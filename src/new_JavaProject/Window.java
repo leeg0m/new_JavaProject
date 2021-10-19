@@ -168,7 +168,7 @@ public class Window {
 		JButton startGamePage_singleButton = new JButton("\uC784\uC2DC");
 		startGamePage_singleButton.setBounds(207, 399, 97, 23);
 		startGamePage.add(startGamePage_singleButton);
-		startGamePage.addMouseListener(new MouseAdapter() {
+		startGamePage_singleButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				
@@ -347,8 +347,20 @@ public class Window {
 //		multipleButton.setVisible(false);
 //		background = new ImageIcon(Main.class.getResource("../images/gameBackground.png")).getImage();
 		
-		InGame IG = new InGame(new JLabel(""));
-		IG.setBounds(100, 100, 240, 240);
+		int col = 30;
+		int row = 16;
+		int mine = 99;
+		//초급 : 9x9|10
+		//중급 : 16x16|40
+		//고급 : 30x16|99
+		//난이도별로 구조체나 클래스로 [가로x세로|지뢰수] 데이터 저장
+//		private final int BOARD_WIDTH = N_COLS * CELL_SIZE + 1;//프레임 넓이
+//	    private final int BOARD_HEIGHT = N_ROWS * CELL_SIZE + 1;//
+//		int size = 
+//		InGame IG = new InGame(new JLabel(""));
+		InGame IG = new InGame(col,row,mine);
+//		IG.setLocation(100, 100);
+		IG.setBounds(100, 100,IG.getWidth(), IG.getHeight());
 		frame.add(IG);
 	}
 }
