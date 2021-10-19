@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+
 public class Window {
 
 	private JFrame frame;
@@ -167,6 +168,25 @@ public class Window {
 		JButton startGamePage_singleButton = new JButton("\uC784\uC2DC");
 		startGamePage_singleButton.setBounds(207, 399, 97, 23);
 		startGamePage.add(startGamePage_singleButton);
+		startGamePage.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+//				loginPage.setVisible(false);
+				startGamePage.setVisible(false);
+				gameStart();
+
+			}
+		});
 
 		JButton startGamePage_multiButton = new JButton("\uC784\uC2DC");
 		startGamePage_multiButton.setBounds(633, 399, 97, 23);
@@ -320,6 +340,17 @@ public class Window {
 		htpPage.add(htpPage_rankButton);
 
 	}
+	//public void gameStart(int nowSelected, String mode) {
+	public void gameStart() {
+//		isMainScreen = false;
+//		singleButton.setVisible(false);
+//		multipleButton.setVisible(false);
+//		background = new ImageIcon(Main.class.getResource("../images/gameBackground.png")).getImage();
+		
+		InGame IG = new InGame(new JLabel(""));
+		IG.setBounds(100, 100, 240, 240);
+		frame.add(IG);
+	}
 }
 
 class ImagePanel extends JPanel {
@@ -344,3 +375,5 @@ class ImagePanel extends JPanel {
 		g.drawImage(img, 0, 0, null);
 	}
 }
+
+
