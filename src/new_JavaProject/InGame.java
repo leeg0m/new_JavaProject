@@ -395,6 +395,11 @@ public class InGame extends JPanel {
                         if (field[(cRow * N_COLS) + cCol] == EMPTY_CELL) {//빈셀이면
                             find_empty_cells((cRow * N_COLS) + cCol);//다른 빈셀 탐색
                         }
+                        
+                    }
+                    if (field[(cRow * N_COLS) + cCol] < COVER_FOR_CELL) {//활성화 셀이면
+                        find_mark_cells((cRow * N_COLS) + cCol);//깃발비교후 팔방 활성화
+                        doRepaint = true;
                     }
                 }
 
@@ -403,5 +408,146 @@ public class InGame extends JPanel {
                 }
             }
         }
+    }
+    
+    private class FlagsCount{
+    	int fc=0;
+    }
+    private void find_mark_cells(int j) {//깃발찾기
+
+        int current_col = j % N_COLS;//넘겨받은 칸의 가로 위치
+        int cell;
+        FlagsCount  flags_count = new FlagsCount();
+        int coverMark=COVER_FOR_CELL+MARK_FOR_CELL;
+        System.out.println("주소!"+Integer.toHexString(flags_count.hashCode()));
+
+        for(int i=0;i<2;i++) {
+	        if (current_col > 0) {//왼쪽 셀이 범위에 있는지 체크
+	            cell = j - N_COLS - 1;//왼쪽 위
+	            if (cell >= 0) {
+//	            	if(i==0){//첫번째 반복 : 팔방의 깃발 수 카운트
+//	            		if (field[cell] >= coverMark) {//왼쪽 위의 셀이 커버가 있으면서 깃발이 꽂혀있으면
+//	                		flags_count++;
+//	            		}
+//	            	}
+//                	else{//두번째 반복 : 현재 셀의 숫자와 깃발카운트가 같으면 팔방 활성화
+//                		if(flags_count == field[j]) {
+//                			if (field[cell] < coverMark && field[cell]>=COVER_FOR_CELL) {//왼쪽 위의 셀이 커버가 있으면서 깃발이 없으면
+//	                			field[cell] -= COVER_FOR_CELL;//커버값(10)만큼 뺌 //10-19 => 0-9
+//	                		}
+//                		}
+//                	}
+	            	find_mark_cells_tool(cell,flags_count,coverMark,i,j);
+	            }
+	            
+	
+	            cell = j - 1;//왼쪽
+	            if (cell >= 0) {
+//	                if (field[cell] >= coverMark) {
+//	                    field[cell] -= COVER_FOR_CELL;
+//	                    if (field[cell] == EMPTY_CELL) {
+//	                        find_empty_cells(cell);
+//	                    }
+//	                }
+	            	find_mark_cells_tool(cell,flags_count,coverMark,i,j);
+	                
+	            }
+	            
+	            
+	
+	            cell = j + N_COLS - 1;//왼쪽 아래
+	            if (cell < allCells) {
+//	                if (field[cell] >= coverMark) {
+//	                    field[cell] -= COVER_FOR_CELL;
+//	                    if (field[cell] == EMPTY_CELL) {
+//	                        find_empty_cells(cell);
+//	                    }
+//	                }
+	            	find_mark_cells_tool(cell,flags_count,coverMark,i,j);
+	            }
+	        }
+	
+	        cell = j - N_COLS;//위
+	        if (cell >= 0) {
+//	            if (field[cell] >= coverMark) {
+//	                field[cell] -= COVER_FOR_CELL;
+//	                if (field[cell] == EMPTY_CELL) {
+//	                    find_empty_cells(cell);
+//	                }
+//	            }
+	        	find_mark_cells_tool(cell,flags_count,coverMark,i,j);
+	        }
+	
+	        cell = j + N_COLS;//아래
+	        if (cell < allCells) {
+//	            if (field[cell] >= coverMark) {
+//	                field[cell] -= COVER_FOR_CELL;
+//	                if (field[cell] == EMPTY_CELL) {
+//	                    find_empty_cells(cell);
+//	                }
+//	            }
+	        	find_mark_cells_tool(cell,flags_count,coverMark,i,j);
+	        }
+	
+	        if (current_col < (N_COLS - 1)) {//오른쪽 셀이 범위내에 있는지 체크
+	            cell = j - N_COLS + 1;//오른쪽 위
+	            if (cell >= 0) {
+//	                if (field[cell] >= coverMark) {
+//	                    field[cell] -= COVER_FOR_CELL;
+//	                    if (field[cell] == EMPTY_CELL) {
+//	                        find_empty_cells(cell);
+//	                    }
+//	                }
+	            	find_mark_cells_tool(cell,flags_count,coverMark,i,j);
+	            }
+	
+	            cell = j + N_COLS + 1;//오른쪽 아래
+	            if (cell < allCells) {
+//	                if (field[cell] >= coverMark) {
+//	                    field[cell] -= COVER_FOR_CELL;
+//	                    if (field[cell] == EMPTY_CELL) {
+//	                        find_empty_cells(cell);
+//	                    }
+//	                }
+	            	find_mark_cells_tool(cell,flags_count,coverMark,i,j);
+	            }
+	
+	            cell = j + 1;//오른쪽
+	            if (cell < allCells) {
+//	                if (field[cell] >= coverMark) {
+//	                    field[cell] -= COVER_FOR_CELL;
+//	                    if (field[cell] == EMPTY_CELL) {
+//	                        find_empty_cells(cell);
+//	                    }
+//	                }
+	            	find_mark_cells_tool(cell,flags_count,coverMark,i,j);
+	            }
+	        }
+	        if(flags_count.fc != field[j]) break;//깃발수가 현재셀숫자와 다르면 다음동작없음
+        }
+    }
+    
+    private void find_mark_cells_tool(int cell, FlagsCount flags_count, int coverMark, int i, int j) {
+    	System.out.println("!"+flags_count);
+    	if(i==0){//첫번째 반복 : 팔방의 깃발 수 카운트
+    		if (field[cell] >= coverMark) {//셀이 커버가 있으면서 깃발이 꽂혀있으면
+        		flags_count.fc++;
+    		}
+    		System.out.println("hey");
+    	}
+    	else{//두번째 반복 : 현재 셀의 숫자와 깃발카운트가 같으면 팔방 활성화
+    		if(flags_count.fc == field[j]) {
+    			if (field[cell] < coverMark && field[cell]>=COVER_FOR_CELL) {//왼쪽 위의 셀이 커버가 있으면서 깃발이 없으면
+        			field[cell] -= COVER_FOR_CELL;//커버값(10)만큼 뺌 //10-19 => 0-9
+        		}
+    			if (field[cell] == EMPTY_CELL) {
+                    find_empty_cells(cell);
+                }
+    		}
+    		System.out.println("ok");
+    	}
+    	System.out.println("@"+flags_count.fc);
+    	
+    	System.out.println("주소@"+Integer.toHexString(flags_count.hashCode()));
     }
 }
