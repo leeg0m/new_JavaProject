@@ -5,7 +5,10 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -52,6 +55,8 @@ public class InGame extends JPanel {
 
     private int allCells;//N_ROWS * N_COLS;// = field 개수
     private final JLabel statusbar=new JLabel("testMessage");//좌측하단의 글씨. ex) 지뢰개수, 승리메시지,패배메시지 등 
+	FirstClick fc = new FirstClick();
+	CreateGame game = new CreateGame();
 
 //    public InGame(JLabel statusbar) {
 	public InGame(int n_cols, int n_rows, int n_mines) {
@@ -83,100 +88,210 @@ public class InGame extends JPanel {
         }
 
         addMouseListener(new MinesAdapter());
-        newGame();//핵심코드
+        game.gameBoard();
+//        newGame();//핵심코드
     }
 
-    private void newGame() {
+//    private void newGame() {
+//
+//        int cell;
+//
+//        var random = new Random();//java.util.Random //지뢰 위치설정할때 사용
+//        inGame = true;//게임 상태. true:대기 false:gamelose
+//        minesLeft = N_MINES;//남은 개수를 총 개수로 초기화
+//
+//        allCells = N_ROWS * N_COLS;
+//        field = new int[allCells];
+//
+//        for (int i = 0; i < allCells; i++) {
+//
+//            field[i] = COVER_FOR_CELL;//모든 칸에 커버(비활성화 빈칸)를 씌움
+//        }
+//
+//        statusbar.setText(Integer.toString(minesLeft));
+//
+//        int i = 0;
+//
+//        while (i < N_MINES) {
+//
+////            int position = (int) (50 * random.nextDouble());
+//            int position = (int) (allCells * random.nextDouble());//전체 셀 중에 위치하는 좌표값. ex) position==0 일때 (0,0)에 지뢰가 있음
+//
+//            if ((position < allCells)
+//                    && (field[position] != COVERED_MINE_CELL)) { //지뢰의 위치가 전체칸보다 크지 않으면서 지뢰가있는 필드의 상태가 커버가 씌어진 지뢰칸이 아니면
+//
+//                int current_col = position % N_COLS;//지뢰의 가로 위치. %연산
+//                
+//                field[position] = COVERED_MINE_CELL;// 지뢰가 있는 필드에 커버(지뢰있음)를 씌움
+//                i++;
+//
+//                if (current_col > 0) {//0보다 큼 = 가장 왼쪽에 위치하지 않음 = 왼쪽 셀이 범위안에 있는지 체크
+//                    cell = position - 1 - N_COLS;//지뢰 위치의 왼쪽 위의 칸
+////                    System.out.println(cell);
+//                    if (cell >= 0) {//0보다 크거나 같음 = 왼쪽 위 셀이 범위 안에 있다.
+//                        if (field[cell] != COVERED_MINE_CELL) {//지뢰칸 왼쪽위에 지뢰 없으면
+//                            field[cell] += 1;//그자리에 1더함
+//                        }
+//                    }
+//                    cell = position - 1;//지뢰 위치의 왼쪽
+//                    if (cell >= 0) {
+//                        if (field[cell] != COVERED_MINE_CELL) {
+//                            field[cell] += 1;
+//                        }
+//                    }
+//
+//                    cell = position + N_COLS - 1;//왼쪽 아래
+//                    if (cell < allCells) {
+//                        if (field[cell] != COVERED_MINE_CELL) {
+//                            field[cell] += 1;
+//                        }
+//                    }
+//                }
+//
+//                cell = position - N_COLS;//위
+//                if (cell >= 0) {
+//                    if (field[cell] != COVERED_MINE_CELL) {
+//                        field[cell] += 1;
+//                    }
+//                }
+//
+//                cell = position + N_COLS;//아래
+//                if (cell < allCells) {
+//                    if (field[cell] != COVERED_MINE_CELL) {
+//                        field[cell] += 1;
+//                    }
+//                }
+//
+//                if (current_col < (N_COLS - 1)) {//오른쪽 셀이 범위안에있는지 체크
+//                    cell = position - N_COLS + 1;//오른쪽 위
+//                    if (cell >= 0) {
+//                        if (field[cell] != COVERED_MINE_CELL) {
+//                            field[cell] += 1;
+//                        }
+//                    }
+//                    cell = position + N_COLS + 1;//오른쪽 아래
+//                    if (cell < allCells) {
+//                        if (field[cell] != COVERED_MINE_CELL) {
+//                            field[cell] += 1;
+//                        }
+//                    }
+//                    cell = position + 1;//오른쪽
+//                    if (cell < allCells) {
+//                        if (field[cell] != COVERED_MINE_CELL) {
+//                            field[cell] += 1;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+    
+    private class CreateGame{
+    	int cell;
 
-        int cell;
+    	
+    	void newGame() {
+//    		gameBoard();
+    		
+    		int i = 0;
+    		var random = new Random();
+    		int position;
 
-        var random = new Random();//java.util.Random //지뢰 위치설정할때 사용
-        inGame = true;//게임 상태. true:대기 false:gamelose
-        minesLeft = N_MINES;//남은 개수를 총 개수로 초기화
+            while (i < N_MINES) {
 
-        allCells = N_ROWS * N_COLS;
-        field = new int[allCells];
+            	position = (int) (allCells * random.nextDouble());
+//            		position = (int) (allCells * random.nextDouble());//전체 셀 중에 위치하는 좌표값. ex) position==0 일때 (0,0)에 지뢰가 있음
+            	
+            	boolean count=false;//빈셀에 지뢰가 배치되면 다시 계산
+            	for(int empty : fc.emptyCell) {
+            		if(empty == position)
+            			count=true;
+            	}
+            	if(count)
+            		continue;
+            	
+                if ((position < allCells)
+                        && (field[position] != COVERED_MINE_CELL)) { //지뢰의 위치가 전체칸보다 크지 않으면서 지뢰가있는 필드의 상태가 커버가 씌어진 지뢰칸이 아니면
 
-        for (int i = 0; i < allCells; i++) {
+                    int current_col = position % N_COLS;//지뢰의 가로 위치. %연산
+                    
+                    field[position] = COVERED_MINE_CELL;// 지뢰가 있는 필드에 커버(지뢰있음)를 씌움
+                    i++;
 
-            field[i] = COVER_FOR_CELL;//모든 칸에 커버(비활성화 빈칸)를 씌움
-        }
+                    if (current_col > 0) {//0보다 큼 = 가장 왼쪽에 위치하지 않음 = 왼쪽 셀이 범위안에 있는지 체크
+                        cell = position - 1 - N_COLS;//지뢰 위치의 왼쪽 위의 칸
+                        if (cell >= 0) {//0보다 크거나 같음 = 왼쪽 위 셀이 범위 안에 있다.
+                            if (field[cell] != COVERED_MINE_CELL) {//지뢰칸 왼쪽위에 지뢰 없으면
+                                field[cell] += 1;//그자리에 1더함
+                            }
+                        }
+                        cell = position - 1;//지뢰 위치의 왼쪽
+                        if (cell >= 0) {
+                            if (field[cell] != COVERED_MINE_CELL) {
+                                field[cell] += 1;
+                            }
+                        }
 
-        statusbar.setText(Integer.toString(minesLeft));
-
-        int i = 0;
-
-        while (i < N_MINES) {
-
-//            int position = (int) (50 * random.nextDouble());
-            int position = (int) (allCells * random.nextDouble());//전체 셀 중에 위치하는 좌표값. ex) position==0 일때 (0,0)에 지뢰가 있음
-
-            if ((position < allCells)
-                    && (field[position] != COVERED_MINE_CELL)) { //지뢰의 위치가 전체칸보다 크지 않으면서 지뢰가있는 필드의 상태가 커버가 씌어진 지뢰칸이 아니면
-
-                int current_col = position % N_COLS;//지뢰의 가로 위치. %연산
-                
-                field[position] = COVERED_MINE_CELL;// 지뢰가 있는 필드에 커버(지뢰있음)를 씌움
-                i++;
-
-                if (current_col > 0) {//0보다 큼 = 가장 왼쪽에 위치하지 않음 = 왼쪽 셀이 범위안에 있는지 체크
-                    cell = position - 1 - N_COLS;//지뢰 위치의 왼쪽 위의 칸
-//                    System.out.println(cell);
-                    if (cell >= 0) {//0보다 크거나 같음 = 왼쪽 위 셀이 범위 안에 있다.
-                        if (field[cell] != COVERED_MINE_CELL) {//지뢰칸 왼쪽위에 지뢰 없으면
-                            field[cell] += 1;//그자리에 1더함
+                        cell = position + N_COLS - 1;//왼쪽 아래
+                        if (cell < allCells) {
+                            if (field[cell] != COVERED_MINE_CELL) {
+                                field[cell] += 1;
+                            }
                         }
                     }
-                    cell = position - 1;//지뢰 위치의 왼쪽
+
+                    cell = position - N_COLS;//위
                     if (cell >= 0) {
                         if (field[cell] != COVERED_MINE_CELL) {
                             field[cell] += 1;
                         }
                     }
 
-                    cell = position + N_COLS - 1;//왼쪽 아래
+                    cell = position + N_COLS;//아래
                     if (cell < allCells) {
                         if (field[cell] != COVERED_MINE_CELL) {
                             field[cell] += 1;
                         }
                     }
-                }
 
-                cell = position - N_COLS;//위
-                if (cell >= 0) {
-                    if (field[cell] != COVERED_MINE_CELL) {
-                        field[cell] += 1;
-                    }
-                }
-
-                cell = position + N_COLS;//아래
-                if (cell < allCells) {
-                    if (field[cell] != COVERED_MINE_CELL) {
-                        field[cell] += 1;
-                    }
-                }
-
-                if (current_col < (N_COLS - 1)) {//오른쪽 셀이 범위안에있는지 체크
-                    cell = position - N_COLS + 1;//오른쪽 위
-                    if (cell >= 0) {
-                        if (field[cell] != COVERED_MINE_CELL) {
-                            field[cell] += 1;
+                    if (current_col < (N_COLS - 1)) {//오른쪽 셀이 범위안에있는지 체크
+                        cell = position - N_COLS + 1;//오른쪽 위
+                        if (cell >= 0) {
+                            if (field[cell] != COVERED_MINE_CELL) {
+                                field[cell] += 1;
+                            }
                         }
-                    }
-                    cell = position + N_COLS + 1;//오른쪽 아래
-                    if (cell < allCells) {
-                        if (field[cell] != COVERED_MINE_CELL) {
-                            field[cell] += 1;
+                        cell = position + N_COLS + 1;//오른쪽 아래
+                        if (cell < allCells) {
+                            if (field[cell] != COVERED_MINE_CELL) {
+                                field[cell] += 1;
+                            }
                         }
-                    }
-                    cell = position + 1;//오른쪽
-                    if (cell < allCells) {
-                        if (field[cell] != COVERED_MINE_CELL) {
-                            field[cell] += 1;
+                        cell = position + 1;//오른쪽
+                        if (cell < allCells) {
+                            if (field[cell] != COVERED_MINE_CELL) {
+                                field[cell] += 1;
+                            }
                         }
                     }
                 }
             }
+    	}
+    	
+    	void gameBoard() {
+    		fc.firstCheck=true;//첫클릭 상태 초기화
+    		
+            inGame = true;//게임 상태. true:대기 false:gamelose
+            minesLeft = N_MINES;//남은 개수를 총 개수로 초기화
+
+            allCells = N_ROWS * N_COLS;
+            field = new int[allCells];
+
+            for (int i = 0; i < allCells; i++) {
+
+                field[i] = COVER_FOR_CELL;//모든 칸에 커버(비활성화 빈칸)를 씌움
+            }
+
         }
     }
 
@@ -344,11 +459,12 @@ public class InGame extends JPanel {
             int cRow = y / CELL_SIZE;
 //            System.out.println(cCol);// 범위0-240/15(CELL_SIZE) = 0~15(CELL_SIZE)
 
+            int currentField=(cRow * N_COLS) + cCol;//현재 누르는 셀
             boolean doRepaint = false;
 
             if (!inGame) {
 
-                newGame();//새게임
+                game.gameBoard();//새게임
                 repaint();//새로그림
             }
 //            System.out.println(e.getButton());
@@ -358,14 +474,14 @@ public class InGame extends JPanel {
 
                 if (e.getButton() == MouseEvent.BUTTON3) {//우클릭하면
 
-                    if (field[(cRow * N_COLS) + cCol] > MINE_CELL) {//눌린 셀이 지뢰(9)보다 크면 = 10-29
+                    if (field[currentField] > MINE_CELL) {//눌린 셀이 지뢰(9)보다 크면 = 10-29
 
                         doRepaint = true;
 
-                        if (field[(cRow * N_COLS) + cCol] <= COVERED_MINE_CELL) {//커버지뢰보다 작거나 같으면 = 10-19 = 깃발 안꽂혀있으면
+                        if (field[currentField] <= COVERED_MINE_CELL) {//커버지뢰보다 작거나 같으면 = 10-19 = 깃발 안꽂혀있으면
 
                             if (minesLeft > 0) {//지뢰 카운터가 0보다 클때
-                                field[(cRow * N_COLS) + cCol] += MARK_FOR_CELL;//깃발 꽂음
+                                field[currentField] += MARK_FOR_CELL;//깃발 꽂음
                                 minesLeft--;//지뢰 카운터 줄임
                                 String msg = Integer.toString(minesLeft);
                                 statusbar.setText(msg);//카운터 줄임
@@ -374,7 +490,7 @@ public class InGame extends JPanel {
                             }
                         } else {//깃발 꽂혀있으면
 
-                            field[(cRow * N_COLS) + cCol] -= MARK_FOR_CELL;//깃발 제거
+                            field[currentField] -= MARK_FOR_CELL;//깃발 제거
                             minesLeft++;//카운터 증가
                             String msg = Integer.toString(minesLeft);
                             statusbar.setText(msg);//증가
@@ -382,29 +498,33 @@ public class InGame extends JPanel {
                     }
 
                 } else {//좌클, 휠클 등등
+                	if(fc.firstCheck) {//첫클릭이면
+                		fc.openFirstCell(inGame, currentField);//팔방향 빈셀 확보
+                		game.newGame();//지뢰 셋팅
+                	}
 
-                    if (field[(cRow * N_COLS) + cCol] > COVERED_MINE_CELL) {//깃발꽂혀있으면
+                    if (field[currentField] > COVERED_MINE_CELL) {//깃발꽂혀있으면
 
                         return;//아무것도안함
                     }
 
-                    if ((field[(cRow * N_COLS) + cCol] > MINE_CELL)
-                            && (field[(cRow * N_COLS) + cCol] < MARKED_MINE_CELL)) {//커버있는 셀이면
+                    if ((field[currentField] > MINE_CELL)
+                            && (field[currentField] < MARKED_MINE_CELL)) {//커버있는 셀이면
 
-                        field[(cRow * N_COLS) + cCol] -= COVER_FOR_CELL;//커버 제거
+                        field[currentField] -= COVER_FOR_CELL;//커버 제거
                         doRepaint = true;
 
-                        if (field[(cRow * N_COLS) + cCol] == MINE_CELL) {//지뢰였으면
+                        if (field[currentField] == MINE_CELL) {//지뢰였으면
                             inGame = false;//패배
                         }
 
-                        if (field[(cRow * N_COLS) + cCol] == EMPTY_CELL) {//빈셀이면
-                            find_empty_cells((cRow * N_COLS) + cCol);//다른 빈셀 탐색
+                        if (field[currentField] == EMPTY_CELL) {//빈셀이면
+                            find_empty_cells(currentField);//다른 빈셀 탐색
                         }
                         
                     }
-                    if (field[(cRow * N_COLS) + cCol] < COVER_FOR_CELL) {//활성화 셀이면
-                        find_mark_cells((cRow * N_COLS) + cCol);//깃발비교후 팔방 활성화
+                    if (field[currentField] < COVER_FOR_CELL) {//활성화 셀이면
+                        find_mark_cells(currentField);//깃발비교후 팔방 활성화
                         doRepaint = true;
                     }
                 }
@@ -503,6 +623,75 @@ public class InGame extends JPanel {
                     find_empty_cells(cell);
                 }
     		}
+    	}
+    }
+    private class FirstClick{
+    	boolean firstCheck=true;
+    	List<Integer> emptyCell = new ArrayList<>();//빈셀 좌표 저장
+    	
+    	void openFirstCell(boolean inGame, int currentCell){
+    		if(inGame) {
+    			if(firstCheck) {
+    				firstCheck=false;
+    				int currentCol = currentCell % N_COLS;//넘겨받은 칸의 가로 위치
+    		        int cell;
+    		        
+    		        field[currentCell]=EMPTY_CELL;//현재칸 빈셀
+	            	emptyCell.add(currentCell);
+    		        if (currentCol > 0) {//왼쪽 셀이 범위에 있는지 체크
+    		            cell = currentCell - N_COLS - 1;//왼쪽 위
+    		            if (cell >= 0) {
+    		            	field[cell]=EMPTY_CELL;
+    		            	emptyCell.add(cell);
+    		            }
+    		            cell = currentCell - 1;//왼쪽
+    		            if (cell >= 0) {
+    		            	field[cell]=EMPTY_CELL;
+    		            	emptyCell.add(cell);
+    		            }
+    		            cell = currentCell + N_COLS - 1;//왼쪽 아래
+    		            if (cell < allCells) {
+    		            	field[cell]=EMPTY_CELL;
+    		            	emptyCell.add(cell);
+    		            }
+    		        }
+    		
+    		        cell = currentCell - N_COLS;//위
+    		        if (cell >= 0) {
+    		        	field[cell]=EMPTY_CELL;
+    		        	emptyCell.add(cell);
+    		        }
+    		
+    		        cell = currentCell + N_COLS;//아래
+    		        if (cell < allCells) {
+    		        	field[cell]=EMPTY_CELL;
+    		        	emptyCell.add(cell);
+    		        }
+    		
+    		        if (currentCol < (N_COLS - 1)) {//오른쪽 셀이 범위내에 있는지 체크
+    		            cell = currentCell - N_COLS + 1;//오른쪽 위
+    		            if (cell >= 0) {
+    		            	field[cell]=EMPTY_CELL;
+    		            	emptyCell.add(cell);
+    		            }
+    		
+    		            cell = currentCell + N_COLS + 1;//오른쪽 아래
+    		            if (cell < allCells) {
+    		            	field[cell]=EMPTY_CELL;
+    		            	emptyCell.add(cell);
+    		            }
+    		
+    		            cell = currentCell + 1;//오른쪽
+    		            if (cell < allCells) {
+    		            	field[cell]=EMPTY_CELL;
+    		            	emptyCell.add(cell);
+    		            }
+    		        }
+    			}
+    		}
+//    		else {
+//    			firstCheck=true;
+//    		}
     	}
     }
 }
