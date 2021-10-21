@@ -362,6 +362,15 @@ public class Window {
 //		IG.setLocation(100, 100);
 		IG.setBounds(100, 100,IG.getWidth(), IG.getHeight());
 		frame.add(IG);
+		InGame IG2 = new InGame(col,row,mine);
+		IG2.setBounds(100, 400,IG2.getWidth(), IG2.getHeight());
+		frame.add(IG2);
+		InGame IG3 = new InGame(col,row,mine);
+		IG3.setBounds(700, 100,IG3.getWidth(), IG3.getHeight());
+		frame.add(IG3);
+		InGame IG4 = new InGame(col,row,mine);
+		IG4.setBounds(700, 400,IG4.getWidth(), IG4.getHeight());
+		frame.add(IG4);
 	}
 }
 
