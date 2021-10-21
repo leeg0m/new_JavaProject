@@ -286,6 +286,12 @@ public class InGame extends JPanel {
 
                     inGame = false;//졌다
                 }
+            }
+        }
+        for (int i = 0; i < N_ROWS; i++) {//세로
+
+            for (int j = 0; j < N_COLS; j++) {//가로
+            	int cell = field[(i * N_COLS) + j];
 
                 if (!inGame) {//졌으면
 
