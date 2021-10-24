@@ -232,6 +232,31 @@ public class Window {
 		});
 		startGamePage.add(startGamePage_htpButton);
 		
+		JButton startGamePage_logoutButton = new JButton("");
+		startGamePage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButton.png"));
+		startGamePage_logoutButton.setBounds(1203, 43, 47, 47);
+		startGamePage_logoutButton.setBorderPainted(false);
+		startGamePage_logoutButton.setContentAreaFilled(false);
+		startGamePage_logoutButton.setFocusPainted(false);
+		startGamePage_logoutButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				startGamePage.setVisible(false);
+				loginPage.setVisible(true);
+			}
+		});
+		startGamePage.add(startGamePage_logoutButton);
+		
 		
 		//랭크화면 버튼들
 		JButton rankPage_startGameButton = new JButton("");
@@ -281,6 +306,31 @@ public class Window {
 			}
 		});
 		rankPage.add(rankPage_htpButton);
+		
+		JButton rankpage_logoutButton = new JButton("");
+		rankpage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButton.png"));
+		rankpage_logoutButton.setBounds(1203, 43, 47, 47);
+		rankpage_logoutButton.setBorderPainted(false);
+		rankpage_logoutButton.setContentAreaFilled(false);
+		rankpage_logoutButton.setFocusPainted(false);
+		rankpage_logoutButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				rankPage.setVisible(false);
+				loginPage.setVisible(true);
+			}
+		});		
+		rankPage.add(rankpage_logoutButton);
 
 		//튜토리얼화면 버튼들
 		JButton htpPage_startGameButton = new JButton("");
@@ -330,6 +380,31 @@ public class Window {
 			}
 		});
 		htpPage.add(htpPage_rankButton);
+		
+		JButton htpPage_logoutButton = new JButton("");
+		htpPage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButton.png"));
+		htpPage_logoutButton.setBounds(1203, 43, 47, 47);
+		htpPage_logoutButton.setBorderPainted(false);
+		htpPage_logoutButton.setContentAreaFilled(false);
+		htpPage_logoutButton.setFocusPainted(false);
+		htpPage_logoutButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				htpPage.setVisible(false);
+				loginPage.setVisible(true);
+			}
+		});	
+		htpPage.add(htpPage_logoutButton);
 
 	}
 }
