@@ -53,7 +53,7 @@ public class Window {
 
 		// 게임 종료 버튼
 		JButton exitButton = new JButton("");
-		exitButton.setLocation(1248, 7);
+		exitButton.setLocation(1249, 10);
 		exitButton.setSize(21, 20);
 		exitButton.setIcon(new ImageIcon(".\\images\\exitButton.png"));
 		exitButton.setBorderPainted(false);
@@ -80,7 +80,7 @@ public class Window {
 		// 게임 메뉴바(menuBar)
 		JLabel menuBar = new JLabel("");
 		menuBar.setIcon(new ImageIcon(".\\images\\menuBar.png"));
-		menuBar.setBounds(0, 0, 1280, 30);
+		menuBar.setBounds(6, 7, 1269, 26);
 		menuBar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -165,11 +165,21 @@ public class Window {
 		
 		//게임시작화면 버튼들
 		JButton startGamePage_singleButton = new JButton("\uC784\uC2DC");
-		startGamePage_singleButton.setBounds(207, 399, 97, 23);
+
+		startGamePage_singleButton.setBorderPainted(false);
+		startGamePage_singleButton.setContentAreaFilled(false);
+		startGamePage_singleButton.setFocusPainted(false);
+
+		startGamePage_singleButton.setBounds(207, 257, 350, 280);
 		startGamePage.add(startGamePage_singleButton);
 
 		JButton startGamePage_multiButton = new JButton("\uC784\uC2DC");
-		startGamePage_multiButton.setBounds(633, 399, 97, 23);
+
+		startGamePage_multiButton.setBorderPainted(false);
+		startGamePage_multiButton.setContentAreaFilled(false);
+		startGamePage_multiButton.setFocusPainted(false);
+
+		startGamePage_multiButton.setBounds(729, 258, 350, 280);
 		startGamePage.add(startGamePage_multiButton);
 
 		JButton startGamePage_rankButton = new JButton("");
