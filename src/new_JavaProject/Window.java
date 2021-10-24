@@ -106,7 +106,7 @@ public class Window {
 
 		// 로그인화면
 		ImagePanel loginPage = new ImagePanel(
-				new ImageIcon("./images/mainmenuPage.png").getImage());
+				new ImageIcon("./images/loginPage.png").getImage());
 		frame.setSize(loginPage.getWidth(), loginPage.getHeight());
 
 		frame.getContentPane().add(loginPage);
@@ -114,8 +114,13 @@ public class Window {
 		
 
 		//로그인화면 버튼들
-		JButton loginButton = new JButton("\uC784\uC2DC\uB85C\uAE34");
-		loginButton.setBounds(402, 456, 97, 108);
+		JButton loginButton = new JButton("");
+		loginButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
+
+		loginButton.setBounds(713, 537, 91, 80);
+		loginButton.setBorderPainted(false);
+		loginButton.setContentAreaFilled(false);
+		loginButton.setFocusPainted(false);
 		loginButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
@@ -137,7 +142,7 @@ public class Window {
 		loginPage.add(loginButton);
 
 		JButton signupButton = new JButton("\uC784\uC2DC\uD68C\uC6D0\uAC11");
-		signupButton.setBounds(651, 415, 97, 142);
+		signupButton.setBounds(100, 100, 30, 30);
 		loginPage.add(signupButton);
 
 		frame.getContentPane().add(startGamePage);
