@@ -164,7 +164,8 @@ public class Window {
 
 		
 		//게임시작화면 버튼들
-		JButton startGamePage_singleButton = new JButton("\uC784\uC2DC");
+		JButton startGamePage_singleButton = new JButton("");
+		startGamePage_singleButton.setIcon(new ImageIcon(".\\images\\singleButton.png"));
 
 		startGamePage_singleButton.setBorderPainted(false);
 		startGamePage_singleButton.setContentAreaFilled(false);
@@ -173,7 +174,8 @@ public class Window {
 		startGamePage_singleButton.setBounds(207, 257, 350, 280);
 		startGamePage.add(startGamePage_singleButton);
 
-		JButton startGamePage_multiButton = new JButton("\uC784\uC2DC");
+		JButton startGamePage_multiButton = new JButton("");
+		startGamePage_multiButton.setIcon(new ImageIcon(".\\images\\multiButton.png"));
 
 		startGamePage_multiButton.setBorderPainted(false);
 		startGamePage_multiButton.setContentAreaFilled(false);
