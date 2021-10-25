@@ -13,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Window {
@@ -62,12 +63,12 @@ public class Window {
 		exitButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				exitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				exitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));		//버튼에 마우스 올리면 손가락 모양 커서로 변경
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				exitButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				exitButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));		//버튼에 마우스 때면 원래 모양 커서로 변경
 			}
 
 			@Override
@@ -141,9 +142,53 @@ public class Window {
 		});
 		loginPage.add(loginButton);
 
-		JButton signupButton = new JButton("\uC784\uC2DC\uD68C\uC6D0\uAC11");
-		signupButton.setBounds(100, 100, 30, 30);
+		JButton signupButton = new JButton("");
+		signupButton.setBounds(722, 645, 70, 18);
+		signupButton.setBorderPainted(false);
+		signupButton.setContentAreaFilled(false);
+		signupButton.setFocusPainted(false);
+		signupButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				signupButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				signupButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				JOptionPane.showMessageDialog(null,"회원가입 테슷흐");
+
+			}
+		});
 		loginPage.add(signupButton);
+		
+		JButton find_ID_Pass_Button = new JButton("");
+		find_ID_Pass_Button.setBounds(543, 645, 140, 18);
+		find_ID_Pass_Button.setBorderPainted(false);
+		find_ID_Pass_Button.setContentAreaFilled(false);
+		find_ID_Pass_Button.setFocusPainted(false);
+		find_ID_Pass_Button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				find_ID_Pass_Button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				find_ID_Pass_Button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				JOptionPane.showMessageDialog(null,"찾기 테슷흐");
+
+			}
+		});
+		loginPage.add(find_ID_Pass_Button);
 
 		frame.getContentPane().add(startGamePage);
 
@@ -246,12 +291,12 @@ public class Window {
 		startGamePage_logoutButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
+				startGamePage_logoutButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
+				startGamePage_logoutButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
 			@Override
@@ -321,12 +366,12 @@ public class Window {
 		rankpage_logoutButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
+				rankpage_logoutButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
+				rankpage_logoutButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
 			@Override
@@ -346,7 +391,6 @@ public class Window {
 		htpPage_startGameButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
 			}
 
 			@Override
@@ -370,7 +414,6 @@ public class Window {
 		htpPage_rankButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
 			}
 
 			@Override
@@ -395,12 +438,12 @@ public class Window {
 		htpPage_logoutButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				
+				htpPage_logoutButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				
+				htpPage_logoutButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
 			@Override
