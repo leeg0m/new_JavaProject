@@ -5,20 +5,30 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class InGame extends JPanel {
-
+//#책갈피(Ctrl f)
+//=깃발탐색=
+//=빈셀탐색=
+//=첫클릭=
+//=사운드=
+//=마우스이벤트=
+	
 //    private final int NUM_IMAGES = 26;
     private final int NUM_IMAGES = 13;// \Java-Minesweeper-Game-master\Java-Minesweeper-Game-master\src\resources 이미지 파일 12개 
-    private final int CELL_SIZE = 15;//셀의 간격
-//    private final int CELL_SIZE = 30;
+//    private final int CELL_SIZE = 15;//셀의 간격
+    private int CELL_SIZE = 30;
 
     private final int COVER_FOR_CELL = 10;//커버(비활성화 칸)//커버 있는곳은 10만큼 더해짐
     private final int MARK_FOR_CELL = 10;//깃발 꽃힌 칸//깃발꽂힌곳은 10만큼 더해짐
@@ -57,12 +67,15 @@ public class InGame extends JPanel {
     private final JLabel statusbar=new JLabel("testMessage");//좌측하단의 글씨. ex) 지뢰개수, 승리메시지,패배메시지 등 
 	FirstClick fc = new FirstClick();
 	CreateGame game = new CreateGame();
+	private boolean mousePressedCheck=false;
+	List<Integer> pressedCellCover = new ArrayList<>();
 
 //    public InGame(JLabel statusbar) {
-	public InGame(int n_cols, int n_rows, int n_mines) {
+	public InGame(int n_cols, int n_rows, int n_mines, int cell_size) {
 		this.N_COLS=n_cols;
 		this.N_ROWS=n_rows;
 		this.N_MINES=n_mines;
+		this.CELL_SIZE=cell_size;
 		BOARD_WIDTH = N_COLS * CELL_SIZE + 1;//프레임 넓이
 		BOARD_HEIGHT = N_ROWS * CELL_SIZE + 1;//
 
@@ -77,20 +90,34 @@ public class InGame extends JPanel {
 	}
 
     private void initBoard() {
-
         setPreferredSize(new Dimension(BOARD_WIDTH, BOARD_HEIGHT));//창 사이즈 지정
 
+        setSounds();//사운드 추가
+        
         img = new Image[NUM_IMAGES];//이미지 로딩
         for (int i = 0; i < NUM_IMAGES; i++) {
 
             var path = "./images/inGame/resources/" + i + ".png";
-            img[i] = (new ImageIcon(path)).getImage();
+            ImageIcon icon = new ImageIcon(path);
+//            img[i] = (new ImageIcon(path)).getImage();
+            img[i] = icon.getImage();
+            img[i] = img[i].getScaledInstance(CELL_SIZE,CELL_SIZE,Image.SCALE_SMOOTH);
+            
+            ImageIcon changeIcon = new ImageIcon(img[i]);
+//            img[i] = imageSetSize(img[i],30,30);
+            
         }
 
         addMouseListener(new MinesAdapter());
         game.gameBoard();
 //        newGame();//핵심코드
     }
+//    static ImageIcon imageSetSize(ImageIcon icon, int i, int j) { // image Size Setting
+//		Image ximg = icon.getImage();  //ImageIcon을 Image로 변환.
+//		Image yimg = ximg.getScaledInstance(i, j, java.awt.Image.SCALE_SMOOTH);
+//		ImageIcon xyimg = new ImageIcon(yimg); 
+//		return xyimg;
+//	}
 
 //    private void newGame() {
 //
@@ -295,6 +322,7 @@ public class InGame extends JPanel {
         }
     }
 
+//  =============================빈셀탐색======================
     private void find_empty_cells(int j) {//빈칸찾기
 
         int current_col = j % N_COLS;//넘겨받은 칸의 가로 위치
@@ -428,39 +456,103 @@ public class InGame extends JPanel {
                         cell = DRAW_COVER;//일반커버
                         uncover++;//비활성화 셀 카운트 증가
                     }
+                    if(mousePressedCheck) {
+	                    for(int pcc : pressedCellCover) {
+	                    	if((i*j) == pcc) cell = EMPTY_CELL;
+	                    }
+                    }
                 }
 
                 g.drawImage(img[cell], (j * CELL_SIZE),
                         (i * CELL_SIZE), this);//셀 이미지 갱신
+                
             }
+//            if(mousePressedCheck) {
+//            	for(int pcc : pressedCellCover) {
+//            		int col = pcc % N_COLS;
+//            		g.drawImage(img[EMPTY_CELL], (col * CELL_SIZE),
+//            				((pcc - col % N_ROWS)+1 * CELL_SIZE), this);//셀 이미지 갱신
+////            		System.out.println((pcc % N_COLS) +" " +(pcc % N_ROWS));
+////            		System.out.println(pcc);
+//            	}
+//        	}
         }
 
         if (uncover == 0 && inGame) {//게임중이고 비활성화 칸 없으면
 
             inGame = false;//게임종료
             statusbar.setText("Game won");//승리
+//            sound(soundsFilePath.get(soundsEnum.GAMEWIN.ordinal()));//승리소리
 
         } else if (!inGame) {//게임끝
             statusbar.setText("Game lost");//졌다
+//            sound(soundsFilePath.get(soundsEnum.GAMEOVER.ordinal()));//패배소리
         }
     }
-
+  //=============================마우스이벤트======================
     private class MinesAdapter extends MouseAdapter {
 
-        @Override
-        public void mousePressed(MouseEvent e) {
+    	 int x;//마우스 x좌표
+         int y;//마우스 y좌표
 
-            int x = e.getX();//마우스 x좌표
-            int y = e.getY();//마우스 y좌표
-//            System.out.println(y);//범위0-240
-//            System.out.println(x);//범위0-240
-
-            int cCol = x / CELL_SIZE;
+    	
+    	@Override
+    	public void mousePressed(MouseEvent e) {
+    		x = e.getX();//마우스 x좌표
+    		y = e.getY();//마우스 y좌표
+    		int cCol = x / CELL_SIZE;
             int cRow = y / CELL_SIZE;
-//            System.out.println(cCol);// 범위0-240/15(CELL_SIZE) = 0~15(CELL_SIZE)
-
             int currentField=(cRow * N_COLS) + cCol;//현재 누르는 셀
             boolean doRepaint = false;
+//            mousePressedCheck = true;
+            
+    		if ((x < N_COLS * CELL_SIZE) && (y < N_ROWS * CELL_SIZE)) {//15*16=240
+
+                if (e.getButton() == MouseEvent.BUTTON3) {//우클릭하면
+
+                } else {//좌클, 휠클 등등
+
+
+                    if ((field[currentField] > MINE_CELL)
+                            && (field[currentField] < MARKED_MINE_CELL)) {//커버있는 셀이면
+
+
+                        if (field[currentField] == MINE_CELL) {//지뢰였으면
+                        }
+
+                        if (field[currentField] == EMPTY_CELL) {//빈셀이면
+                        }
+                        
+                        
+                    }
+                    if (field[currentField] < COVER_FOR_CELL) {//활성화 셀이면
+                    	pressedCellCover=mousePressedCell(inGame, currentField);
+                    	mousePressedCheck = true;
+                    	doRepaint=true;
+                    	System.out.println();
+                    }
+                }
+
+                if (doRepaint) {
+                    repaint();
+                }
+            }
+        }
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        	mousePressedCheck = false;
+
+        	x = e.getX();//마우스 x좌표
+    		y = e.getY();//마우스 y좌표
+//          System.out.println(y);//범위0-240
+//          System.out.println(x);//범위0-240
+
+          int cCol = x / CELL_SIZE;
+          int cRow = y / CELL_SIZE;
+//          System.out.println(cCol);// 범위0-240/15(CELL_SIZE) = 0~15(CELL_SIZE)
+
+          int currentField=(cRow * N_COLS) + cCol;//현재 누르는 셀
+          boolean doRepaint = false;
 
             if (!inGame) {
 
@@ -485,7 +577,9 @@ public class InGame extends JPanel {
                                 minesLeft--;//지뢰 카운터 줄임
                                 String msg = Integer.toString(minesLeft);
                                 statusbar.setText(msg);//카운터 줄임
+                                sound(soundsFilePath.get(soundsEnum.FLAG.ordinal()));//깃발소리
                             } else {
+//                            	sound()//금지
                                 statusbar.setText("No marks left");//카운터보다 깃발을 많이 꽂아서 더이상 깃발을 꽂을 수 없음
                             }
                         } else {//깃발 꽂혀있으면
@@ -494,6 +588,7 @@ public class InGame extends JPanel {
                             minesLeft++;//카운터 증가
                             String msg = Integer.toString(minesLeft);
                             statusbar.setText(msg);//증가
+                            sound(soundsFilePath.get(soundsEnum.UNFLAG.ordinal()));//깃발소리
                         }
                     }
 
@@ -501,10 +596,12 @@ public class InGame extends JPanel {
                 	if(fc.firstCheck) {//첫클릭이면
                 		fc.openFirstCell(inGame, currentField);//팔방향 빈셀 확보
                 		game.newGame();//지뢰 셋팅
+                		sound(soundsFilePath.get(soundsEnum.CLICK.ordinal()));//클릭소리
                 	}
 
                     if (field[currentField] > COVERED_MINE_CELL) {//깃발꽂혀있으면
 
+//                    	sound()//금지?
                         return;//아무것도안함
                     }
 
@@ -515,12 +612,17 @@ public class InGame extends JPanel {
                         doRepaint = true;
 
                         if (field[currentField] == MINE_CELL) {//지뢰였으면
+//                        	sound(soundsFilePath.get(soundsEnum.GAMEOVER.ordinal()));//패배소리
+//                        	sound(soundsFilePath.get(soundsEnum.CLICK.ordinal()));//패배소리
                             inGame = false;//패배
                         }
 
                         if (field[currentField] == EMPTY_CELL) {//빈셀이면
                             find_empty_cells(currentField);//다른 빈셀 탐색
                         }
+                        
+                        if (field[currentField] < MINE_CELL) 
+                        	sound(soundsFilePath.get(soundsEnum.CLICK.ordinal()));//클릭소리
                         
                     }
                     if (field[currentField] < COVER_FOR_CELL) {//활성화 셀이면
@@ -539,7 +641,8 @@ public class InGame extends JPanel {
     private class FlagsCount{//깃발찾아서 카운트 하는데 사용하는 클래스
     	int fc=0;
     }
-    private void find_mark_cells(int j) {//깃발찾기
+    //=============================깃발탐색======================
+    private void find_mark_cells(int j) {
 
         int current_col = j % N_COLS;//넘겨받은 칸의 가로 위치
         int cell;
@@ -605,6 +708,12 @@ public class InGame extends JPanel {
 	            }
 	        }
 	        if(flags_count.fc != field[j]) break;//깃발수가 현재셀숫자와 다르면 다음동작없음
+	        if(i==1) {
+	        	if(inGame)
+	        		sound(soundsFilePath.get(soundsEnum.CLICK.ordinal()));//클릭소리
+//	        	else
+//	        		sound();//
+	        }
         }
     }
     
@@ -625,6 +734,9 @@ public class InGame extends JPanel {
     		}
     	}
     }
+    
+    
+  //=============================첫클릭======================
     private class FirstClick{
     	boolean firstCheck=true;
     	List<Integer> emptyCell = new ArrayList<>();//빈셀 좌표 저장
@@ -694,4 +806,114 @@ public class InGame extends JPanel {
 //    		}
     	}
     }
+    
+    
+    List<Integer> mousePressedCell(boolean inGame, int currentCell){
+    	List<Integer> list = new ArrayList<>();
+		if(inGame) {
+			int currentCol = currentCell % N_COLS;//넘겨받은 칸의 가로 위치
+	        int cell;
+	        
+	        if (currentCol > 0) {//왼쪽 셀이 범위에 있는지 체크
+	            cell = currentCell - N_COLS - 1;//왼쪽 위
+	            if (cell >= 0) {
+	            	list.add(cell);
+	            }
+	            cell = currentCell - 1;//왼쪽
+	            if (cell >= 0) {
+	            	list.add(cell);
+	            }
+	            cell = currentCell + N_COLS - 1;//왼쪽 아래
+	            if (cell < allCells) {
+	            	list.add(cell);
+	            }
+	        }
+	
+	        cell = currentCell - N_COLS;//위
+	        if (cell >= 0) {
+	        	list.add(cell);
+	        }
+	
+	        cell = currentCell + N_COLS;//아래
+	        if (cell < allCells) {
+	        	list.add(cell);
+	        }
+	
+	        if (currentCol < (N_COLS - 1)) {//오른쪽 셀이 범위내에 있는지 체크
+	            cell = currentCell - N_COLS + 1;//오른쪽 위
+	            if (cell >= 0) {
+	            	list.add(cell);
+	            }
+	
+	            cell = currentCell + N_COLS + 1;//오른쪽 아래
+	            if (cell < allCells) {
+	            	list.add(cell);
+	            }
+	
+	            cell = currentCell + 1;//오른쪽
+	            if (cell < allCells) {
+	            	list.add(cell);
+	            	System.out.println("asassas"+currentCell);
+	            }
+	        }
+		}
+		System.out.println(list);
+		return list;
+	}
+    
+    
+    //==================================사운드=========================================
+    public void sound(String fileName)
+    {
+        try
+        {
+            AudioInputStream ais = AudioSystem.getAudioInputStream(new File(fileName));
+            Clip clip = AudioSystem.getClip();
+            clip.stop();
+            clip.open(ais);
+            clip.start();
+        }
+        catch (Exception ex)
+        {
+        }
+    }
+//    "./images/inGame/resources/" + i + ".png";
+    List<String> soundsFilePath = new ArrayList<>();
+    void setSounds() {
+//    	String fileName = "";
+    	String soundsPath = "./sounds/";
+	    File rw = new File(soundsPath);
+	    File []fileList = rw.listFiles();
+	    for(File file : fileList) {
+	          if(file.isFile()) {
+//	             fileName = file.getName();
+//	             System.out.println("fileName : " + fileName);
+	        	  soundsFilePath.add(soundsPath+file.getName());
+	          }
+	    }
+    }
+    enum soundsEnum{
+    	CLICK(0),
+    	FLAG(1),
+    	GAMEOVER(2),
+    	GAMEWIN(3),
+    	x(4),
+    	xx(5),
+    	UNFLAG(6),
+    	WRONG(7);
+
+		soundsEnum(int i) {
+			// TODO Auto-generated constructor stub
+		}
+    }
+//    soundsFilePath 순서(임시)
+//    fileName : sounds_click.wav
+//    fileName : sounds_flag.wav
+//    fileName : sounds_gameOver.wav
+//    fileName : sounds_gameWin.wav
+//    fileName : sounds_mainmenu.ogg
+//    fileName : sounds_music.ogg
+//    fileName : sounds_unflag.wav
+//    fileName : sounds_wrong.wav
+    
 }
