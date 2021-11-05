@@ -24,6 +24,8 @@ public class InGame extends JPanel {
 //=첫클릭=
 //=사운드=
 //=마우스이벤트=
+//=화면출력=
+//=클릭중=
 	
 //    private final int NUM_IMAGES = 26;
     private final int NUM_IMAGES = 13;// \Java-Minesweeper-Game-master\Java-Minesweeper-Game-master\src\resources 이미지 파일 12개 
@@ -414,6 +416,7 @@ public class InGame extends JPanel {
 
     }
 
+    //==================================화면출력=========================================
     @Override
     public void paintComponent(Graphics g) {
 
@@ -456,26 +459,26 @@ public class InGame extends JPanel {
                         cell = DRAW_COVER;//일반커버
                         uncover++;//비활성화 셀 카운트 증가
                     }
-                    if(mousePressedCheck) {
-	                    for(int pcc : pressedCellCover) {
-	                    	if((i*j) == pcc) cell = EMPTY_CELL;
-	                    }
-                    }
+//                    if(mousePressedCheck) {
+//	                    for(int pcc : pressedCellCover) {
+//	                    	if((i*j) == pcc) cell = EMPTY_CELL;
+//	                    	System.out.println("iijijijijii"+i*j);
+//	                    }
+//                    }
                 }
 
                 g.drawImage(img[cell], (j * CELL_SIZE),
                         (i * CELL_SIZE), this);//셀 이미지 갱신
                 
             }
-//            if(mousePressedCheck) {
-//            	for(int pcc : pressedCellCover) {
-//            		int col = pcc % N_COLS;
-//            		g.drawImage(img[EMPTY_CELL], (col * CELL_SIZE),
-//            				((pcc - col % N_ROWS)+1 * CELL_SIZE), this);//셀 이미지 갱신
-////            		System.out.println((pcc % N_COLS) +" " +(pcc % N_ROWS));
-////            		System.out.println(pcc);
-//            	}
-//        	}
+            if(mousePressedCheck) {
+            	for(int pcc : pressedCellCover) {
+            		int col = pcc % N_COLS;
+            		int row = pcc / N_COLS;
+            		g.drawImage(img[EMPTY_CELL], (col * CELL_SIZE),
+            				(row * CELL_SIZE), this);//셀 이미지 갱신
+            	}
+        	}
         }
 
         if (uncover == 0 && inGame) {//게임중이고 비활성화 칸 없으면
@@ -529,7 +532,7 @@ public class InGame extends JPanel {
                     	pressedCellCover=mousePressedCell(inGame, currentField);
                     	mousePressedCheck = true;
                     	doRepaint=true;
-                    	System.out.println();
+//                    	System.out.println();
                     }
                 }
 
@@ -807,8 +810,8 @@ public class InGame extends JPanel {
     	}
     }
     
-    
-    List<Integer> mousePressedCell(boolean inGame, int currentCell){
+    //==================================클릭중=========================================
+    List<Integer> mousePressedCell(boolean inGame, int currentCell){//클릭중에 비활성셀이 있으면 임시로 활성표시
     	List<Integer> list = new ArrayList<>();
 		if(inGame) {
 			int currentCol = currentCell % N_COLS;//넘겨받은 칸의 가로 위치
@@ -817,47 +820,53 @@ public class InGame extends JPanel {
 	        if (currentCol > 0) {//왼쪽 셀이 범위에 있는지 체크
 	            cell = currentCell - N_COLS - 1;//왼쪽 위
 	            if (cell >= 0) {
-	            	list.add(cell);
+	            	if(field[cell]>=10 && field[cell]<20)
+	            		list.add(cell);
 	            }
 	            cell = currentCell - 1;//왼쪽
 	            if (cell >= 0) {
-	            	list.add(cell);
+	            	if(field[cell]>=10 && field[cell]<20)
+	            		list.add(cell);
 	            }
 	            cell = currentCell + N_COLS - 1;//왼쪽 아래
 	            if (cell < allCells) {
-	            	list.add(cell);
+	            	if(field[cell]>=10 && field[cell]<20)
+	            		list.add(cell);
 	            }
 	        }
 	
 	        cell = currentCell - N_COLS;//위
 	        if (cell >= 0) {
-	        	list.add(cell);
+	        	if(field[cell]>=10 && field[cell]<20)
+	        		list.add(cell);
 	        }
 	
 	        cell = currentCell + N_COLS;//아래
 	        if (cell < allCells) {
-	        	list.add(cell);
+	        	if(field[cell]>=10 && field[cell]<20)
+	        		list.add(cell);
 	        }
 	
 	        if (currentCol < (N_COLS - 1)) {//오른쪽 셀이 범위내에 있는지 체크
 	            cell = currentCell - N_COLS + 1;//오른쪽 위
 	            if (cell >= 0) {
-	            	list.add(cell);
+	            	if(field[cell]>=10 && field[cell]<20)
+	            		list.add(cell);
 	            }
 	
 	            cell = currentCell + N_COLS + 1;//오른쪽 아래
 	            if (cell < allCells) {
-	            	list.add(cell);
+	            	if(field[cell]>=10 && field[cell]<20)
+	            		list.add(cell);
 	            }
 	
 	            cell = currentCell + 1;//오른쪽
 	            if (cell < allCells) {
-	            	list.add(cell);
-	            	System.out.println("asassas"+currentCell);
+	            	if(field[cell]>=10 && field[cell]<20)
+	            		list.add(cell);
 	            }
 	        }
 		}
-		System.out.println(list);
 		return list;
 	}
     
