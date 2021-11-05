@@ -358,7 +358,7 @@ public class Window {
 //	    private final int BOARD_HEIGHT = N_ROWS * CELL_SIZE + 1;//
 //		int size = 
 //		InGame IG = new InGame(new JLabel(""));
-		InGame IG = new InGame(col,row,mine,35);//가로개수,세로개수,지뢰수,한칸당 크기
+		InGame IG = new InGame(col,row,mine,10);//가로개수,세로개수,지뢰수,한칸당 크기
 //		IG.setLocation(100, 100);
 		IG.setBounds(100, 100,IG.getWidth(), IG.getHeight());
 		frame.add(IG);
