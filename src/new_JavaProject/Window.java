@@ -115,9 +115,11 @@ public class Window {
 		
 
 		//로그인화면 버튼들
+		
+		//로그인 버튼
 		JButton loginButton = new JButton("");
 		loginButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
-
+		
 		loginButton.setBounds(713, 537, 91, 80);
 		loginButton.setBorderPainted(false);
 		loginButton.setContentAreaFilled(false);
@@ -141,7 +143,9 @@ public class Window {
 			}
 		});
 		loginPage.add(loginButton);
-
+		
+		
+		//회원가입 버튼
 		JButton signupButton = new JButton("");
 		signupButton.setBounds(722, 645, 70, 18);
 		signupButton.setBorderPainted(false);
@@ -166,6 +170,8 @@ public class Window {
 		});
 		loginPage.add(signupButton);
 		
+		
+		//아이디/비밀번호 찾기
 		JButton find_ID_Pass_Button = new JButton("");
 		find_ID_Pass_Button.setBounds(543, 645, 140, 18);
 		find_ID_Pass_Button.setBorderPainted(false);
@@ -214,6 +220,8 @@ public class Window {
 
 		
 		//게임시작화면 버튼들
+		
+		//싱글 버튼
 		JButton startGamePage_singleButton = new JButton("");
 		startGamePage_singleButton.setIcon(new ImageIcon(".\\images\\singleButton.png"));
 
@@ -224,6 +232,8 @@ public class Window {
 		startGamePage_singleButton.setBounds(207, 257, 350, 280);
 		startGamePage.add(startGamePage_singleButton);
 
+		
+		//멀티 버튼
 		JButton startGamePage_multiButton = new JButton("");
 		startGamePage_multiButton.setIcon(new ImageIcon(".\\images\\multiButton.png"));
 
@@ -233,7 +243,9 @@ public class Window {
 
 		startGamePage_multiButton.setBounds(729, 258, 350, 280);
 		startGamePage.add(startGamePage_multiButton);
-
+		
+		
+		//랭크 메뉴 버튼
 		JButton startGamePage_rankButton = new JButton("");
 		startGamePage_rankButton.setBounds(244, 59, 210, 40);
 		startGamePage_rankButton.setBorderPainted(false);
@@ -257,7 +269,8 @@ public class Window {
 			}
 		});
 		startGamePage.add(startGamePage_rankButton);
-
+		
+		//튜토리얼 메뉴 버튼
 		JButton startGamePage_htpButton = new JButton("");
 		startGamePage_htpButton.setBounds(466, 59, 210, 40);
 		startGamePage_htpButton.setBorderPainted(false);
@@ -282,6 +295,7 @@ public class Window {
 		});
 		startGamePage.add(startGamePage_htpButton);
 		
+		//로그아웃 버튼
 		JButton startGamePage_logoutButton = new JButton("");
 		startGamePage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButton.png"));
 		startGamePage_logoutButton.setBounds(1203, 43, 47, 47);
@@ -309,6 +323,8 @@ public class Window {
 		
 		
 		//랭크화면 버튼들
+		
+		//게임시작 메뉴 버튼
 		JButton rankPage_startGameButton = new JButton("");
 		rankPage_startGameButton.setBounds(26, 57, 210, 40);
 		rankPage_startGameButton.setBorderPainted(false);
@@ -333,6 +349,7 @@ public class Window {
 		});
 		rankPage.add(rankPage_startGameButton);
 
+		//튜토리얼 메뉴 버튼
 		JButton rankPage_htpButton = new JButton("");
 		rankPage_htpButton.setBounds(466, 57, 210, 40);
 		rankPage_htpButton.setBorderPainted(false);
@@ -357,6 +374,8 @@ public class Window {
 		});
 		rankPage.add(rankPage_htpButton);
 		
+		
+		//로그아웃 버튼
 		JButton rankpage_logoutButton = new JButton("");
 		rankpage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButton.png"));
 		rankpage_logoutButton.setBounds(1203, 43, 47, 47);
@@ -383,6 +402,8 @@ public class Window {
 		rankPage.add(rankpage_logoutButton);
 
 		//튜토리얼화면 버튼들
+		
+		//게임시작 메뉴 버튼
 		JButton htpPage_startGameButton = new JButton("");
 		htpPage_startGameButton.setBounds(29, 59, 210, 40);
 		htpPage_startGameButton.setBorderPainted(false);
@@ -405,7 +426,8 @@ public class Window {
 			}
 		});
 		htpPage.add(htpPage_startGameButton);
-
+		
+		//랭크 메뉴 버튼
 		JButton htpPage_rankButton = new JButton("");
 		htpPage_rankButton.setBounds(251, 59, 210, 40);
 		htpPage_rankButton.setBorderPainted(false);
@@ -429,6 +451,7 @@ public class Window {
 		});
 		htpPage.add(htpPage_rankButton);
 		
+		//로그아웃 버튼
 		JButton htpPage_logoutButton = new JButton("");
 		htpPage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButton.png"));
 		htpPage_logoutButton.setBounds(1203, 43, 47, 47);
