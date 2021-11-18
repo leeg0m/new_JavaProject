@@ -209,14 +209,26 @@ public class Window {
 				new ImageIcon(".\\images/htpPage.png").getImage());
 		frame.setSize(htpPage.getWidth(), htpPage.getHeight());
 		frame.getContentPane().add(htpPage);
+		
+		//싱글게임모드선택화면
+		ImagePanel singleModeSelectPage = new ImagePanel(new ImageIcon(".\\images/startGamePage.png")
+				.getImage());
+		frame.setSize(singleModeSelectPage.getWidth(), singleModeSelectPage.getHeight());
+		frame.getContentPane().add(singleModeSelectPage);
+		
+		
+		//화면 초기화
 		htpPage.setVisible(false);
 		rankPage.setVisible(false);
 		startGamePage.setVisible(false);
+		singleModeSelectPage.setVisible(false);
 		frame.getContentPane().setLayout(null);
 
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		
+		
 
 		
 		//게임시작화면 버튼들
@@ -230,6 +242,24 @@ public class Window {
 		startGamePage_singleButton.setFocusPainted(false);
 
 		startGamePage_singleButton.setBounds(207, 257, 350, 280);
+		
+		startGamePage_singleButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				startGamePage.setVisible(false);
+				singleModeSelectPage.setVisible(true);
+			}
+		});
 		startGamePage.add(startGamePage_singleButton);
 
 		
@@ -476,6 +506,131 @@ public class Window {
 			}
 		});	
 		htpPage.add(htpPage_logoutButton);
+		
+		
+		
+		//싱글선택화면 모드들
+		
+		//랭크 메뉴 버튼
+		JButton singlemodeSelectPage_rankButton = new JButton("");
+		singlemodeSelectPage_rankButton.setBounds(244, 59, 210, 40);
+		singlemodeSelectPage_rankButton.setBorderPainted(false);
+		singlemodeSelectPage_rankButton.setContentAreaFilled(false);
+		singlemodeSelectPage_rankButton.setFocusPainted(false);
+		singlemodeSelectPage_rankButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				singleModeSelectPage.setVisible(false);
+				rankPage.setVisible(true);
+			}
+		});
+		singleModeSelectPage.add(singlemodeSelectPage_rankButton);
+		
+		//튜토리얼 메뉴 버튼
+		
+		JButton singleModeSelectPage_htpButton = new JButton("");
+		singleModeSelectPage_htpButton.setBounds(466, 57, 210, 40);
+		singleModeSelectPage_htpButton.setBorderPainted(false);
+		singleModeSelectPage_htpButton.setContentAreaFilled(false);
+		singleModeSelectPage_htpButton.setFocusPainted(false);
+		singleModeSelectPage_htpButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				singleModeSelectPage.setVisible(false);
+				htpPage.setVisible(true);
+			}
+		});
+		singleModeSelectPage.add(singleModeSelectPage_htpButton);
+		
+		//로그아웃 버튼
+		JButton singleModeSelectPage_logoutButton = new JButton("");
+		singleModeSelectPage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButton.png"));
+		singleModeSelectPage_logoutButton.setBounds(1203, 43, 47, 47);
+		singleModeSelectPage_logoutButton.setBorderPainted(false);
+		singleModeSelectPage_logoutButton.setContentAreaFilled(false);
+		singleModeSelectPage_logoutButton.setFocusPainted(false);
+		singleModeSelectPage_logoutButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				htpPage_logoutButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				htpPage_logoutButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				singleModeSelectPage.setVisible(false);
+				loginPage.setVisible(true);
+			}
+		});	
+		singleModeSelectPage.add(singleModeSelectPage_logoutButton);
+		
+		//초급 모드 버튼
+		JButton singleModeSelectPage_beginnerButton = new JButton("");
+		singleModeSelectPage_beginnerButton.setIcon(new ImageIcon(".\\images\\singleButton.png"));
+
+		singleModeSelectPage_beginnerButton.setBorderPainted(false);
+		singleModeSelectPage_beginnerButton.setContentAreaFilled(false);
+		singleModeSelectPage_beginnerButton.setFocusPainted(false);
+
+		singleModeSelectPage_beginnerButton.setBounds(89, 301, 200, 200);
+		
+		singleModeSelectPage_beginnerButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+			}
+		});
+		singleModeSelectPage.add(singleModeSelectPage_beginnerButton);
+		
+		//중급 모드 버튼
+		JButton singleModeSelectPage_intermediateButton = new JButton("New button");
+		singleModeSelectPage.add(singleModeSelectPage_intermediateButton);
+		
+		//고급 모드 버튼
+		JButton singleModeSelectPage_advancedButton = new JButton("New button");
+		singleModeSelectPage.add(singleModeSelectPage_advancedButton);
+		
+		//도전 모드 버튼
+		JButton  singleModeSelectPage_challengeButton = new JButton("New button");
+		singleModeSelectPage.add(singleModeSelectPage_challengeButton);
+		
+		//뒤로가기 버튼
+		JButton singleModeSelectPage_backButton = new JButton("New button");
+		singleModeSelectPage.add(singleModeSelectPage_backButton);
 
 	}
 }
