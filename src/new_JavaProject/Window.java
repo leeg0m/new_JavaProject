@@ -590,7 +590,7 @@ public class Window {
 		
 		//초급 모드 버튼
 		JButton singleModeSelectPage_beginnerButton = new JButton("");
-		singleModeSelectPage_beginnerButton.setIcon(new ImageIcon(".\\images\\singleButton.png"));
+		singleModeSelectPage_beginnerButton.setIcon(new ImageIcon(".\\images\\beginner_Button.png"));
 
 		singleModeSelectPage_beginnerButton.setBorderPainted(false);
 		singleModeSelectPage_beginnerButton.setContentAreaFilled(false);
@@ -611,29 +611,167 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
+				singleModeSelectPage.setVisible(false);
+				gameStart();
 			}
 		});
 		singleModeSelectPage.add(singleModeSelectPage_beginnerButton);
 		
 		//중급 모드 버튼
-		JButton singleModeSelectPage_intermediateButton = new JButton("New button");
+		JButton singleModeSelectPage_intermediateButton = new JButton("");
+		singleModeSelectPage_intermediateButton.setIcon(new ImageIcon(".\\images\\intermediate_Button.png"));
+
+		singleModeSelectPage_intermediateButton.setBorderPainted(false);
+		singleModeSelectPage_intermediateButton.setContentAreaFilled(false);
+		singleModeSelectPage_intermediateButton.setFocusPainted(false);
+
+		singleModeSelectPage_intermediateButton.setBounds(390, 301, 200, 200);
+		
+		singleModeSelectPage_intermediateButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+			}
+		});
 		singleModeSelectPage.add(singleModeSelectPage_intermediateButton);
 		
 		//고급 모드 버튼
-		JButton singleModeSelectPage_advancedButton = new JButton("New button");
+		JButton singleModeSelectPage_advancedButton = new JButton("");
+		singleModeSelectPage_advancedButton.setIcon(new ImageIcon(".\\images\\advanced_Button.png"));
+
+		singleModeSelectPage_advancedButton.setBorderPainted(false);
+		singleModeSelectPage_advancedButton.setContentAreaFilled(false);
+		singleModeSelectPage_advancedButton.setFocusPainted(false);
+
+		singleModeSelectPage_advancedButton.setBounds(691, 301, 200, 200);
+		
+		singleModeSelectPage_advancedButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+			}
+		});
+		
 		singleModeSelectPage.add(singleModeSelectPage_advancedButton);
 		
 		//도전 모드 버튼
-		JButton  singleModeSelectPage_challengeButton = new JButton("New button");
+		JButton singleModeSelectPage_challengeButton = new JButton("");
+		singleModeSelectPage_challengeButton.setIcon(new ImageIcon(".\\images\\challenge_Button.png"));
+
+		singleModeSelectPage_challengeButton.setBorderPainted(false);
+		singleModeSelectPage_challengeButton.setContentAreaFilled(false);
+		singleModeSelectPage_challengeButton.setFocusPainted(false);
+
+		singleModeSelectPage_challengeButton.setBounds(992, 301, 200, 200);
+		
+		singleModeSelectPage_challengeButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				
+			}
+		});
 		singleModeSelectPage.add(singleModeSelectPage_challengeButton);
 		
 		//뒤로가기 버튼
-		JButton singleModeSelectPage_backButton = new JButton("New button");
+		JButton singleModeSelectPage_backButton = new JButton("");
+		singleModeSelectPage_backButton.setIcon(new ImageIcon(".\\images\\backButton.png"));
+		singleModeSelectPage_backButton.setBounds(56, 598, 66, 66);
+		singleModeSelectPage_backButton.setBorderPainted(false);
+		singleModeSelectPage_backButton.setContentAreaFilled(false);
+		singleModeSelectPage_backButton.setFocusPainted(false);
+		singleModeSelectPage_backButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				singleModeSelectPage_backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				singleModeSelectPage_backButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				singleModeSelectPage.setVisible(false);
+				startGamePage.setVisible(true);
+			}
+		});	
+		
 		singleModeSelectPage.add(singleModeSelectPage_backButton);
 
 	}
+	
+	
+	
+	//public void gameStart(int nowSelected, String mode) {
+		public void gameStart() {
+//			isMainScreen = false;
+//			singleButton.setVisible(false);
+//			multipleButton.setVisible(false);
+//			background = new ImageIcon(Main.class.getResource("../images/gameBackground.png")).getImage();
+			
+			int col = 9;
+			int row = 9;
+			int mine = 10;
+			//초급 : 9x9|10
+			//중급 : 16x16|40
+			//고급 : 30x16|99
+			//난이도별로 구조체나 클래스로 [가로x세로|지뢰수] 데이터 저장
+//			private final int BOARD_WIDTH = N_COLS * CELL_SIZE + 1;//프레임 넓이
+//		    private final int BOARD_HEIGHT = N_ROWS * CELL_SIZE + 1;//
+//			int size = 
+//			InGame IG = new InGame(new JLabel(""));
+			InGame IG = new InGame(col,row,mine,10);//가로개수,세로개수,지뢰수,한칸당 크기
+//			IG.setLocation(100, 100);
+			IG.setBounds(100, 100,IG.getWidth(), IG.getHeight());
+			frame.add(IG);
+//			InGame IG2 = new InGame(col,row,mine);
+//			IG2.setBounds(100, 400,IG2.getWidth(), IG2.getHeight());
+//			frame.add(IG2);
+//			InGame IG3 = new InGame(col,row,mine);
+//			IG3.setBounds(700, 100,IG3.getWidth(), IG3.getHeight());
+//			frame.add(IG3);
+//			InGame IG4 = new InGame(col,row,mine);
+//			IG4.setBounds(700, 400,IG4.getWidth(), IG4.getHeight());
+//			frame.add(IG4);
+		}
 }
+
+
+
+
+
+
 
 class ImagePanel extends JPanel {
 	private Image img;
@@ -657,3 +795,5 @@ class ImagePanel extends JPanel {
 		g.drawImage(img, 0, 0, null);
 	}
 }
+
+
