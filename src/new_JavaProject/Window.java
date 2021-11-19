@@ -77,7 +77,8 @@ public class Window {
 			}
 		});
 		frame.getContentPane().add(exitButton);
-
+		
+		
 		// 게임 메뉴바(menuBar)
 		JLabel menuBar = new JLabel("");
 		menuBar.setIcon(new ImageIcon(".\\images\\menuBar.png"));
@@ -89,6 +90,7 @@ public class Window {
 				mouseY = e.getY();
 			}
 		});
+		
 		menuBar.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
@@ -98,6 +100,18 @@ public class Window {
 			}
 		});
 		frame.getContentPane().add(menuBar);
+		
+		
+		//배경화면
+				JLabel background = new JLabel("");
+				background.setIcon(new ImageIcon(".\\images\\mainMenuPage.png"));
+				background.setBounds(0, 0, 1280, 720);
+				
+				frame.getContentPane().add(background);
+				
+				background.setVisible(false);
+		
+		
 
 		// 게임시작화면
 		ImagePanel startGamePage = new ImagePanel(
@@ -222,6 +236,9 @@ public class Window {
 		rankPage.setVisible(false);
 		startGamePage.setVisible(false);
 		singleModeSelectPage.setVisible(false);
+		background.setVisible(false);
+
+		
 		frame.getContentPane().setLayout(null);
 
 		frame.setLocationRelativeTo(null);
@@ -612,7 +629,9 @@ public class Window {
 			@Override
 			public void mousePressed(MouseEvent e) {
 				singleModeSelectPage.setVisible(false);
+				background.setVisible(true);
 				gameStart();
+				
 			}
 		});
 		singleModeSelectPage.add(singleModeSelectPage_beginnerButton);
@@ -728,6 +747,8 @@ public class Window {
 		});	
 		
 		singleModeSelectPage.add(singleModeSelectPage_backButton);
+		
+		
 
 	}
 	
@@ -735,13 +756,14 @@ public class Window {
 	
 	//public void gameStart(int nowSelected, String mode) {
 		public void gameStart() {
+
 //			isMainScreen = false;
 //			singleButton.setVisible(false);
 //			multipleButton.setVisible(false);
 //			background = new ImageIcon(Main.class.getResource("../images/gameBackground.png")).getImage();
 			
-			int col = 9;
-			int row = 9;
+			int col = 10;
+			int row = 10;
 			int mine = 10;
 			//초급 : 9x9|10
 			//중급 : 16x16|40
@@ -751,7 +773,7 @@ public class Window {
 //		    private final int BOARD_HEIGHT = N_ROWS * CELL_SIZE + 1;//
 //			int size = 
 //			InGame IG = new InGame(new JLabel(""));
-			InGame IG = new InGame(col,row,mine,10);//가로개수,세로개수,지뢰수,한칸당 크기
+			InGame IG = new InGame(col,row,mine,20);//가로개수,세로개수,지뢰수,한칸당 크기
 //			IG.setLocation(100, 100);
 			IG.setBounds(100, 100,IG.getWidth(), IG.getHeight());
 			frame.add(IG);
