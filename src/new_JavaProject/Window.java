@@ -5,15 +5,20 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import new_JavaProject.InGame.Items;
 
 
 public class Window {
@@ -362,6 +367,54 @@ public class Window {
 //		IG.setLocation(100, 100);
 		IG.setBounds(100, 100,IG.getWidth(), IG.getHeight());
 		frame.add(IG);
+//		frame.addMouseMotionListener(new MouseMotionListener() {
+//			public void	 mouseMoved(MouseEvent e) {
+//				IG.ma.x=e.getX();
+//				IG.ma.y=e.getY();
+//				System.out.println(IG.ma.getUsingItem());
+//				if(IG.ma.getUsingItem()) {IG.repaint();
+//					Items.scan.using(e.getX(),e.getY());
+//					System.out.println("live");
+//				}
+//			}
+//
+//			@Override
+//			public void mouseDragged(MouseEvent e) {
+//				// TODO Auto-generated method stub
+//				
+//			}
+//		});
+		frame.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println(e.getKeyCode());
+				if(e.getKeyCode()==KeyEvent.VK_1) {
+					Items.scan.using(IG.ma.x,IG.ma.y);
+//					System.out.println(IG.ma.x);
+//					System.out.println(IG.ma.y);
+				}
+				if(e.getKeyCode()==KeyEvent.VK_2) {
+					Items.reverse.using();
+					
+				}
+			}
+		});
+		frame.setFocusable(true);
+		frame.requestFocus();
 //		InGame IG2 = new InGame(col,row,mine);
 //		IG2.setBounds(100, 400,IG2.getWidth(), IG2.getHeight());
 //		frame.add(IG2);
@@ -396,5 +449,7 @@ class ImagePanel extends JPanel {
 		g.drawImage(img, 0, 0, null);
 	}
 }
+
+
 
 
