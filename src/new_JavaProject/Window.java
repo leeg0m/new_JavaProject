@@ -107,7 +107,7 @@ public class Window {
 				background.setIcon(new ImageIcon(".\\images\\mainMenuPage.png"));
 				background.setBounds(0, 0, 1280, 720);
 				
-				frame.getContentPane().add(background);
+				frame.getContentPane().add(background,2);
 				
 				background.setVisible(false);
 		
@@ -776,7 +776,7 @@ public class Window {
 			InGame IG = new InGame(col,row,mine,20);//가로개수,세로개수,지뢰수,한칸당 크기
 //			IG.setLocation(100, 100);
 			IG.setBounds(100, 100,IG.getWidth(), IG.getHeight());
-			frame.add(IG);
+			frame.add(IG,1);
 //			InGame IG2 = new InGame(col,row,mine);
 //			IG2.setBounds(100, 400,IG2.getWidth(), IG2.getHeight());
 //			frame.add(IG2);
