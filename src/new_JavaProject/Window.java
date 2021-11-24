@@ -1,20 +1,11 @@
 package new_JavaProject;
 
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class Window {
 
@@ -126,7 +117,23 @@ public class Window {
 
 		frame.getContentPane().add(loginPage);
 
-		
+
+
+		//로그인 화면 필드들
+
+		//ID필드
+		JTextField loginPageTxtID = new JTextField();
+		loginPageTxtID.setFont(new Font("맑은 고딕", Font.PLAIN,20));
+		loginPageTxtID.setBounds(527,537,178,33);
+		loginPageTxtID.setBorder(null);
+		loginPage.add(loginPageTxtID);
+
+		//비밀번호 필드
+		JPasswordField loginPagePass = new JPasswordField();
+		loginPagePass.setFont(new Font("맑은 고딕", Font.PLAIN,20));
+		loginPagePass.setBounds(526,583,178,33);
+		loginPagePass.setBorder(null);
+		loginPage.add(loginPagePass);
 
 		//로그인화면 버튼들
 		
