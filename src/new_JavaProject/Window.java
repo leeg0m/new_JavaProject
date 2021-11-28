@@ -203,10 +203,6 @@ public class Window {
 					JOptionPane.showMessageDialog(null,"ID나 PW가 잘못되었습니다!");
 				}
 
-
-
-				loginPage.setVisible(false); // 화면 바뀌게 하는거 (id,pw 맞을 떄 조건으로 변경)
-				startGamePage.setVisible(true);
 			}
 		});
 		loginPage.add(loginButton);
