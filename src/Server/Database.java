@@ -8,14 +8,14 @@ public class Database {
     /* 데이터베이스와의 연결에 사용할 변수들 */
     Connection conn = null; // 연결
     Statement state = null; // 상태
-    String url = "jdbc:mariadb//localhost:3306/serverTimezone=Asia/Seoul";
+    String url = "jdbc:mariadb://localhost:3306/serverTimezone=Asia/Seoul";
     String user = "계정 이름";
     String passwd = "계정 비밀번호";
 
     Database() {	//Database 객체 생성 시 데이터베이스 서버와 연결한다.
         try {	//데이터베이스 연결은 try-catch문으로 예외를 잡아준다.
             //데이터베이스와 연결한다.
-            Class.forName("com.mariadb.jdbc.Driver");
+            Class.forName("org.mariadb.jdbc.Driver");
             conn = DriverManager.getConnection(url, user, passwd);
             state = conn.createStatement();
             System.out.println("[Server] mariaDB 서버 연동 성공");	//데이터베이스 연결에 성공하면 성공을 콘솔로 알린다.
@@ -26,7 +26,7 @@ public class Database {
 
     //로그인 여부를 확인하는 메소드! 서버에 닉네임을 String 형식으로 반환
     String loginCheck(String _i, String _p) {
-        String nickname = "null";	//반환할 닉네임 변수를 "null"로 초기화.
+        String nickname = "null";	// 반환할 닉네임 변수를 "null"로 초기화.
 
         //매개변수로 받은 id와 password값을 id와 pw값에 초기화한다.
         String id = _i;
@@ -34,7 +34,7 @@ public class Database {
 
         try {
             //id와 일치하는 비밀번호와 닉네임이 있는지 조회한다.
-            String checkingStr = "SELECT password, nickname FROM member WHERE id='" + id + "'";
+            String checkingStr = "SELECT password, nickname FROM member WHERE id = '" + id + "'";
             ResultSet result = state.executeQuery(checkingStr);
 
             int count = 0;

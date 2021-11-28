@@ -180,7 +180,7 @@ public class Window {
 			//
 
 				try {
-					socket = new Socket("127.0.0.1", 1234);
+					socket = new Socket("192.168.0.25", 7777);
 					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					keyboard = new BufferedReader(new InputStreamReader(System.in));
 					out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
@@ -188,6 +188,7 @@ public class Window {
 
 					data = login + "//" + IDvalue + "//" + PWvalue; // Server에서 "//"를 통해서 구분
 					out.write(data);
+					out.flush();
 
 				} catch (IOException ex) {
 					JOptionPane.showMessageDialog(null,"다시 입력!!!!!");

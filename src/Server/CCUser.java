@@ -82,7 +82,7 @@ class CCUser extends Thread{
                         auser.add(this);	//모든 접속 인원에 추가
                         wuser.add(this);	//대기실 접속 인원에 추가
 
-                        dos.writeUTF(loginTag + "success");
+                        dos.writeUTF(loginTag + "//success");
 
                         sendWait(connectedUser());	//대기실 접속 유저에 모든 접속 인원을 전송
 
@@ -93,7 +93,7 @@ class CCUser extends Thread{
                     }
 
                     else {	//로그인 실패
-                        dos.writeUTF(loginTag + "fail");
+                        dos.writeUTF(loginTag + "//fail");
                     }
                 }  //로그인 if문
 
