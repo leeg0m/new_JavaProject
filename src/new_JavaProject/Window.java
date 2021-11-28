@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Vector;
 
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,6 +17,15 @@ public class Window {
 	PrintWriter out = null; // Server로 내보내기 위한 출력스트림
 	private JFrame frame;
 	private int mouseX, mouseY;
+
+	static String data;
+	static String IDvalue; // ID
+	static String PWvalue; // PW
+	static String possible;
+
+	// 태그 정보
+	static String login = "LOGIN";
+
 
 	/**
 	 * Launch the application.
@@ -141,6 +151,8 @@ public class Window {
 		//로그인화면 버튼들
 
 		//로그인 버튼
+		IDvalue = loginPageTxtID.getText();
+		PWvalue = loginPagePass.getText();
 		JButton loginButton = new JButton("");
 		loginButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
 
@@ -166,19 +178,30 @@ public class Window {
 			// DB는 확인 후 맞으면 true를, 틀리면 false를 서버에 반환
 			// 서버는 true를 반화받으면 success를, false를 반환받으면 fail을 반환
 			//
-				String IDvalue;
-				String PWvalue;
+
 				try {
-					socket = new Socket("172.30.1.51", 1234);
+					socket = new Socket("127.0.0.1", 1234);
 					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					keyboard = new BufferedReader(new InputStreamReader(System.in));
 					out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
 					System.out.println(socket.toString());
-				} catch (IOException ex) {
 
+					data = login + "//" + IDvalue + "//" + PWvalue; // Server에서 "//"를 통해서 구분
+					out.write(data);
+
+				} catch (IOException ex) {
+					JOptionPane.showMessageDialog(null,"다시 입력!!!!!");
 				}
-				IDvalue = loginPageTxtID.getText();
-				PWvalue = loginPagePass.getText();
+
+				try {
+					possible = in.readLine();
+					if(possible.equals("success")) {
+						loginPage.setVisible(false);
+						startGamePage.setVisible(true);
+					}
+				} catch(IOException ex) {
+					JOptionPane.showMessageDialog(null,"ID나 PW가 잘못되었습니다!");
+				}
 
 
 

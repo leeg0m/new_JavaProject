@@ -21,7 +21,7 @@ public class DBTable {
             // 회원가입시 0승 0패, 1000점으로 초기화
             String createStr = "CREATE TABLE member (nickname varchar(20) not null, " +
                     "id varchar(20) not null, password varchar(20) not null, " +
-                    "win int not null, lose int not null, mmr int not null, PRIMARY KEY (nickname, id))";
+                    "win int, lose int, mmr int, PRIMARY KEY (nickname, id))";
 
             stmt.executeUpdate(createStr);
             System.out.println("[Server] 테이블 생성 성공");
