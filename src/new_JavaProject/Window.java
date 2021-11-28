@@ -10,11 +10,13 @@ import java.util.Vector;
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import static java.lang.System.*;
+
 public class Window {
 	Socket socket = new Socket(); // 소켓 생성
-	BufferedReader in = null; // Server로부터 데이터를 읽어들임
-	BufferedReader keyboard = null; // 키보드로 입력하는 값 읽어들임
-	PrintWriter out = null; // Server로 내보내기 위한 출력스트림
+	DataInputStream in; // Server로부터 데이터를 읽어들임
+	DataInputStream keyboard; // 키보드로 입력하는 값 읽어들임
+	DataOutputStream out; // Server로 내보내기 위한 출력스트림
 	private JFrame frame;
 	private int mouseX, mouseY;
 
@@ -79,7 +81,7 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				System.exit(0);
+				exit(0);
 			}
 		});
 		frame.getContentPane().add(exitButton);
@@ -180,22 +182,21 @@ public class Window {
 			//
 
 				try {
-					socket = new Socket("192.168.0.25", 7777);
-					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-					keyboard = new BufferedReader(new InputStreamReader(System.in));
-					out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
+					socket = new Socket("192.168.0.24", 7777);
+					in = new DataInputStream(socket.getInputStream());
+					keyboard = new DataInputStream(socket.getInputStream());
+					out = new DataOutputStream(socket.getOutputStream());
 					System.out.println(socket.toString());
 
 					data = login + "//" + IDvalue + "//" + PWvalue; // Server에서 "//"를 통해서 구분
-					out.write(data);
-					out.flush();
+					out.writeUTF(data);
 
 				} catch (IOException ex) {
 					JOptionPane.showMessageDialog(null,"다시 입력!!!!!");
 				}
 
 				try {
-					possible = in.readLine();
+					possible = in.readUTF();
 					if(possible.equals("success")) {
 						loginPage.setVisible(false);
 						startGamePage.setVisible(true);
