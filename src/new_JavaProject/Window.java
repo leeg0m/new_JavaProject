@@ -2,11 +2,18 @@ package new_JavaProject;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
+import java.net.InetAddress;
+import java.net.Socket;
 
 import javax.swing.*;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 public class Window {
-
+	Socket socket = new Socket(); // 소켓 생성
+	BufferedReader in = null; // Server로부터 데이터를 읽어들임
+	BufferedReader keyboard = null; // 키보드로 입력하는 값 읽어들임
+	PrintWriter out = null; // Server로 내보내기 위한 출력스트림
 	private JFrame frame;
 	private int mouseX, mouseY;
 
@@ -161,13 +168,21 @@ public class Window {
 			//
 				String IDvalue;
 				String PWvalue;
+				try {
+					socket = new Socket("172.30.1.51", 1234);
+					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+					keyboard = new BufferedReader(new InputStreamReader(System.in));
+					out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
+					System.out.println(socket.toString());
+				} catch (IOException ex) {
 
+				}
 				IDvalue = loginPageTxtID.getText();
 				PWvalue = loginPagePass.getText();
-				if (e.getSource() == loginButton) {
-					loginPageTxtID.setText(""+IDvalue + " 아디 " + PWvalue + "비번");
-				}
-				loginPage.setVisible(false);
+
+
+
+				loginPage.setVisible(false); // 화면 바뀌게 하는거 (id,pw 맞을 떄 조건으로 변경)
 				startGamePage.setVisible(true);
 			}
 		});
