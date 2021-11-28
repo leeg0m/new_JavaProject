@@ -190,7 +190,7 @@ public class Window {
 					out.write(data);
 
 				} catch (IOException ex) {
-
+					JOptionPane.showMessageDialog(null,"다시 입력!!!!!");
 				}
 
 				try {
