@@ -67,13 +67,15 @@ class CCUser extends Thread{
             dis = new DataInputStream(is);
 
             while(true) {
+                msg = "";
                 msg = dis.readUTF();	//메시지 수신을 상시 대기한다.
-
-                String[] m = msg.split("//");	//msg를 "//"로 나누어 m[]배열에 차례로 집어넣는다.
+                // msg = "LOGIN//admin//admin"
+                String[] m = msg.split("//");	//msg를 "//"로 나누어 m[] 배열에 차례로 집어넣는다.
 
                 // 수신받은 문자열들의 첫 번째 배열(m[0])은 모두 태그 문자. 각 기능을 분리한다.
                 /* 로그인 */
                 if(m[0].equals(loginTag)) {
+                    // loginCheck은 nickname을 반환 m[1]:id, m[2]:pw 에 맞는 nickname
                     String mm = db.loginCheck(m[1], m[2]);
 
                     if(!mm.equals("null")) {	//로그인 성공
