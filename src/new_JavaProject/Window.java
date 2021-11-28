@@ -1,6 +1,7 @@
 package new_JavaProject;
 
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -158,11 +159,21 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				String IDvalue;
+				String PWvalaue;
+
+				IDvalue = loginPageTxtID.getText();
+				PWvalaue = loginPagePass.getText();
+				if (e.getSource() == loginButton) {
+					loginPageTxtID.setText("!"+IDvalue + " 아디 " + PWvalaue + "비번");
+				}
 				loginPage.setVisible(false);
 				startGamePage.setVisible(true);
 
 			}
 		});
+
+
 		loginPage.add(loginButton);
 		
 		
@@ -185,6 +196,20 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+
+				/*JFrame signupForm = new JFrame();
+				JPanel signupPanel = new JPanel();
+				JLabel singupForm_InputID = new JLabel("아이디 입력");
+				JTextField signInputID = new JPasswordField();
+				JLabel singupForm_InputPW = new JLabel("비밀번호 입력");
+				JTextField signInputPW = new JPasswordField();
+				JLabel singupForm_InputPW_confirm = new JLabel("비밀번호 확인");
+				JTextField signInputPW_confirm = new JPasswordField();
+
+				*/
+
+
+
 				JOptionPane.showMessageDialog(null,"회원가입 테슷흐");
 
 			}
