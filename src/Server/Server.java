@@ -10,9 +10,9 @@ public class Server {
     ServerSocket ss = null;
 
     /* 각 객체들을 Vector로 관리 */
-    Vector<CCUser> alluser;		//연결된 모든 클라이언트
-    Vector<CCUser> waituser;	//대기실에 있는 클라이언트
-    Vector<Room> room;			//생성된 Room
+    Vector<CCUser> alluser;		// 연결된 모든 클라이언트
+    Vector<CCUser> waituser;	// 대기실에 있는 클라이언트
+    Vector<Room> room;			// 생성된 Room
 
     public static void main(String[] args) {
         Server server = new Server();

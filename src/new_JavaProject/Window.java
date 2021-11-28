@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Vector;
 
 import javax.swing.*;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,6 +22,10 @@ public class Window {
 	static String IDvalue; // ID
 	static String PWvalue; // PW
 	static String possible;
+
+	// 태그 정보
+	static String login = "LOGIN";
+
 
 	/**
 	 * Launch the application.
@@ -146,6 +151,8 @@ public class Window {
 		//로그인화면 버튼들
 
 		//로그인 버튼
+		IDvalue = loginPageTxtID.getText();
+		PWvalue = loginPagePass.getText();
 		JButton loginButton = new JButton("");
 		loginButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
 
@@ -172,22 +179,6 @@ public class Window {
 			// 서버는 true를 반화받으면 success를, false를 반환받으면 fail을 반환
 			//
 
-				IDvalue = loginPageTxtID.getText();
-				PWvalue = loginPagePass.getText();
-
-				/*
-				try {
-					socket = new Socket("172.30.1.51", 1234);
-					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-					keyboard = new BufferedReader(new InputStreamReader(System.in));
-					out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
-					System.out.println(socket.toString());
-
-					data = IDvalue + " " + PWvalue;
-					out.write(data);
-
-
-				}*/
 				try {
 					socket = new Socket("127.0.0.1", 1234);
 					in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -195,7 +186,7 @@ public class Window {
 					out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())));
 					System.out.println(socket.toString());
 
-					data = IDvalue + " " + PWvalue;
+					data = login + "//" + IDvalue + "//" + PWvalue; // Server에서 "//"를 통해서 구분
 					out.write(data);
 
 				} catch (IOException ex) {
