@@ -196,7 +196,7 @@ public class Window {
 				}
 
 				try {
-					possible = in.readLine();
+					possible = in.readUTF();
 					if(possible.equals("success")) {
 						loginPage.setVisible(false);
 						startGamePage.setVisible(true);
