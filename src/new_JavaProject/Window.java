@@ -153,8 +153,7 @@ public class Window {
 		//로그인화면 버튼들
 
 		//로그인 버튼
-		IDvalue = loginPageTxtID.getText();
-		PWvalue = loginPagePass.getText();
+
 		JButton loginButton = new JButton("");
 		loginButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
 
@@ -182,7 +181,14 @@ public class Window {
 			//
 
 				try {
-					socket = new Socket("192.168.0.24", 7777);
+					IDvalue = loginPageTxtID.getText();
+					PWvalue = loginPagePass.getText();
+					if(IDvalue.equals(""))
+						IDvalue = "null";
+					if(PWvalue.equals(""))
+						PWvalue = "null";
+
+					socket = new Socket("192.168.1.132", 7777);
 					in = new DataInputStream(socket.getInputStream());
 					keyboard = new DataInputStream(socket.getInputStream());
 					out = new DataOutputStream(socket.getOutputStream());
@@ -201,8 +207,10 @@ public class Window {
 						loginPage.setVisible(false);
 						startGamePage.setVisible(true);
 					}
+					else
+						JOptionPane.showMessageDialog(null,"ID나 PW가 잘못되었습니다!");
 				} catch(IOException ex) {
-					JOptionPane.showMessageDialog(null,"ID나 PW가 잘못되었습니다!");
+					//JOptionPane.showMessageDialog(null,"ID나 PW가 잘못되었습니다!");
 				}
 
 			}
