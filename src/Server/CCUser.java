@@ -101,24 +101,26 @@ class CCUser extends Thread{
                 }  //로그인 if문
 
                 /* 회원가입 */
-                else if(m[0].equals(joinTag)) {
+                else if(m[0].equals(signupTag)) {
                     if(db.signupCheck(m[1], m[2], m[3])) {	//회원가입 성공
-                        dos.writeUTF(joinTag + "//OKAY");
+                        dos.writeUTF(signupTag + "//success");
                     }
 
+                    /*
                     else {	//회원가입 실패
-                        dos.writeUTF(joinTag + "//FAIL");
+                        dos.writeUTF(signupTag + "//fail");
                     }
+                    */
                 }  //회원가입 if문
 
                 /* 중복확인 */
                 else if(m[0].equals(overTag)) {
                     if(db.overCheck(m[1], m[2])) {	//사용 가능
-                        dos.writeUTF(overTag + "//OKAY");
+                        dos.writeUTF(overTag + "//success");
                     }
 
                     else {	//사용 불가능
-                        dos.writeUTF(overTag + "//FAIL");
+                        dos.writeUTF(overTag + "//fail");
                     }
                 }  //중복확인 if문
 
