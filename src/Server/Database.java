@@ -82,23 +82,27 @@ public class Database {
     }
 
     //넥네임 이나 아이디 가 중복되었는지 확인해주는 메소드 , 중복이면 false 중복이지 않으면 true
-    boolean overCheck(String _a, String _v) {
-        boolean flag =false; // 참거짓, 초기값이 false
+    boolean overCheck(String _nick, String _id) {
+        boolean flag = false; // 참거짓, 초기값이 false
 
-        String attribute = _a; //속성 - 아이디 비번
-        String val = _v; // 확인할 값이 초기화 ?? 무스말인지 몰겠음
+        String nickname = _nick;
+        String id = _id;
+        //String att = _a; // 닉네임, id
+        //String val = _v; // 확인할 값이 초기화 ?? 무스말인지 몰겠음
 
         try {
             //member 테이블에 존재하는 아이디 or 닉네임을 모두 찾는다
-
-            String selectStr = "SELECT" + attribute + "FROM member ";
+            // 1. nickname 컬럼들을 불러와 중복체크.
+            // 2. nickname에서 중복이 일어나면 바로 false 반환.
+            // 3. nickname에서 중복이 일어나지 않을 시 id 컬름들을 불러와 중복체크.
+            String selectStr = "SELECT" +  + "FROM member ";
             ResultSet result = state.executeQuery(selectStr);
 
             int count = 0;
 
             while (result.next() ) {
                 //조회한 아이디 or 닉네임과 val을 비교
-                if (val.equals(result.getString(attribute))) {  //val 과 같은 것이 있다면 flag값을 true 로 변경
+                if (val.equals(result.getString(att))) {  //val 과 같은 것이 있다면 flag값을 true 로 변경
                     flag = true;
                 } else { //val 과 갑튼 것이 없다면 false로 변경함
                     flag = false;
