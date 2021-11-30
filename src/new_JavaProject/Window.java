@@ -176,6 +176,8 @@ public class Window {
 		/* 회원가입 화면 버튼들 */
 		// id 중복체크 버튼
 		JButton signupPage_IDovercheckButton = new JButton("");
+		signupPage_IDovercheckButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
+
 		signupPage_IDovercheckButton.setBounds(755, 327, 91, 35);
 		signupPage_IDovercheckButton.setBorderPainted(false);
 		signupPage_IDovercheckButton.setContentAreaFilled(false);
@@ -199,6 +201,8 @@ public class Window {
 		signupPage.add(signupPage_IDovercheckButton);
 		// nickname 중복체크 버튼
 		JButton signupPage_NicknameovercheckButton = new JButton("");
+		signupPage_NicknameovercheckButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
+
 		signupPage_NicknameovercheckButton.setBounds(755, 327, 91, 35);
 		signupPage_NicknameovercheckButton.setBorderPainted(false);
 		signupPage_NicknameovercheckButton.setContentAreaFilled(false);
@@ -224,7 +228,9 @@ public class Window {
 
 		//뒤로가기 버튼
 		JButton signupPage_BackButton = new JButton("");
-		signupPage_BackButton.setBounds(550, 513, 73, 29);
+		signupPage_BackButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
+
+		signupPage_BackButton.setBounds(543, 512, 91, 35);
 		signupPage_BackButton.setBorderPainted(false);
 		signupPage_BackButton.setContentAreaFilled(false);
 		signupPage_BackButton.setFocusPainted(false);
@@ -249,7 +255,9 @@ public class Window {
 
 		//회원가입 화면의 회원가입 버튼
 		JButton signupPage_signupButton = new JButton("");
-		signupPage_signupButton.setBounds(656, 513, 73, 29);
+		signupPage_signupButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
+
+		signupPage_signupButton.setBounds(647, 512, 91, 35);
 		signupPage_signupButton.setBorderPainted(false);
 		signupPage_signupButton.setContentAreaFilled(false);
 		signupPage_signupButton.setFocusPainted(false);
