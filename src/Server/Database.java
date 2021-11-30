@@ -81,39 +81,38 @@ public class Database {
         return flag;	//flag 반환
     }
 
-    //넥네임 이나 아이디 가 중복되었는지 확인해주는 메소드 , 중복이면 false 중복이지 않으면 true
-    boolean overCheck(String _nick, String _id) {
-        boolean flag = false; // 참거짓, 초기값이 false
+    //닉네임 이나 아이디 가 중복되었는지 확인해주는 메소드 , 중복이면 false 중복이지 않으면 true
+    boolean overCheck(String _a, String _v) {
+        boolean flag = false;   //참거짓을 반환할 flag 변수. 초기값은 false
 
-        String nickname = _nick;
-        String id = _id;
-        //String att = _a; // 닉네임, id
-        //String val = _v; // 확인할 값이 초기화 ?? 무스말인지 몰겠음
+        //at t는 속성(아이디, 닉네임)을 구분하고, val은 확인할 값이 초기화.
+        String att = _a;
+        String val = _v;
 
         try {
-            //member 테이블에 존재하는 아이디 or 닉네임을 모두 찾는다
-            // 1. nickname 컬럼들을 불러와 중복체크.
-            // 2. nickname에서 중복이 일어나면 바로 false 반환.
-            // 3. nickname에서 중복이 일어나지 않을 시 id 컬름들을 불러와 중복체크.
-            String selectStr = "SELECT" +  + "FROM member ";
-            ResultSet result = state.executeQuery(selectStr);
+            //member 테이블에 존재하는 아이디(혹은 닉네임)를 모두 찾는다.
+            String selcectStr = "SELECT " + att + " FROM member";
+            ResultSet result = state.executeQuery(selcectStr);
 
             int count = 0;
-
-            while (result.next() ) {
-                //조회한 아이디 or 닉네임과 val을 비교
-                if (val.equals(result.getString(att))) {  //val 과 같은 것이 있다면 flag값을 true 로 변경
+            while(result.next()) {
+                //조회한 아이디(혹은 닉네임)과 val을 비교.
+                if(!val.equals(result.getString(att))) {   //val과 같은 것이 존재하면 flag를 true로 변경한다.
                     flag = true;
-                } else { //val 과 갑튼 것이 없다면 false로 변경함
+                }
+
+                else {   //val과 같은 것이 존재하지 않으면 flag를 false로 변경한다.
                     flag = false;
                 }
                 count++;
             }
-            System.out.println("[SERVER] 중복 확인 성공! > " );
-        } catch (Exception e) {
-            System.out.println("[SERVER] 중복 확인 실패! > " + e.toString());
+            System.out.println("[Server] 중복 확인 성공");   //정상적으로 수행되었을 때 성공을 콘솔로 알린다.
+        } catch(Exception e) {   //정상적으로 수행하지 못하면 실패를 콘솔로 알린다.
+            System.out.println("[Server] 중복 확인 실패 > " + e.toString());
         }
+
         return flag;
+
     }
 
     //DB에 저장된 자신의 정보를 조회하는 메소드! 조회한 정보들을 String 형태로 반환
@@ -142,7 +141,9 @@ public class Database {
         return msg;	//msg 반환
     }
 
-/*    //회원정보를 변경을 수행하는 메소드! 변경에 성공하면 true, 실패하면 false를 반환한다.
+
+    /*
+    //회원정보를 변경을 수행하는 메소드! 변경에 성공하면 true, 실패하면 false를 반환한다.
     boolean changeInfo(String _nn, String _a, String _v) {
         boolean flag = false;	//참거짓을 반환할 flag 변수. 초기값은 false.
 
@@ -164,7 +165,7 @@ public class Database {
         }
         return flag;	//flag 반환
     }
-*/
+    */
 
     //전체 회원의 전적을 조회하는 메소드. 모든 회원의 전적을 String 형태로 반환한다.
     String viewRank() {
@@ -172,7 +173,7 @@ public class Database {
 
         try {
             //member 테이블의 닉네임, 승, 패를 모두 조회한다.
-            String viewStr = "SELECT nickname, win, lose FROM member";
+            String viewStr = "SELECT nickname, win, lose, mmr FROM member";
             ResultSet result = state.executeQuery(viewStr);
 
             int count = 0;
@@ -251,7 +252,7 @@ public class Database {
         return flag;	//flag 반환
     }
 
-    //게임 패배 시 전적을 업데이트하는 메소드. 조회 및 업데이트에 성공하면 true, 실패하면 false를 반환한다.
+    //게임 패배 시 전적을 업데이트하는 메소드! 조회 및 업데이트 성공 → true, 실패 → false 반환
     boolean loseRecord(String _nn) {
         boolean flag = false;	//참거짓을 반환할 flag 변수. 초기값은 false.
 

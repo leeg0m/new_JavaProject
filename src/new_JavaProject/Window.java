@@ -21,13 +21,19 @@ public class Window {
 	private JFrame frame;
 	private int mouseX, mouseY;
 
+	static String Server_IP = "192.168.1.90";
 	static String login_data;
 	static String signup_data;
 	static String IDvalue; // ID
 	static String PWvalue; // PW
-	static String possible;
+	static String NIvalue; // NickName
+	static String login_possible;
+	static String signup_possible;
 
 	// 태그 정보
+
+	static String sc = "//success";
+	static String f = "//fail";
 	static String login = "LOGIN";
 	static String signup = "SIGNUP";
 
@@ -137,16 +143,190 @@ public class Window {
 
 		frame.getContentPane().add(loginPage);
 
+		//회원가입화면
+		ImagePanel signupPage = new ImagePanel(
+				new ImageIcon(".\\images\\signupPage.png").getImage());
+		frame.setSize(signupPage.getWidth(), signupPage.getHeight());
+		frame.getContentPane().add(signupPage);
+
+		//회원가입 화면 필드들
+
+		//회원가입 ID필드
+		JTextField signupPageTxtID = new JTextField();
+		signupPageTxtID.setFont(new Font("맑은 고딕", Font.PLAIN,20));
+		signupPageTxtID.setBounds(551,327,178,33);
+		signupPageTxtID.setBorder(null);
+		signupPage.add(signupPageTxtID);
+
+		//회원가입 비밀번호 필드
+		JPasswordField signupPagePass = new JPasswordField();
+		signupPagePass.setFont(new Font("맑은 고딕", Font.PLAIN,20));
+		signupPagePass.setBounds(551,383,178,33);
+		signupPagePass.setBorder(null);
+		signupPage.add(signupPagePass);
+
+		//회원가입 닉네임 필드
+		JTextField signupPageNickname = new JTextField();
+		signupPageNickname.setFont(new Font("맑은 고딕", Font.PLAIN,20));
+		signupPageNickname.setBounds(551,437,178,33);
+		signupPageNickname.setBorder(null);
+		signupPage.add(signupPageNickname);
+
+
+		/* 회원가입 화면 버튼들 */
+		// id 중복체크 버튼
+		JButton signupPage_IDovercheckButton = new JButton("");
+		signupPage_IDovercheckButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
+
+		signupPage_IDovercheckButton.setBounds(755, 327, 91, 35);
+		signupPage_IDovercheckButton.setBorderPainted(false);
+		signupPage_IDovercheckButton.setContentAreaFilled(false);
+		signupPage_IDovercheckButton.setFocusPainted(false);
+		signupPage_IDovercheckButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				signupPage_IDovercheckButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				signupPage_IDovercheckButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+
+			}
+		});
+		signupPage.add(signupPage_IDovercheckButton);
+		// nickname 중복체크 버튼
+		JButton signupPage_NicknameovercheckButton = new JButton("");
+		signupPage_NicknameovercheckButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
+
+		signupPage_NicknameovercheckButton.setBounds(755, 327, 91, 35);
+		signupPage_NicknameovercheckButton.setBorderPainted(false);
+		signupPage_NicknameovercheckButton.setContentAreaFilled(false);
+		signupPage_NicknameovercheckButton.setFocusPainted(false);
+		signupPage_NicknameovercheckButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				signupPage_NicknameovercheckButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				signupPage_NicknameovercheckButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+
+			}
+		});
+		signupPage.add(signupPage_NicknameovercheckButton);
+
+
+		//뒤로가기 버튼
+		JButton signupPage_BackButton = new JButton("");
+		signupPage_BackButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
+
+		signupPage_BackButton.setBounds(543, 512, 91, 35);
+		signupPage_BackButton.setBorderPainted(false);
+		signupPage_BackButton.setContentAreaFilled(false);
+		signupPage_BackButton.setFocusPainted(false);
+		signupPage_BackButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				signupPage_BackButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				signupPage_BackButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				signupPage.setVisible(false);
+				loginPage.setVisible(true);
+			}
+		});
+		signupPage.add(signupPage_BackButton);
+
+		//회원가입 화면의 회원가입 버튼
+		JButton signupPage_signupButton = new JButton("");
+		signupPage_signupButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
+
+		signupPage_signupButton.setBounds(647, 512, 91, 35);
+		signupPage_signupButton.setBorderPainted(false);
+		signupPage_signupButton.setContentAreaFilled(false);
+		signupPage_signupButton.setFocusPainted(false);
+		signupPage_signupButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				signupPage_signupButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				signupPage_signupButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				try {
+					IDvalue = null;
+					PWvalue = null;
+					NIvalue = null;
+					IDvalue = signupPageTxtID.getText();
+					PWvalue = signupPagePass.getText();
+					NIvalue = signupPageNickname.getText();
+					// ID 중복체크 버튼 만들기
+					if(IDvalue.equals("") || PWvalue.equals("") ||NIvalue.equals(""))
+						JOptionPane.showMessageDialog(null,"나머지 칸을 채워주세요.");
+					else {
+						socket = new Socket(Server_IP, 5555);
+						in = new DataInputStream(socket.getInputStream());
+						keyboard = new DataInputStream(socket.getInputStream());
+						out = new DataOutputStream(socket.getOutputStream());
+						System.out.println(socket.toString());
+
+						signup_data = signup + "//" + NIvalue + "//" + IDvalue + "//" + PWvalue; // Server에서 "//"를 통해서 구분
+						out.writeUTF(signup_data);
+						// id 혹은 pw 혹은 Nickname이 null 값일 때 회원가입 버튼 눌렀을 때 "나머지 값을 입력해주세요!" 출력
+					}
+				} catch (IOException ex) {
+					JOptionPane.showMessageDialog(null,"통신 실패!!!");
+				}
+
+				try {
+					signup_possible = in.readUTF();
+					if(signup_possible.equals(signup + sc)) {
+						JOptionPane.showMessageDialog(null,"회원가입 성공! 메인화면으로 돌아갑니다.");
+						signupPage.setVisible(false);
+						loginPage.setVisible(true);
+					}
+
+				} catch(IOException ex) {
+
+				}
+			}
+		});
+		signupPage.add(signupPage_signupButton);
+
+
+
+
 		//로그인 화면 필드들
 
-		//ID필드
+		//로그인 화면 ID필드
 		JTextField loginPageTxtID = new JTextField();
 		loginPageTxtID.setFont(new Font("맑은 고딕", Font.PLAIN,20));
 		loginPageTxtID.setBounds(527,537,178,33);
 		loginPageTxtID.setBorder(null);
 		loginPage.add(loginPageTxtID);
 
-		//비밀번호 필드
+		//로그인 화면 비밀번호 필드
 		JPasswordField loginPagePass = new JPasswordField();
 		loginPagePass.setFont(new Font("맑은 고딕", Font.PLAIN,20));
 		loginPagePass.setBounds(526,583,178,33);
@@ -193,7 +373,7 @@ public class Window {
 					if(PWvalue.equals(""))
 						PWvalue = "null";
 
-					socket = new Socket("192.168.1.132", 5555);
+					socket = new Socket(Server_IP, 5555);
 					in = new DataInputStream(socket.getInputStream());
 					keyboard = new DataInputStream(socket.getInputStream());
 					out = new DataOutputStream(socket.getOutputStream());
@@ -207,8 +387,8 @@ public class Window {
 				}
 
 				try {
-					possible = in.readUTF();
-					if(possible.equals("success")) {
+					login_possible = in.readUTF();
+					if(login_possible.equals(login + sc)) {
 						loginPage.setVisible(false);
 						startGamePage.setVisible(true);
 					}
@@ -242,7 +422,8 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				//JOptionPane.showMessageDialog(null,"회원가입 테슷흐");
+				loginPage.setVisible(false);
+				signupPage.setVisible(true);
 
 			}
 		});
@@ -276,6 +457,8 @@ public class Window {
 
 		frame.getContentPane().add(startGamePage);
 
+
+
 		// 랭크화면
 		ImagePanel rankPage = new ImagePanel(
 				new ImageIcon(".\\images\\rankPage.png").getImage());
@@ -296,6 +479,7 @@ public class Window {
 
 
 		//화면 초기화
+		signupPage.setVisible(false);
 		htpPage.setVisible(false);
 		rankPage.setVisible(false);
 		startGamePage.setVisible(false);
@@ -308,8 +492,6 @@ public class Window {
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-
-
 
 
 		//게임시작화면 버튼들

@@ -32,7 +32,7 @@ class CCUser extends Thread{
 
     /* 각 메시지를 구분하기 위한 태그 */
     final String loginTag = "LOGIN";	//로그인
-    final String joinTag = "JOIN";		//회원가입
+    final String signupTag = "SIGNUP";		//회원가입
     final String overTag = "OVER";		//중복확인
     final String viewTag = "VIEW";		//회원정보조회d
     final String changeTag = "CHANGE";	//회원정보변경
