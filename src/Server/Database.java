@@ -116,7 +116,7 @@ public class Database {
     }
 
     //DB에 저장된 자신의 정보를 조회하는 메소드! 조회한 정보들을 String 형태로 반환
-    /*String viewInfo(String _nn) {
+    String viewInfo(String _nn) {
         String msg = "null";	//반환할 문자열 변수를 "null"로 초기화.
 
         //매개변수로 받은 닉네임을 nick에 초기화한다.
@@ -140,7 +140,7 @@ public class Database {
 
         return msg;	//msg 반환
     }
-    */
+
 
     /*
     //회원정보를 변경을 수행하는 메소드! 변경에 성공하면 true, 실패하면 false를 반환한다.

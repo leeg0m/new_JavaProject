@@ -174,8 +174,52 @@ public class Window {
 
 
 		/* 회원가입 화면 버튼들 */
-		// ID 중복체크 버튼
+		// id 중복체크 버튼
+		JButton signupPage_IDovercheckButton = new JButton("");
+		signupPage_IDovercheckButton.setBounds(755, 327, 91, 35);
+		signupPage_IDovercheckButton.setBorderPainted(false);
+		signupPage_IDovercheckButton.setContentAreaFilled(false);
+		signupPage_IDovercheckButton.setFocusPainted(false);
+		signupPage_IDovercheckButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				signupPage_IDovercheckButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
 
+			@Override
+			public void mouseExited(MouseEvent e) {
+				signupPage_IDovercheckButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+
+			}
+		});
+		signupPage.add(signupPage_IDovercheckButton);
+		// nickname 중복체크 버튼
+		JButton signupPage_NicknameovercheckButton = new JButton("");
+		signupPage_NicknameovercheckButton.setBounds(755, 327, 91, 35);
+		signupPage_NicknameovercheckButton.setBorderPainted(false);
+		signupPage_NicknameovercheckButton.setContentAreaFilled(false);
+		signupPage_NicknameovercheckButton.setFocusPainted(false);
+		signupPage_NicknameovercheckButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				signupPage_NicknameovercheckButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				signupPage_NicknameovercheckButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+
+			}
+		});
+		signupPage.add(signupPage_NicknameovercheckButton);
 
 
 		//뒤로가기 버튼
