@@ -21,6 +21,7 @@ public class Window {
 	private JFrame frame;
 	private int mouseX, mouseY;
 
+	static String Server_IP = "192.168.1.90";
 	static String login_data;
 	static String signup_data;
 	static String IDvalue; // ID
@@ -193,7 +194,7 @@ public class Window {
 					if(PWvalue.equals(""))
 						PWvalue = "null";
 
-					socket = new Socket("192.168.1.132", 5555);
+					socket = new Socket(Server_IP, 5555);
 					in = new DataInputStream(socket.getInputStream());
 					keyboard = new DataInputStream(socket.getInputStream());
 					out = new DataOutputStream(socket.getOutputStream());
@@ -308,8 +309,6 @@ public class Window {
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-
-
 
 
 		//게임시작화면 버튼들
