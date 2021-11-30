@@ -3,6 +3,7 @@ package Server;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Vector;
 
 //서버에 접속한 유저와의 메시지 송수신을 관리하는 클래스.
@@ -67,11 +68,11 @@ class CCUser extends Thread{
             dis = new DataInputStream(is);
 
             while(true) {
-                msg = "";
                 msg = dis.readUTF();	//메시지 수신을 상시 대기한다.
                 // msg = "LOGIN//admin//admin"
                 String[] m = msg.split("//");	//msg를 "//"로 나누어 m[] 배열에 차례로 집어넣는다.
-
+                // m["LOGIN", "admin", "admin"]
+                System.out.println(Arrays.toString(m));
                 // 수신받은 문자열들의 첫 번째 배열(m[0])은 모두 태그 문자. 각 기능을 분리한다.
                 /* 로그인 */
                 if(m[0].equals(loginTag)) {
@@ -100,24 +101,26 @@ class CCUser extends Thread{
                 }  //로그인 if문
 
                 /* 회원가입 */
-                else if(m[0].equals(joinTag)) {
+                else if(m[0].equals(signupTag)) {
                     if(db.signupCheck(m[1], m[2], m[3])) {	//회원가입 성공
-                        dos.writeUTF(joinTag + "//OKAY");
+                        dos.writeUTF(signupTag + "//success");
                     }
 
+                    /*
                     else {	//회원가입 실패
-                        dos.writeUTF(joinTag + "//FAIL");
+                        dos.writeUTF(signupTag + "//fail");
                     }
+                    */
                 }  //회원가입 if문
 
                 /* 중복확인 */
                 else if(m[0].equals(overTag)) {
                     if(db.overCheck(m[1], m[2])) {	//사용 가능
-                        dos.writeUTF(overTag + "//OKAY");
+                        dos.writeUTF(overTag + "//success");
                     }
 
                     else {	//사용 불가능
-                        dos.writeUTF(overTag + "//FAIL");
+                        dos.writeUTF(overTag + "//fail");
                     }
                 }  //중복확인 if문
 

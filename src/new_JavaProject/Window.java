@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Scanner;
 import java.util.Vector;
 
 import javax.swing.*;
@@ -20,13 +21,15 @@ public class Window {
 	private JFrame frame;
 	private int mouseX, mouseY;
 
-	static String data;
+	static String login_data;
+	static String signup_data;
 	static String IDvalue; // ID
 	static String PWvalue; // PW
 	static String possible;
 
 	// 태그 정보
 	static String login = "LOGIN";
+	static String signup = "SIGNUP";
 
 
 	/**
@@ -153,8 +156,7 @@ public class Window {
 		//로그인화면 버튼들
 
 		//로그인 버튼
-		IDvalue = loginPageTxtID.getText();
-		PWvalue = loginPagePass.getText();
+
 		JButton loginButton = new JButton("");
 		loginButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
 
@@ -182,14 +184,23 @@ public class Window {
 			//
 
 				try {
-					socket = new Socket("192.168.0.24", 7777);
+					IDvalue = null;
+					PWvalue = null;
+					IDvalue = loginPageTxtID.getText();
+					PWvalue = loginPagePass.getText();
+					if(IDvalue.equals(""))
+						IDvalue = "null";
+					if(PWvalue.equals(""))
+						PWvalue = "null";
+
+					socket = new Socket("192.168.1.132", 5555);
 					in = new DataInputStream(socket.getInputStream());
 					keyboard = new DataInputStream(socket.getInputStream());
 					out = new DataOutputStream(socket.getOutputStream());
 					System.out.println(socket.toString());
 
-					data = login + "//" + IDvalue + "//" + PWvalue; // Server에서 "//"를 통해서 구분
-					out.writeUTF(data);
+					login_data = login + "//" + IDvalue + "//" + PWvalue; // Server에서 "//"를 통해서 구분
+					out.writeUTF(login_data);
 
 				} catch (IOException ex) {
 					JOptionPane.showMessageDialog(null,"다시 입력!!!!!");
@@ -201,8 +212,10 @@ public class Window {
 						loginPage.setVisible(false);
 						startGamePage.setVisible(true);
 					}
+					else
+						JOptionPane.showMessageDialog(null,"ID나 PW가 잘못되었습니다!");
 				} catch(IOException ex) {
-					JOptionPane.showMessageDialog(null,"ID나 PW가 잘못되었습니다!");
+					//JOptionPane.showMessageDialog(null,"ID나 PW가 잘못되었습니다!");
 				}
 
 			}
@@ -210,7 +223,7 @@ public class Window {
 		loginPage.add(loginButton);
 
 
-		//회원가입 버튼
+		//로그인 화면의 회원가입 버튼
 		JButton signupButton = new JButton("");
 		signupButton.setBounds(722, 645, 70, 18);
 		signupButton.setBorderPainted(false);

@@ -23,7 +23,7 @@ public class Server {
 
         try {
             //서버 소켓 준비
-            server.ss = new ServerSocket(7777);
+            server.ss = new ServerSocket(5555);
             System.out.println("[Server] 서버 소켓 준비 완료");
 
             //클라이언트의 연결 요청을 상시 대기.
