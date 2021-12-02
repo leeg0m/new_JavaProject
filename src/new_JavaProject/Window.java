@@ -30,6 +30,8 @@ public class Window {
 	static String NIvalue; // NickName
 	static String login_possible;
 	static String signup_possible;
+	static String overcheckNick_possible;
+	static String overcheckId_possible;
 
 	// 태그 정보
 
@@ -223,9 +225,11 @@ public class Window {
 			public void mousePressed(MouseEvent e) {
 
 				try	{
+					System.out.println(signupPageNickname.getText());
 					NIvalue = null;
 					NIvalue = signupPageNickname.getText();
-					if(IDvalue.equals(""))
+
+					if(IDvalue.equals(null))
 						JOptionPane.showMessageDialog(null,"ID를 입력해주세요!");
 					else {
 						socket = new Socket(Server_IP, 5555);
@@ -236,10 +240,26 @@ public class Window {
 
 						overcheck_data = overcheck + "//" + IDvalue; // Server에서 "//"를 통해서 구분
 						out.writeUTF(overcheck_data);
+						JOptionPane.showMessageDialog(null,"사용가능!");
 						// id 혹은 pw 혹은 Nickname이 null 값일 때 회원가입 버튼 눌렀을 때 "나머지 값을 입력해주세요!" 출력
 					}
 
 				} catch(IOException ex) {
+
+				}
+
+				try {
+					overcheckNick_possible = in.readUTF();
+					if (overcheckNick_possible.equals(overcheck + sc)) {
+						JOptionPane.showMessageDialog(null, "사용가능!");
+						signupPage.setVisible(false);
+						loginPage.setVisible(true);
+					} else {
+						JOptionPane.showMessageDialog(null, "사용가능! 다른 ID를 입력해주세요.");
+						signupPage.setVisible(false);
+						loginPage.setVisible(true);
+					}
+					} catch(IOException ex) {
 
 				}
 
@@ -303,7 +323,7 @@ public class Window {
 					IDvalue = signupPageTxtID.getText();
 					PWvalue = signupPagePass.getText();
 					NIvalue = signupPageNickname.getText();
-					// ID 중복체크 버튼 만들기
+
 					if(IDvalue.equals("") || PWvalue.equals("") ||NIvalue.equals(""))
 						JOptionPane.showMessageDialog(null,"나머지 값을 입력해주세요!");
 					else {
@@ -394,15 +414,18 @@ public class Window {
 						IDvalue = "null";
 					if(PWvalue.equals(""))
 						PWvalue = "null";
+					if(IDvalue.equals("null") || PWvalue.equals("null"))
+						JOptionPane.showMessageDialog(null,"ID 혹은 PW가 입력되지 않았습니다.");
+					else {
+						socket = new Socket(Server_IP, 5555);
+						in = new DataInputStream(socket.getInputStream());
+						keyboard = new DataInputStream(socket.getInputStream());
+						out = new DataOutputStream(socket.getOutputStream());
+						System.out.println(socket.toString());
 
-					socket = new Socket(Server_IP, 5555);
-					in = new DataInputStream(socket.getInputStream());
-					keyboard = new DataInputStream(socket.getInputStream());
-					out = new DataOutputStream(socket.getOutputStream());
-					System.out.println(socket.toString());
-
-					login_data = login + "//" + IDvalue + "//" + PWvalue; // Server에서 "//"를 통해서 구분
-					out.writeUTF(login_data);
+						login_data = login + "//" + IDvalue + "//" + PWvalue; // Server에서 "//"를 통해서 구분
+						out.writeUTF(login_data);
+					}
 
 				} catch (IOException ex) {
 					JOptionPane.showMessageDialog(null,"다시 입력!!!!!");
@@ -480,8 +503,9 @@ public class Window {
 		frame.getContentPane().add(startGamePage);
 
 
+		// 게임순위 버튼
 
-		// 랭크화면
+		// 랭크(게임순위)화면
 		ImagePanel rankPage = new ImagePanel(
 				new ImageIcon(".\\images\\rankPage.png").getImage());
 		frame.setSize(rankPage.getWidth(), rankPage.getHeight());

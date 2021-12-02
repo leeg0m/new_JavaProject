@@ -124,7 +124,8 @@ class CCUser extends Thread{
                     }
                 }  //중복확인 if문
 
-                /* 회원정보 조회 */
+                /*
+                // 회원정보 조회
                 else if(m[0].equals(viewTag)) {
                     if(!db.viewInfo(nickname).equals("null")) {	//조회 성공
                         dos.writeUTF(viewTag + "//" + db.viewInfo(nickname));	//태그와 조회한 내용을 같이 전송
@@ -134,6 +135,9 @@ class CCUser extends Thread{
                         dos.writeUTF(viewTag + "//FAIL");
                     }
                 }  //회원정보 조회 if문
+
+                /*
+                 */
 
                 /*
                 // 회원정보 변경
@@ -153,7 +157,7 @@ class CCUser extends Thread{
                     if(!db.viewRank().equals("")) {	//조회 성공
                         dos.writeUTF(rankTag + "//" + db.viewRank());	//태그와 조회한 내용을 같이 전송
                     }
-
+                    // db.viewRank() = record//member
                     else {	//조회 실패
                         dos.writeUTF(rankTag + "//FAIL");
                     }

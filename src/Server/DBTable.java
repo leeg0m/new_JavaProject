@@ -26,8 +26,8 @@ public class DBTable {
             stmt.executeUpdate(member_createStr);
 
             // 싱글기록
-            String Record_createStr = "CREATE TABLE record (nickname varchar(20) not null, time int not null)";
-            stmt.executeUpdate(Record_createStr);
+            String record_createStr = "CREATE TABLE record (nickname varchar(20) not null, time int not null)";
+            stmt.executeUpdate(record_createStr);
 
             System.out.println("[Server] 테이블 생성 성공");
         }catch (Exception e){
