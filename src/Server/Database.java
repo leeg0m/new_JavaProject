@@ -86,8 +86,8 @@ public class Database {
         boolean flag = false;   //참거짓을 반환할 flag 변수. 초기값은 false
 
         //at t는 속성(아이디, 닉네임)을 구분하고, val은 확인할 값이 초기화.
-        String att = _a;
-        String val = _v;
+        String att = _a; // 컬럼
+        String val = _v; // 데이터 값
 
         try {
             //member 테이블에 존재하는 아이디(혹은 닉네임)를 모두 찾는다.

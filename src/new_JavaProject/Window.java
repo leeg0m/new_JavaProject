@@ -24,6 +24,7 @@ public class Window {
 	static String Server_IP = "192.168.1.90";
 	static String login_data;
 	static String signup_data;
+	static String overcheck_data;
 	static String IDvalue; // ID
 	static String PWvalue; // PW
 	static String NIvalue; // NickName
@@ -221,6 +222,27 @@ public class Window {
 			@Override
 			public void mousePressed(MouseEvent e) {
 
+				try	{
+					NIvalue = null;
+					NIvalue = signupPageNickname.getText();
+					if(IDvalue.equals(""))
+						JOptionPane.showMessageDialog(null,"ID를 입력해주세요!");
+					else {
+						socket = new Socket(Server_IP, 5555);
+						in = new DataInputStream(socket.getInputStream());
+						keyboard = new DataInputStream(socket.getInputStream());
+						out = new DataOutputStream(socket.getOutputStream());
+						System.out.println(socket.toString());
+
+						overcheck_data = overcheck + "//" + IDvalue; // Server에서 "//"를 통해서 구분
+						out.writeUTF(overcheck_data);
+						// id 혹은 pw 혹은 Nickname이 null 값일 때 회원가입 버튼 눌렀을 때 "나머지 값을 입력해주세요!" 출력
+					}
+
+				} catch(IOException ex) {
+
+				}
+
 			}
 		});
 		signupPage.add(signupPage_NicknameovercheckButton);
@@ -283,7 +305,7 @@ public class Window {
 					NIvalue = signupPageNickname.getText();
 					// ID 중복체크 버튼 만들기
 					if(IDvalue.equals("") || PWvalue.equals("") ||NIvalue.equals(""))
-						JOptionPane.showMessageDialog(null,"나머지 칸을 채워주세요.");
+						JOptionPane.showMessageDialog(null,"나머지 값을 입력해주세요!");
 					else {
 						socket = new Socket(Server_IP, 5555);
 						in = new DataInputStream(socket.getInputStream());
