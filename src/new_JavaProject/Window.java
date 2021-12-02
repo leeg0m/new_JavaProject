@@ -39,6 +39,7 @@ public class Window {
 	static String f = "//fail";
 	static String login = "LOGIN";
 	static String signup = "SIGNUP";
+	static String overcheck = "OVER";
 
 
 	/**
@@ -741,6 +742,49 @@ public class Window {
 		rankPage.add(rankpage_logoutButton);
 
 		//튜토리얼화면 버튼들
+
+		//튜토리얼 화면 이미지
+		ImageIcon img1 = new ImageIcon(".\\images\\htpimage1.png");
+		ImageIcon img2 = new ImageIcon(".\\images\\htpimage2.png");
+		JButton htpImageButton = new JButton(img1);
+		htpImageButton.setBorderPainted(false);
+		htpImageButton.setBounds(100,120,1080,520);
+		htpImageButton.setPreferredSize(new Dimension(1080,520));
+
+		htpImageButton.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				JButton htpImageButton2 = new JButton(img2);
+				htpImageButton2.setBorderPainted(false);
+				htpImageButton2.setBounds(100,120,1080,520);
+				htpImageButton2.setPreferredSize(new Dimension(1080,520));
+				htpPage.add(htpImageButton2);
+				htpImageButton.setVisible(false);
+
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+
+			}
+		});
+
+		htpPage.add(htpImageButton);
 
 		//게임시작 메뉴 버튼
 		JButton htpPage_startGameButton = new JButton("");
