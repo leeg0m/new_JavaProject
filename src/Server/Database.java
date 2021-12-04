@@ -8,9 +8,9 @@ public class Database {
     /* 데이터베이스와의 연결에 사용할 변수들 */
     Connection conn = null; // 연결
     Statement state = null; // 상태
-    String url = "jdbc:mariadb://localhost:3306/serverTimezone=Asia/Seoul";
-    String user = "계정 이름";
-    String passwd = "계정 비밀번호";
+    String url = "jdbc:mariadb://localhost:3306/minesweeper?serverTimezone=Asia/Seoul";
+    String user = "root";
+    String passwd = "root";
 
     Database() {	//Database 객체 생성 시 데이터베이스 서버와 연결한다.
         try {	//데이터베이스 연결은 try-catch문으로 예외를 잡아준다.
