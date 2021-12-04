@@ -41,6 +41,9 @@ public class Window {
 	static String signup = "SIGNUP";
 	static String overcheck = "OVER";
 
+	//승준이가 테스트한 부분
+	static String viewrank = "RANK";
+
 
 	/**
 	 * Launch the application.
@@ -84,7 +87,7 @@ public class Window {
 		exitButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				exitButton.setIcon(new ImageIcon(".\\images\\exitButtonPressed.png"));
+				exitButton.setIcon(new ImageIcon(".\\images\\exitButtonEntered.png"));
 				exitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));//버튼에 마우스 올리면 손가락 모양 커서로 변경
 			}
 
@@ -98,6 +101,10 @@ public class Window {
 			public void mousePressed(MouseEvent e) {
 
 				exitButton.setIcon(new ImageIcon(".\\images\\exitButtonPressed.png"));
+			//	exit(0);
+			}
+			public void mouseReleased(MouseEvent e) {
+				//작동은 여기서
 				exit(0);
 			}
 		});
@@ -231,6 +238,10 @@ public class Window {
 			@Override
 			public void mousePressed(MouseEvent e) {
 
+
+			}
+			public void mouseReleased(MouseEvent e) {
+				//작동은 여기서
 				try	{
 					System.out.println(signupPageNickname.getText());
 					NIvalue = null;
@@ -266,7 +277,7 @@ public class Window {
 						signupPage.setVisible(false);
 						loginPage.setVisible(true);
 					}
-					} catch(IOException ex) {
+				} catch(IOException ex) {
 
 				}
 
@@ -277,7 +288,7 @@ public class Window {
 
 		//뒤로가기 버튼
 		JButton signupPage_BackButton = new JButton("");
-		signupPage_BackButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
+		signupPage_BackButton.setIcon(new ImageIcon(".\\images\\BackButton.png"));
 
 		signupPage_BackButton.setBounds(543, 512, 91, 35);
 		signupPage_BackButton.setBorderPainted(false);
@@ -286,16 +297,23 @@ public class Window {
 		signupPage_BackButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				signupPage_BackButton.setIcon(new ImageIcon(".\\images\\BackButtonEntered.png"));
 				signupPage_BackButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
+				signupPage_BackButton.setIcon(new ImageIcon(".\\images\\BackButton.png"));
 				signupPage_BackButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				signupPage_BackButton.setIcon(new ImageIcon(".\\images\\BackButtonPressed.png"));
+
+			}
+			public void mouseReleased(MouseEvent e) {
+				//작동은 여기서
 				signupPage.setVisible(false);
 				loginPage.setVisible(true);
 			}
@@ -396,7 +414,7 @@ public class Window {
 		loginButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				loginButton.setIcon(new ImageIcon(".\\images\\loginButtonPressed.png"));
+				loginButton.setIcon(new ImageIcon(".\\images\\loginButtonEntered.png"));
 				loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
 			}
@@ -409,52 +427,60 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-			// 메소드로 로그인 버튼을 눌렀을 때 서버에 ID와 PW를 반환
-			// ID, PW를 반환받은 서버는 일치여부 확인을 위해 DB 반환
-			// DB는 확인 후 맞으면 true를, 틀리면 false를 서버에 반환
-			// 서버는 true를 반화받으면 success를, false를 반환받으면 fail을 반환
-			//
-				//loginButton.setIcon(new ImageIcon(".\\images\\loginButtonPressed.png"));
-				//loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				try {
-					IDvalue = null;
-					PWvalue = null;
-					IDvalue = loginPageTxtID.getText();
-					PWvalue = loginPagePass.getText();
-					if(IDvalue.equals(""))
-						IDvalue = "null";
-					if(PWvalue.equals(""))
-						PWvalue = "null";
-					if(IDvalue.equals("null") || PWvalue.equals("null"))
-						JOptionPane.showMessageDialog(null,"ID 혹은 PW가 입력되지 않았습니다.");
-					else {
-						socket = new Socket(Server_IP, 5555);
-						in = new DataInputStream(socket.getInputStream());
-						keyboard = new DataInputStream(socket.getInputStream());
-						out = new DataOutputStream(socket.getOutputStream());
-						System.out.println(socket.toString());
-
-						login_data = login + "//" + IDvalue + "//" + PWvalue; // Server에서 "//"를 통해서 구분
-						out.writeUTF(login_data);
-					}
-
-				} catch (IOException ex) {
-					JOptionPane.showMessageDialog(null,"다시 입력!!!!!");
-				}
-
-				try {
-					login_possible = in.readUTF();
-					if(login_possible.equals(login + sc)) {
-						loginPage.setVisible(false);
-						startGamePage.setVisible(true);
-					}
-					else
-						JOptionPane.showMessageDialog(null,"ID나 PW가 잘못되었습니다!");
-				} catch(IOException ex) {
-					//JOptionPane.showMessageDialog(null,"ID나 PW가 잘못되었습니다!");
-				}
-
+				loginButton.setIcon(new ImageIcon(".\\images\\loginButtonPressed.png"));
 			}
+			//
+			public void mouseReleased(MouseEvent e) {
+				//작동은 여기서
+					// 메소드로 로그인 버튼을 눌렀을 때 서버에 ID와 PW를 반환
+					// ID, PW를 반환받은 서버는 일치여부 확인을 위해 DB 반환
+					// DB는 확인 후 맞으면 true를, 틀리면 false를 서버에 반환
+					// 서버는 true를 반화받으면 success를, false를 반환받으면 fail을 반환
+					//
+					//loginButton.setIcon(new ImageIcon(".\\images\\loginButtonPressed.png"));
+					//loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+					//
+					try {
+						IDvalue = null;
+						PWvalue = null;
+						IDvalue = loginPageTxtID.getText();
+						PWvalue = loginPagePass.getText();
+						if(IDvalue.equals(""))
+							IDvalue = "null";
+						if(PWvalue.equals(""))
+							PWvalue = "null";
+						if(IDvalue.equals("null") || PWvalue.equals("null"))
+							JOptionPane.showMessageDialog(null,"ID 혹은 PW가 입력되지 않았습니다.");
+						else {
+							socket = new Socket(Server_IP, 5555);
+							in = new DataInputStream(socket.getInputStream());
+							keyboard = new DataInputStream(socket.getInputStream());
+							out = new DataOutputStream(socket.getOutputStream());
+							System.out.println(socket.toString());
+
+							login_data = login + "//" + IDvalue + "//" + PWvalue; // Server에서 "//"를 통해서 구분
+							out.writeUTF(login_data);
+						}
+
+					} catch (IOException ex) {
+						JOptionPane.showMessageDialog(null,"다시 입력!!!!!");
+					}
+
+					try {
+						login_possible = in.readUTF();
+						if(login_possible.equals(login + sc)) {
+							loginPage.setVisible(false);
+							startGamePage.setVisible(true);
+						}
+						else
+							JOptionPane.showMessageDialog(null,"ID나 PW가 잘못되었습니다!");
+					} catch(IOException ex) {
+						//JOptionPane.showMessageDialog(null,"ID나 PW가 잘못되었습니다!");
+					}
+
+				}
+
 		});
 		loginPage.add(loginButton);
 
@@ -572,7 +598,7 @@ public class Window {
 		startGamePage_singleButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				startGamePage_singleButton.setIcon(new ImageIcon(".\\images\\singleButtonPressed.png"));
+				startGamePage_singleButton.setIcon(new ImageIcon(".\\images\\singleButtonEntered.png"));
 				startGamePage_singleButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
@@ -585,10 +611,15 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				startGamePage.setVisible(false);
-				singleModeSelectPage.setVisible(true);
+				startGamePage_singleButton.setIcon(new ImageIcon(".\\images\\singleButtonPressed.png"));
+
 				//startGamePage_singleButton.setIcon(new ImageIcon(".\\images\\singleButtonPressed.png"));
 
+			}
+			public void mouseReleased(MouseEvent e) {
+				//작동은 여기서
+				startGamePage.setVisible(false);
+				singleModeSelectPage.setVisible(true);
 			}
 		});
 		startGamePage.add(startGamePage_singleButton);
@@ -607,7 +638,7 @@ public class Window {
 		startGamePage_multiButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				startGamePage_multiButton.setIcon(new ImageIcon(".\\images\\multiButtonPressed.png"));
+				startGamePage_multiButton.setIcon(new ImageIcon(".\\images\\multiButtonEntered.png"));
 				startGamePage_multiButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
@@ -620,6 +651,11 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				startGamePage_multiButton.setIcon(new ImageIcon(".\\images\\multiButtonEntered.png"));
+				startGamePage.setVisible(false);
+				singleModeSelectPage.setVisible(true);
+			}
+			public void mouseReleased(MouseEvent e) {
 				startGamePage.setVisible(false);
 				singleModeSelectPage.setVisible(true);
 			}
@@ -671,9 +707,16 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				//startGamePage.setVisible(false);
+				//htpPage.setVisible(true);
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				startGamePage.setVisible(false);
 				htpPage.setVisible(true);
 			}
+
 		});
 		startGamePage.add(startGamePage_htpButton);
 
@@ -687,7 +730,7 @@ public class Window {
 		startGamePage_logoutButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				startGamePage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButtonPressed.png"));
+				startGamePage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButtonEntered.png"));
 				startGamePage_logoutButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
@@ -699,6 +742,12 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				startGamePage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButtonPressed.png"));
+
+
+			}
+
+			public void mouseReleased(MouseEvent e) {
 				startGamePage.setVisible(false);
 				loginPage.setVisible(true);
 			}
@@ -707,11 +756,14 @@ public class Window {
 
 
 		//랭크화면 버튼들
+
+		//랭크화면 텍스트필드
 		JTextField rank_TextField = new JTextField("여기에 DB SELECT * FROM 문이 들어갑니다");
-		rank_TextField.setBounds(100,120,1080,520);
+		rank_TextField.setBounds(300,120,520,480);
 
 		rankPage.add(rank_TextField);
 
+		//랭크화면 새로고침 버튼  entered 아직 안만듬
 		JButton rank_refreshButton = new JButton("");
 		rank_refreshButton.setIcon(new ImageIcon(".\\images\\rankrefreshButton.png"));
 		rank_refreshButton.setBounds(50, 600, 47, 47);
@@ -723,7 +775,7 @@ public class Window {
 		rank_refreshButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				rank_refreshButton.setIcon(new ImageIcon(".\\images\\rankrefreshButtonPressed.png"));
+				rank_refreshButton.setIcon(new ImageIcon(".\\images\\rankrefreshButtonPressed.png")); //entered로 변환 필요
 				rank_refreshButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
@@ -735,7 +787,11 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) { // select 문을 다시 불러온다.
+				rank_refreshButton.setIcon(new ImageIcon(".\\images\\rankrefreshButtonPressed.png"));
+			}
 
+			public void mouseReleased(MouseEvent e) {
+				//작동은 여기서
 			}
 		});
 
@@ -800,7 +856,7 @@ public class Window {
 		rankpage_logoutButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				rankpage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButtonPressed.png"));
+				rankpage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButtonEntered.png"));
 				rankpage_logoutButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
@@ -812,6 +868,12 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				rankpage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButtonPressed.png"));
+
+
+			}
+
+			public void mouseReleased(MouseEvent e) {
 				rankPage.setVisible(false);
 				loginPage.setVisible(true);
 			}
@@ -821,37 +883,44 @@ public class Window {
 		//튜토리얼화면 버튼들
 
 		//튜토리얼 화면 이미지
-		ImageIcon img1 = new ImageIcon(".\\images\\htpimage1.png");
-		ImageIcon img2 = new ImageIcon(".\\images\\htpimage2.png");
-		JButton htpImageButton = new JButton(img1);
+		//ImageIcon img1 = new ImageIcon(".\\images\\htpimage1.png");
+		//ImageIcon img2 = new ImageIcon(".\\images\\htpimage2.png");
+		JButton htpImageButton = new JButton("");
+		htpImageButton.setIcon(new ImageIcon(".\\images\\htipimage1.png"));
+
+
 		htpImageButton.setBorderPainted(false);
 		htpImageButton.setBounds(100,120,1080,520);
 		htpImageButton.setPreferredSize(new Dimension(1080,520));
 
-		htpImageButton.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseClicked(MouseEvent e) { }
+		JButton htp_nextButton = new JButton("");
+		htp_nextButton.setIcon(new ImageIcon(".\\images\\BackButton.png")); //이미지바꾸기
+		htp_nextButton.setBounds(50, 600, 47, 47);
+		htp_nextButton.setBorderPainted(false);
+		htp_nextButton.setContentAreaFilled(false);
+		htp_nextButton.setFocusPainted(false);
 
-			@Override
-			public void mousePressed(MouseEvent e) {
-				JButton htpImageButton2 = new JButton(img2);
-				htpImageButton2.setBorderPainted(false);
-				htpImageButton2.setBounds(100,120,1080,520);
-				htpImageButton2.setPreferredSize(new Dimension(1080,520));
-				htpPage.add(htpImageButton2);
-				htpImageButton.setVisible(false);
+		htp_nextButton.addMouseListener(new MouseAdapter() {
+
+			public void mouseEntered(MouseEvent e) {
+				htp_nextButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
-			@Override
-			public void mouseReleased(MouseEvent e) { }
+			public void mouseExited(MouseEvent e) {
+				htp_nextButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
-			@Override
-			public void mouseEntered(MouseEvent e) { }
+			}
 
-			@Override
-			public void mouseExited(MouseEvent e) { }
+			public void mousePressed(MouseEvent e) {
+
+			}
+			public void mouseReleased(MouseEvent e) {
+
+				htpImageButton.setIcon(new ImageIcon(".\\images\\htipimage2.png"));
+			}
 		});
 
+		htpPage.add(htp_nextButton);
 		htpPage.add(htpImageButton);
 
 		//게임시작 메뉴 버튼
@@ -912,7 +981,7 @@ public class Window {
 		htpPage_logoutButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				htpPage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButtonPressed.png"));
+				htpPage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButtonEntered.png"));
 				htpPage_logoutButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
@@ -924,6 +993,10 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				htpPage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButtonPressed.png"));
+
+			}
+			public void mouseReleased(MouseEvent e) {
 				htpPage.setVisible(false);
 				loginPage.setVisible(true);
 			}
@@ -995,7 +1068,7 @@ public class Window {
 		singleModeSelectPage_logoutButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				singleModeSelectPage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButtonPressed.png"));
+				singleModeSelectPage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButtonEntered.png"));
 				htpPage_logoutButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
@@ -1007,9 +1080,14 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				singleModeSelectPage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButtonPressed.png"));
+
+			}
+			public void mouseReleased(MouseEvent e) {
 				singleModeSelectPage.setVisible(false);
 				loginPage.setVisible(true);
 			}
+
 		});
 		singleModeSelectPage.add(singleModeSelectPage_logoutButton);
 
@@ -1026,7 +1104,7 @@ public class Window {
 		singleModeSelectPage_beginnerButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				singleModeSelectPage_beginnerButton.setIcon(new ImageIcon(".\\images\\beginner_ButtonPressed.png"));
+				singleModeSelectPage_beginnerButton.setIcon(new ImageIcon(".\\images\\beginner_ButtonEntered.png"));
 				singleModeSelectPage_beginnerButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
 			}
@@ -1039,10 +1117,15 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				singleModeSelectPage_beginnerButton.setIcon(new ImageIcon(".\\images\\beginner_ButtonPressed.png"));
+
+
+			}
+
+			public void mouseReleased(MouseEvent e) {
 				singleModeSelectPage.setVisible(false);
 				background.setVisible(true);
 				beginner_gameStart();
-
 			}
 		});
 		singleModeSelectPage.add(singleModeSelectPage_beginnerButton);
@@ -1060,7 +1143,7 @@ public class Window {
 		singleModeSelectPage_intermediateButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				singleModeSelectPage_intermediateButton.setIcon(new ImageIcon(".\\images\\intermediate_ButtonPressed.png"));
+				singleModeSelectPage_intermediateButton.setIcon(new ImageIcon(".\\images\\intermediate_ButtonEntered.png"));
 				singleModeSelectPage_intermediateButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
@@ -1072,7 +1155,11 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				singleModeSelectPage_intermediateButton.setIcon(new ImageIcon(".\\images\\intermediate_ButtonPressed.png"));
 
+			}
+			public void mouseReleased(MouseEvent e) {
+				//작동은 여기서
 			}
 		});
 		singleModeSelectPage.add(singleModeSelectPage_intermediateButton);
@@ -1090,7 +1177,7 @@ public class Window {
 		singleModeSelectPage_advancedButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				singleModeSelectPage_advancedButton.setIcon(new ImageIcon(".\\images\\advanced_ButtonPressed.png"));
+				singleModeSelectPage_advancedButton.setIcon(new ImageIcon(".\\images\\advanced_ButtonEntered.png"));
 				singleModeSelectPage_advancedButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
@@ -1103,7 +1190,11 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				singleModeSelectPage_advancedButton.setIcon(new ImageIcon(".\\images\\advanced_ButtonPressed.png"));
 
+			}
+			public void mouseReleased(MouseEvent e) {
+				//작동은 여기서
 			}
 		});
 
@@ -1122,7 +1213,7 @@ public class Window {
 		singleModeSelectPage_challengeButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				singleModeSelectPage_challengeButton.setIcon(new ImageIcon(".\\images\\challenge_ButtonPressed.png"));
+				singleModeSelectPage_challengeButton.setIcon(new ImageIcon(".\\images\\challenge_ButtonEntered.png"));
 				singleModeSelectPage_challengeButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
@@ -1134,6 +1225,11 @@ public class Window {
 
 				@Override
 			public void mousePressed(MouseEvent e) {
+					singleModeSelectPage_challengeButton.setIcon(new ImageIcon(".\\images\\challenge_ButtonPressed.png"));
+
+				}
+			public void mouseReleased(MouseEvent e) {
+				//작동은 여기서
 
 			}
 		});
@@ -1149,7 +1245,7 @@ public class Window {
 		singleModeSelectPage_backButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				singleModeSelectPage_backButton.setIcon(new ImageIcon(".\\images\\backButtonPressed.png"));
+				singleModeSelectPage_backButton.setIcon(new ImageIcon(".\\images\\backButtonEntered.png"));
 				singleModeSelectPage_backButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
@@ -1161,6 +1257,13 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				singleModeSelectPage_backButton.setIcon(new ImageIcon(".\\images\\backButtonPressed.png"));
+
+			//	singleModeSelectPage.setVisible(false);
+				//startGamePage.setVisible(true);
+			}
+			public void mouseReleased(MouseEvent e) {
+				//작동은 여기서
 				singleModeSelectPage.setVisible(false);
 				startGamePage.setVisible(true);
 			}
