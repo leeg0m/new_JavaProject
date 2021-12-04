@@ -707,14 +707,14 @@ public class Window {
 
 
 		//랭크화면 버튼들
-		JTextField rank_TextField = new JTextField("");
+		JTextField rank_TextField = new JTextField("여기에 DB SELECT * FROM 문이 들어갑니다");
 		rank_TextField.setBounds(100,120,1080,520);
 
 		rankPage.add(rank_TextField);
 
 		JButton rank_refreshButton = new JButton("");
-		rank_refreshButton.setIcon(new ImageIcon(".\\images\\logoutButton.png"));
-		rank_refreshButton.setBounds(70, 600, 47, 47);
+		rank_refreshButton.setIcon(new ImageIcon(".\\images\\rankrefreshButton.png"));
+		rank_refreshButton.setBounds(50, 600, 47, 47);
 		rank_refreshButton.setBorderPainted(false);
 		rank_refreshButton.setContentAreaFilled(false);
 		rank_refreshButton.setFocusPainted(false);
@@ -723,13 +723,13 @@ public class Window {
 		rank_refreshButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				rank_refreshButton.setIcon(new ImageIcon(".\\images\\logoutButton.png"));
+				rank_refreshButton.setIcon(new ImageIcon(".\\images\\rankrefreshButtonPressed.png"));
 				rank_refreshButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				rank_refreshButton.setIcon(new ImageIcon(".\\images\\logoutButtonPressed.png"));
+				rank_refreshButton.setIcon(new ImageIcon(".\\images\\rankrefreshButton.png"));
 				rank_refreshButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 
