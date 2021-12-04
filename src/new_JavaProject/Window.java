@@ -84,12 +84,13 @@ public class Window {
 		exitButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				exitButton.setIcon(new ImageIcon(".\\images\\exitButtonEntered.png"));
+				exitButton.setIcon(new ImageIcon(".\\images\\exitButtonPressed.png"));
 				exitButton.setCursor(new Cursor(Cursor.HAND_CURSOR));//버튼에 마우스 올리면 손가락 모양 커서로 변경
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
+				exitButton.setIcon(new ImageIcon(".\\images\\exitButton.png"));
 				exitButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));		//버튼에 마우스 때면 원래 모양 커서로 변경
 			}
 
@@ -706,6 +707,37 @@ public class Window {
 
 
 		//랭크화면 버튼들
+		JTextField rank_TextField = new JTextField("");
+		rank_TextField.setBounds(100,120,1080,520);
+
+		rankPage.add(rank_TextField);
+
+		JButton rank_refreshButton = new JButton("");
+		rank_refreshButton.setIcon(new ImageIcon(".\\images\\logoutButton.png"));
+		rank_refreshButton.setBounds(70, 600, 47, 47);
+		rank_refreshButton.setBorderPainted(false);
+		rank_refreshButton.setContentAreaFilled(false);
+		rank_refreshButton.setFocusPainted(false);
+
+		rankPage.add(rank_refreshButton);
+		rank_refreshButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				rank_refreshButton.setIcon(new ImageIcon(".\\images\\logoutButton.png"));
+				rank_refreshButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				rank_refreshButton.setIcon(new ImageIcon(".\\images\\logoutButtonPressed.png"));
+				rank_refreshButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) { // select 문을 다시 불러온다.
+
+			}
+		});
 
 		//게임시작 메뉴 버튼
 		JButton rankPage_startGameButton = new JButton("");
