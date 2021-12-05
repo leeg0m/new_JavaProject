@@ -578,7 +578,6 @@ public class Window {
 
 		frame.getContentPane().add(startGamePage);
 
-
 		// 게임순위 버튼
 
 		// 랭크(게임순위)화면
@@ -1175,7 +1174,7 @@ public class Window {
 	}
 
 
-
+	/* 게임 시작 */
 	//public void gameStart(int nowSelected, String mode) {
 	public void beginner_gameStart() {
 

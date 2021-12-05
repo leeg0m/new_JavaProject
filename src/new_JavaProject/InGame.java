@@ -531,7 +531,7 @@ public class InGame extends JPanel {
 				}
 			}
 		}
-
+		// 게임 승리
 		if (uncover == 0 && inGame) {// 게임중이고 비활성화 칸 없으면
 			afterTime = System.nanoTime();// 게임 종료시간
 			secDiffTime = (afterTime - beforeTime) / 1000;
@@ -540,7 +540,7 @@ public class InGame extends JPanel {
 //			statusbar.setText("Game won");// 승리
 //            sound(soundsFilePath.get(soundsEnum.GAMEWIN.ordinal()));//승리소리
 
-		} else if (!inGame) {// 게임끝
+		} else if (!inGame) { // 게임끝
 			afterTime = System.nanoTime();// 게임 종료시간
 			secDiffTime = (afterTime - beforeTime) / 1000;
 			m_task.cancel();
