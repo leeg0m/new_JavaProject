@@ -21,7 +21,8 @@ public class Window {
 	private JFrame frame;
 	private int mouseX, mouseY;
 
-	static String Server_IP = "192.168.1.90";
+	static String Server_IP = "172.18.6.176";
+	static int Server_Port = 5555;
 	static String login_data;
 	static String signup_data;
 	static String overcheck_data;
@@ -200,6 +201,39 @@ public class Window {
 			@Override
 			public void mousePressed(MouseEvent e) {
 
+				IDvalue = null;
+				IDvalue = signupPageTxtID.getText();
+
+				if(IDvalue.equals(""))
+					JOptionPane.showMessageDialog(null,"ID를 입력해주세요");
+				else{
+						try {
+							socket = new Socket(Server_IP, Server_Port);
+							in = new DataInputStream(socket.getInputStream());
+							keyboard = new DataInputStream(socket.getInputStream());
+							out = new DataOutputStream(socket.getOutputStream());
+							System.out.println(socket.toString());
+
+							overcheck_data = overcheck + "//" + "id" + "//" + IDvalue; // Server에서 "//"를 통해서 구분
+							out.writeUTF(overcheck_data);
+
+						}catch (IOException ex){
+
+						}
+
+						try {
+							overcheckId_possible = in.readUTF();
+							//System.out.println(overcheckId_possible);
+							if(overcheckId_possible.equals(overcheck + sc))
+								JOptionPane.showMessageDialog(null,"사용가능!");
+
+							else
+								JOptionPane.showMessageDialog(null,"사용불가! 다른 ID를 입력해주세요.");
+
+						}catch (IOException ex){
+
+						}
+				}
 			}
 		});
 		signupPage.add(signupPage_IDovercheckButton);
@@ -225,45 +259,39 @@ public class Window {
 			@Override
 			public void mousePressed(MouseEvent e) {
 
-				try	{
-					System.out.println(signupPageNickname.getText());
-					NIvalue = null;
-					NIvalue = signupPageNickname.getText();
+				NIvalue = null;
+				NIvalue = signupPageNickname.getText();
 
-					if(IDvalue.equals(null))
-						JOptionPane.showMessageDialog(null,"ID를 입력해주세요!");
-					else {
-						socket = new Socket(Server_IP, 5555);
+				if(NIvalue.equals(""))
+					JOptionPane.showMessageDialog(null,"닉네임을 입력해주세요");
+				else{
+					try {
+						socket = new Socket(Server_IP, Server_Port);
 						in = new DataInputStream(socket.getInputStream());
 						keyboard = new DataInputStream(socket.getInputStream());
 						out = new DataOutputStream(socket.getOutputStream());
 						System.out.println(socket.toString());
 
-						overcheck_data = overcheck + "//" + IDvalue; // Server에서 "//"를 통해서 구분
+						overcheck_data = overcheck + "//" + "nickname" + "//" + NIvalue; // Server에서 "//"를 통해서 구분
 						out.writeUTF(overcheck_data);
-						JOptionPane.showMessageDialog(null,"사용가능!");
-						// id 혹은 pw 혹은 Nickname이 null 값일 때 회원가입 버튼 눌렀을 때 "나머지 값을 입력해주세요!" 출력
+
+					}catch (IOException ex){
+
 					}
 
-				} catch(IOException ex) {
+					try {
+						overcheckNick_possible = in.readUTF();
+						//System.out.println(overcheckId_possible);
+						if(overcheckNick_possible.equals(overcheck + sc))
+							JOptionPane.showMessageDialog(null,"사용가능!");
 
-				}
+						else
+							JOptionPane.showMessageDialog(null,"사용불가! 다른 닉네임을 입력해주세요.");
 
-				try {
-					overcheckNick_possible = in.readUTF();
-					if (overcheckNick_possible.equals(overcheck + sc)) {
-						JOptionPane.showMessageDialog(null, "사용가능!");
-						signupPage.setVisible(false);
-						loginPage.setVisible(true);
-					} else {
-						JOptionPane.showMessageDialog(null, "사용가능! 다른 ID를 입력해주세요.");
-						signupPage.setVisible(false);
-						loginPage.setVisible(true);
+					}catch (IOException ex){
+
 					}
-					} catch(IOException ex) {
-
 				}
-
 			}
 		});
 		signupPage.add(signupPage_NicknameovercheckButton);
@@ -328,7 +356,7 @@ public class Window {
 					if(IDvalue.equals("") || PWvalue.equals("") ||NIvalue.equals(""))
 						JOptionPane.showMessageDialog(null,"나머지 값을 입력해주세요!");
 					else {
-						socket = new Socket(Server_IP, 5555);
+						socket = new Socket(Server_IP, Server_Port);
 						in = new DataInputStream(socket.getInputStream());
 						keyboard = new DataInputStream(socket.getInputStream());
 						out = new DataOutputStream(socket.getOutputStream());
@@ -418,7 +446,7 @@ public class Window {
 					if(IDvalue.equals("null") || PWvalue.equals("null"))
 						JOptionPane.showMessageDialog(null,"ID 혹은 PW가 입력되지 않았습니다.");
 					else {
-						socket = new Socket(Server_IP, 5555);
+						socket = new Socket(Server_IP, Server_Port);
 						in = new DataInputStream(socket.getInputStream());
 						keyboard = new DataInputStream(socket.getInputStream());
 						out = new DataOutputStream(socket.getOutputStream());

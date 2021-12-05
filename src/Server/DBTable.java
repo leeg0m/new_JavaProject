@@ -21,7 +21,7 @@ public class DBTable {
 
             // 회원정보
             String member_createStr = "CREATE TABLE member (nickname varchar(20) not null, " +
-                    "id varchar(20) not null, password varchar(20) not null, " +
+                    "id varchar(20) not null, password varchar(20) not null, email varchar(30) not null, " +
                     "win int, lose int, mmr int, PRIMARY KEY (nickname, id))";
             stmt.executeUpdate(member_createStr);
 
