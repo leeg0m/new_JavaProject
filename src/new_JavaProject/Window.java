@@ -894,7 +894,7 @@ public class Window {
 		htpImageButton.setPreferredSize(new Dimension(1080,520));
 
 		JButton htp_nextButton = new JButton("");
-		htp_nextButton.setIcon(new ImageIcon(".\\images\\BackButton.png")); //이미지바꾸기
+		htp_nextButton.setIcon(new ImageIcon(".\\images\\nextButton.png")); //이미지바꾸기
 		htp_nextButton.setBounds(50, 600, 47, 47);
 		htp_nextButton.setBorderPainted(false);
 		htp_nextButton.setContentAreaFilled(false);
@@ -903,15 +903,20 @@ public class Window {
 		htp_nextButton.addMouseListener(new MouseAdapter() {
 
 			public void mouseEntered(MouseEvent e) {
+				htp_nextButton.setIcon(new ImageIcon(".\\images\\nextButtonEntered.png")); //이미지바꾸기
+
 				htp_nextButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			}
 
 			public void mouseExited(MouseEvent e) {
+				htp_nextButton.setIcon(new ImageIcon(".\\images\\nextButton.png")); //이미지바꾸기
+
 				htp_nextButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
 			}
 
 			public void mousePressed(MouseEvent e) {
+				htp_nextButton.setIcon(new ImageIcon(".\\images\\nextButtonPressed.png")); //이미지바꾸기
 
 			}
 			public void mouseReleased(MouseEvent e) {
