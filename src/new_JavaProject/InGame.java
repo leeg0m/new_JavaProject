@@ -26,6 +26,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import new_JavaProject.InGame.Items.reverse;
+
 public class InGame extends JPanel {
 //#책갈피(Ctrl f)
 //=깃발탐색=
@@ -756,6 +758,9 @@ public class InGame extends JPanel {
 				Items.scan.using(e.getX(),e.getY());
 //				System.out.println("live");
 			}
+			if(reverse.reverse) {//스태틱으로 설정되어있음//동작안될것임//테스트용
+				reverse.using();
+			}
 		}
 		
 		public void setMousePoint(MouseEvent e) {
@@ -1057,20 +1062,90 @@ public class InGame extends JPanel {
 		int getItemIndex() {return itemIndex;}
 		
 		void useItem(int itemIndex){
-			if(itemIndex==0) {
-				
-			}
+//			if(itemIndex==0) {
+//				
+//			}
+			item.get(itemIndex).useItem();
+		}
+		void setItem(itemCode code) {
+			item.add(new Items(code));
+		}
+		void itemType(int itemIndex) {
+//			if(item.get(itemIndex).s.scan);
 		}
 	}
 	
+	
+	static enum itemCode{
+		LIFE(0),
+		SCAN(1),
+		REVERSE(2),
+		RELOCATION(3);
+
+		private final int value;
+		itemCode(int value) {
+			// TODO Auto-generated constructor stub
+			this.value = value;
+		}
+
+	    public int getValue() { return value; }
+	}
+	void test() {
+		Items i = new Items(itemCode.SCAN);
+	}
 	static Robot robot;
 	public static class Items{
+		int selectItem;
+		String selectItemString;
+		life l;
+		scan s;
+		reverse rv;
+		relocation rl;
+		
+		Items(itemCode code){
+			switch(code) {
+				case LIFE:
+					l = new life();
+				break;
+				case SCAN:
+					s = new scan();
+				break;
+				case REVERSE:
+					rv = new reverse();
+					break;
+				case RELOCATION:
+					rl = new relocation();
+					break;
+				default:
+					selectItem = code.ordinal();
+					selectItemString = code.name();
+			}
+		}
+		void useItem() {
+			itemCode code = itemCode.valueOf(selectItemString);
+			switch(code) {
+				case LIFE:
+//					l.increase(null);
+				break;
+				case SCAN:
+					s.using(ma.x, ma.y);
+				break;
+				case REVERSE:
+					rv.using();
+					break;
+				case RELOCATION:
+//					rl.using();
+					break;
+//				default:
+			}
+		}
 		class life {
 			void increase(Player p) {
 				p.lifeIncrease();
 			}
 		}
 //		class scan extends MouseAdapter {//implements MouseListener, MouseMotionListener
+		
 		static class scan {
 //			InGame.MinesAdapter.
 			//클릭 우선순위 높게 설정
@@ -1153,18 +1228,28 @@ public class InGame extends JPanel {
             
 		}
 		static class reverse{//마우스 이동 반대로 만들기
-			boolean reverse=false;
+			static boolean reverse=false;
 //            Thread time;
 //            void setTime() {
 //            	time.start();
 //            }
 			static Point p;
 			static boolean firstPoint=false;
+			static Timer reverseTime; 
 			static void using() {
 				if(!firstPoint) {
 					PointerInfo mouseInfo = MouseInfo.getPointerInfo();
 					p = mouseInfo.getLocation();
 					firstPoint=true;
+					reverse=true;
+					reverseTime = new Timer();
+					reverseTime.schedule(new TimerTask() {
+						@Override
+						public void run() {
+							reverse=false;
+							firstPoint=false;
+						}
+					}, 10000);
 				}
 				PointerInfo mouseInfo = MouseInfo.getPointerInfo();
 				Point newp = mouseInfo.getLocation();
@@ -1186,6 +1271,7 @@ public class InGame extends JPanel {
 					// TODO Auto-generated catch blockW
 					e1.printStackTrace();
 				}
+				
 			}
 		}
 		class relocation {
@@ -1194,3 +1280,23 @@ public class InGame extends JPanel {
 	}
 
 }
+
+
+
+
+
+
+
+
+//scancell 1095
+//
+//paint 700
+//
+//item code(enum)
+//
+//ingame -> player -> itembox - items -> item
+//
+//ItemBox.setItem(itemCode, 유저?)
+//
+//테스트 끝나면 items static 제거
+
