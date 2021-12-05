@@ -1278,6 +1278,9 @@ public class InGame extends JPanel {
 			//reverse, random
 		}
 	}
+//	void getTimer(){
+//		return m_timer;
+//	}
 
 }
 
