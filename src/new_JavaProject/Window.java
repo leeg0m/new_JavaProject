@@ -33,6 +33,8 @@ public class Window {
 	static String signup_possible;
 	static String overcheckNick_possible;
 	static String overcheckId_possible;
+	static int IDovercheck_count = 0; // 중복체크 누른 여부 체크
+	static int NIovercheck_count = 0; // 둘 다 1 이상 일 떄 회원가입 가능
 
 	// 태그 정보
 
@@ -224,9 +226,10 @@ public class Window {
 						try {
 							overcheckId_possible = in.readUTF();
 							//System.out.println(overcheckId_possible);
-							if(overcheckId_possible.equals(overcheck + sc))
-								JOptionPane.showMessageDialog(null,"사용가능!");
-
+							if(overcheckId_possible.equals(overcheck + sc)) {
+								JOptionPane.showMessageDialog(null, "사용가능!");
+								IDovercheck_count++;
+							}
 							else
 								JOptionPane.showMessageDialog(null,"사용불가! 다른 ID를 입력해주세요.");
 
@@ -282,9 +285,10 @@ public class Window {
 					try {
 						overcheckNick_possible = in.readUTF();
 						//System.out.println(overcheckId_possible);
-						if(overcheckNick_possible.equals(overcheck + sc))
-							JOptionPane.showMessageDialog(null,"사용가능!");
-
+						if(overcheckNick_possible.equals(overcheck + sc)) {
+							JOptionPane.showMessageDialog(null, "사용가능!");
+							NIovercheck_count++;
+						}
 						else
 							JOptionPane.showMessageDialog(null,"사용불가! 다른 닉네임을 입력해주세요.");
 
@@ -345,42 +349,53 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				try {
-					IDvalue = null;
-					PWvalue = null;
-					NIvalue = null;
-					IDvalue = signupPageTxtID.getText();
-					PWvalue = signupPagePass.getText();
-					NIvalue = signupPageNickname.getText();
+				IDvalue = null;
+				PWvalue = null;
+				NIvalue = null;
+				EMvalue = null;
+				IDvalue = signupPageTxtID.getText();
+				PWvalue = signupPagePass.getText();
+				NIvalue = signupPageNickname.getText();
+				EMvalue = signupPageEmail.getText();
 
-					if(IDvalue.equals("") || PWvalue.equals("") ||NIvalue.equals(""))
-						JOptionPane.showMessageDialog(null,"나머지 값을 입력해주세요!");
-					else {
-						socket = new Socket(Server_IP, Server_Port);
+				if(IDvalue.equals("") || PWvalue.equals("") || NIvalue.equals("") || EMvalue.equals("")){
+						JOptionPane.showMessageDialog(null, "나머지 값을 채워주세요!");
+				}else if(IDovercheck_count == 0 || NIovercheck_count == 0){
+						JOptionPane.showMessageDialog(null, "중복체크 버튼을 눌러주세요");
+				}else{
+					try{
+						socket = new Socket(Server_IP,Server_Port);
 						in = new DataInputStream(socket.getInputStream());
 						keyboard = new DataInputStream(socket.getInputStream());
 						out = new DataOutputStream(socket.getOutputStream());
 						System.out.println(socket.toString());
 
-						signup_data = signup + "//" + NIvalue + "//" + IDvalue + "//" + PWvalue; // Server에서 "//"를 통해서 구분
+						signup_data = signup + "//" + NIvalue + "//" + IDvalue + "//" + PWvalue + "//" + EMvalue; // Server에서 "//"를 통해서 구분
 						out.writeUTF(signup_data);
 						// id 혹은 pw 혹은 Nickname이 null 값일 때 회원가입 버튼 눌렀을 때 "나머지 값을 입력해주세요!" 출력
-					}
-				} catch (IOException ex) {
-					JOptionPane.showMessageDialog(null,"통신 실패!!!");
-				}
-
-				try {
-					signup_possible = in.readUTF();
-					if(signup_possible.equals(signup + sc)) {
-						JOptionPane.showMessageDialog(null,"회원가입 성공! 메인화면으로 돌아갑니다.");
-						signupPage.setVisible(false);
-						loginPage.setVisible(true);
+					}catch (IOException ex){
+						JOptionPane.showMessageDialog(null,"통신 실패!!!");
 					}
 
-				} catch(IOException ex) {
+					try {
+						signup_possible = in.readUTF();
+						if(signup_possible.equals(signup + sc)) {
+							JOptionPane.showMessageDialog(null, "회원가입 성공! 메인화면으로 돌아갑니다.");
+							signupPage.setVisible(false);
+							loginPage.setVisible(true);
+							IDovercheck_count = 0;            //회원가입 성공시 아이디, 닉네임 카운터 초기화
+							NIovercheck_count = 0;
 
+							signupPageTxtID.getText();
+							signupPagePass.getText();
+							signupPageNickname.getText();
+							signupPageEmail.getText();
+						}
+					}catch (IOException ex){
+
+					}
 				}
+
 			}
 		});
 		signupPage.add(signupPage_signupButton);
@@ -539,6 +554,7 @@ public class Window {
 				new ImageIcon(".\\images\\rankPage.png").getImage());
 		frame.setSize(rankPage.getWidth(), rankPage.getHeight());
 		frame.getContentPane().add(rankPage);
+
 
 		// 튜토리얼화면
 		ImagePanel htpPage = new ImagePanel(

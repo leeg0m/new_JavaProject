@@ -1,6 +1,8 @@
 package Server;
 
 
+import org.w3c.dom.ls.LSOutput;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Arrays;
@@ -54,8 +56,8 @@ class CCUser extends Thread{
         this.socket = _s;
         this.server = _ss;
 
-        auser = server.alluser;
-        wuser = server.waituser;
+        auser = server.alluser; // 현재 접속 중인 모든 유저
+        wuser = server.waituser; //
         room = server.room;
     }  //CCUser()
     public void run() {
@@ -102,7 +104,7 @@ class CCUser extends Thread{
 
                 /* 회원가입 */
                 else if(m[0].equals(signupTag)) {
-                    if(db.signupCheck(m[1], m[2], m[3])) {	//회원가입 성공
+                    if(db.signupCheck(m[1], m[2], m[3], m[4])) {	//회원가입 성공
                         dos.writeUTF(signupTag + "//success");
                     }
 

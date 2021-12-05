@@ -60,16 +60,17 @@ public class Database {
     }
 
     //회원가입을 수행하는 메소드. 성공하면 true, 실패하면 false
-    boolean signupCheck(String _nickname, String _id, String _password) {
+    boolean signupCheck(String _nickname, String _id, String _password, String _email) {
         boolean flag = false; // 참 거짓을 반환나는 flag 변수, 초기값은 false
 
         String user_nickname = _nickname;
         String user_id = _id;
         String user_password = _password;
+        String user_email = _email;
 
         try {
             //member 테이블에 각 문자열들을 순서대로 업데이트하는 문장. 각각 초기값을 승/패는 0, mmr점수는 1000으로 한다.
-            String insertStr = "INSERT INTO member VALUES('" + user_nickname + "', '" + user_id + "', '" + user_password + "',0,0,1000)";
+            String insertStr = "INSERT INTO member VALUES('" + user_nickname + "', '" + user_id + "', '" + user_password + "', '" + user_email +"',0,0,1000)";
             state.executeUpdate(insertStr);
 
             flag = true;	//업데이트문이 정상적으로 수행되면 flag를 true로 초기화하고 성공을 콘솔로 알린다.
@@ -95,17 +96,23 @@ public class Database {
             ResultSet result = state.executeQuery(selcectStr);
 
             int count = 0;
-            while(result.next()) {
-                //조회한 아이디(혹은 닉네임)과 val을 비교.
-                if(!val.equals(result.getString(att))) {   // val과 같은 것이 존재하면 flag를 true로 변경한다.
-                    flag = true;
+            // SELECT id FROM member 가 Empty 일 때 flag를 false 값으로 반환 해야함
+            /*
+            if(result == null)
+                flag = false;
+
+            */
+
+                while (result.next()) {
+                    //조회한 아이디(혹은 닉네임)과 val을 비교.
+                    if (!val.equals(result.getString(att))) {   // val과 같은 것이 존재하면 flag를 true로 변경한다.
+                        flag = true;
+                    } else {   // val과 같은 것이 존재하지 않으면 flag를 false로 변경한다.
+                        flag = false;
+                    }
+                    count++;
                 }
 
-                else {   // val과 같은 것이 존재하지 않으면 flag를 false로 변경한다.
-                    flag = false;
-                }
-                count++;
-            }
             System.out.println("[Server] 중복 확인 성공");   //정상적으로 수행되었을 때 성공을 콘솔로 알린다.
         } catch(Exception e) {   //정상적으로 수행하지 못하면 실패를 콘솔로 알린다.
             System.out.println("[Server] 중복 확인 실패 > " + e.toString());
