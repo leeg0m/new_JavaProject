@@ -29,6 +29,7 @@ public class Window {
 	static String IDvalue; // ID
 	static String PWvalue; // PW
 	static String NIvalue; // NickName
+	static String EMvalue; // email
 	static String login_possible;
 	static String signup_possible;
 	static String overcheckNick_possible;
@@ -161,16 +162,24 @@ public class Window {
 		//회원가입 ID필드
 		JTextField signupPageTxtID = new JTextField();
 		signupPageTxtID.setFont(new Font("맑은 고딕", Font.PLAIN,20));
-		signupPageTxtID.setBounds(551,327,178,33);
+		signupPageTxtID.setBounds(551,270,178,33);
 		signupPageTxtID.setBorder(null);
 		signupPage.add(signupPageTxtID);
 
 		//회원가입 닉네임 필드
 		JTextField signupPageNickname = new JTextField();
 		signupPageNickname.setFont(new Font("맑은 고딕", Font.PLAIN,20));
-		signupPageNickname.setBounds(551,383,178,33);
+		signupPageNickname.setBounds(551,326,178,33);
 		signupPageNickname.setBorder(null);
 		signupPage.add(signupPageNickname);
+
+		//회원가입 이메일 필드
+		JTextField signupPageEmail = new JTextField();
+		signupPageEmail.setFont(new Font("맑은 고딕", Font.PLAIN,20));
+		signupPageEmail.setBounds(551,382,178,33);
+		signupPageEmail.setBorder(null);
+		signupPage.add(signupPageEmail);
+
 
 		//회원가입 비밀번호 필드
 		JPasswordField signupPagePass = new JPasswordField();
@@ -185,7 +194,7 @@ public class Window {
 		JButton signupPage_IDovercheckButton = new JButton("");
 		signupPage_IDovercheckButton.setIcon(new ImageIcon(".\\images\\overcheckButton.png"));
 
-		signupPage_IDovercheckButton.setBounds(755, 327, 91, 35);
+		signupPage_IDovercheckButton.setBounds(755, 270, 91, 35);
 		signupPage_IDovercheckButton.setBorderPainted(false);
 		signupPage_IDovercheckButton.setContentAreaFilled(false);
 		signupPage_IDovercheckButton.setFocusPainted(false);
@@ -240,11 +249,13 @@ public class Window {
 			}
 		});
 		signupPage.add(signupPage_IDovercheckButton);
+
+
 		// 닉네임 중복체크 버튼
 		JButton signupPage_NicknameovercheckButton = new JButton("");
 		signupPage_NicknameovercheckButton.setIcon(new ImageIcon(".\\images\\overcheckButton.png"));
 
-		signupPage_NicknameovercheckButton.setBounds(755, 382, 91, 35);
+		signupPage_NicknameovercheckButton.setBounds(755, 326, 91, 35);
 		signupPage_NicknameovercheckButton.setBorderPainted(false);
 		signupPage_NicknameovercheckButton.setContentAreaFilled(false);
 		signupPage_NicknameovercheckButton.setFocusPainted(false);
@@ -322,6 +333,8 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				IDovercheck_count = 0;			//뒤로가기 버튼 누를 시 아이디, 닉네임 카운터 초기화
+				NIovercheck_count = 0;
 				signupPage.setVisible(false);
 				loginPage.setVisible(true);
 			}
