@@ -163,25 +163,25 @@ public class Window {
 		signupPageTxtID.setBorder(null);
 		signupPage.add(signupPageTxtID);
 
-		//회원가입 비밀번호 필드
-		JPasswordField signupPagePass = new JPasswordField();
-		signupPagePass.setFont(new Font("맑은 고딕", Font.PLAIN,20));
-		signupPagePass.setBounds(551,383,178,33);
-		signupPagePass.setBorder(null);
-		signupPage.add(signupPagePass);
-
 		//회원가입 닉네임 필드
 		JTextField signupPageNickname = new JTextField();
 		signupPageNickname.setFont(new Font("맑은 고딕", Font.PLAIN,20));
-		signupPageNickname.setBounds(551,437,178,33);
+		signupPageNickname.setBounds(551,383,178,33);
 		signupPageNickname.setBorder(null);
 		signupPage.add(signupPageNickname);
+
+		//회원가입 비밀번호 필드
+		JPasswordField signupPagePass = new JPasswordField();
+		signupPagePass.setFont(new Font("맑은 고딕", Font.PLAIN,20));
+		signupPagePass.setBounds(551,437,178,33);
+		signupPagePass.setBorder(null);
+		signupPage.add(signupPagePass);
 
 
 		/* 회원가입 화면 버튼들 */
 		// id 중복체크 버튼
 		JButton signupPage_IDovercheckButton = new JButton("");
-		signupPage_IDovercheckButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
+		signupPage_IDovercheckButton.setIcon(new ImageIcon(".\\images\\overcheckButton.png"));
 
 		signupPage_IDovercheckButton.setBounds(755, 327, 91, 35);
 		signupPage_IDovercheckButton.setBorderPainted(false);
@@ -237,11 +237,11 @@ public class Window {
 			}
 		});
 		signupPage.add(signupPage_IDovercheckButton);
-		// nickname 중복체크 버튼
+		// 닉네임 중복체크 버튼
 		JButton signupPage_NicknameovercheckButton = new JButton("");
-		signupPage_NicknameovercheckButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
+		signupPage_NicknameovercheckButton.setIcon(new ImageIcon(".\\images\\overcheckButton.png"));
 
-		signupPage_NicknameovercheckButton.setBounds(755, 327, 91, 35);
+		signupPage_NicknameovercheckButton.setBounds(755, 382, 91, 35);
 		signupPage_NicknameovercheckButton.setBorderPainted(false);
 		signupPage_NicknameovercheckButton.setContentAreaFilled(false);
 		signupPage_NicknameovercheckButton.setFocusPainted(false);
@@ -299,7 +299,7 @@ public class Window {
 
 		//뒤로가기 버튼
 		JButton signupPage_BackButton = new JButton("");
-		signupPage_BackButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
+		signupPage_BackButton.setIcon(new ImageIcon(".\\images\\signupBackButton.png"));
 
 		signupPage_BackButton.setBounds(543, 512, 91, 35);
 		signupPage_BackButton.setBorderPainted(false);
@@ -326,7 +326,7 @@ public class Window {
 
 		//회원가입 화면의 회원가입 버튼
 		JButton signupPage_signupButton = new JButton("");
-		signupPage_signupButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
+		signupPage_signupButton.setIcon(new ImageIcon(".\\images\\signupButton.png"));
 
 		signupPage_signupButton.setBounds(647, 512, 91, 35);
 		signupPage_signupButton.setBorderPainted(false);
