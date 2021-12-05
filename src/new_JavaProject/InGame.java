@@ -534,7 +534,7 @@ public class InGame extends JPanel {
 		// 게임 승리
 		if (uncover == 0 && inGame) {// 게임중이고 비활성화 칸 없으면
 			afterTime = System.nanoTime();// 게임 종료시간
-			secDiffTime = (afterTime - beforeTime) / 1000;
+			secDiffTime = (afterTime - beforeTime) / 1_000_000;
 			m_task.cancel();
 			inGame = false;// 게임종료
 //			statusbar.setText("Game won");// 승리
@@ -542,7 +542,7 @@ public class InGame extends JPanel {
 
 		} else if (!inGame) { // 게임끝
 			afterTime = System.nanoTime();// 게임 종료시간
-			secDiffTime = (afterTime - beforeTime) / 1000;
+			secDiffTime = (afterTime - beforeTime) / 1_000_000;
 			m_task.cancel();
 //			statusbar.setText("Game lost");// 패배
 //            sound(soundsFilePath.get(soundsEnum.GAMEOVER.ordinal()));//패배소리
@@ -698,7 +698,7 @@ public class InGame extends JPanel {
 
 						setTimerTask();
 						m_timer = new Timer();
-						m_timer.schedule(m_task, 0, 1000);
+						m_timer.schedule(m_task, 0, 100);
 
 						fc.openFirstCell(inGame, currentField);// 팔방향 빈셀 확보
 						game.newGame();// 지뢰 셋팅
@@ -1011,7 +1011,8 @@ public class InGame extends JPanel {
 				@Override
 				public void run() {
 					afterTime = System.nanoTime();
-					secDiffTime = (afterTime - beforeTime) / 1_000_000_000;//정수? 실수?
+					secDiffTime = (afterTime - beforeTime) / 1_000_000;//정수? 실수?
+//					secDiffTime = (afterTime - beforeTime) / 1_000_000_000;//정수? 실수?
 					System.out.printf("%.2f\n", (afterTime - beforeTime) / 1_000_000_000.);//나노초 -> 초 변환
 				}
 			};
@@ -1278,9 +1279,9 @@ public class InGame extends JPanel {
 			//reverse, random
 		}
 	}
-//	void getTimer(){
-//		return m_timer;
-//	}
+	int getPlayTime(){
+		return (int)secDiffTime;
+	}
 
 }
 
