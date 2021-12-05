@@ -36,6 +36,7 @@ public class Window {
 	static String overcheckId_possible;
 	static int IDovercheck_count = 0; // 중복체크 누른 여부 체크
 	static int NIovercheck_count = 0; // 둘 다 1 이상 일 떄 회원가입 가능
+	static String mynick;
 
 	// 태그 정보
 
@@ -44,6 +45,7 @@ public class Window {
 	static String login = "LOGIN";
 	static String signup = "SIGNUP";
 	static String overcheck = "OVER";
+	static String logout = "LOGOUT";
 
 
 	/**
@@ -98,7 +100,15 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				try {
+					out.writeUTF(logout + "//" + mynick);
+					socket.close();
+				} catch(IOException ex) {
+
+				}
+
 				exit(0);
+
 			}
 		});
 		frame.getContentPane().add(exitButton);
@@ -312,7 +322,7 @@ public class Window {
 		signupPage.add(signupPage_NicknameovercheckButton);
 
 
-		//뒤로가기 버튼
+		// 회원가입 화면의 뒤로가기 버튼
 		JButton signupPage_BackButton = new JButton("");
 		signupPage_BackButton.setIcon(new ImageIcon(".\\images\\signupBackButton.png"));
 
@@ -335,13 +345,19 @@ public class Window {
 			public void mousePressed(MouseEvent e) {
 				IDovercheck_count = 0;			//뒤로가기 버튼 누를 시 아이디, 닉네임 카운터 초기화
 				NIovercheck_count = 0;
+
 				signupPage.setVisible(false);
 				loginPage.setVisible(true);
+
+				signupPageTxtID.setText("");
+				signupPagePass.setText("");
+				signupPageEmail.setText("");
+				signupPageNickname.setText("");
 			}
 		});
 		signupPage.add(signupPage_BackButton);
 
-		//회원가입 화면의 회원가입 버튼
+		// 회원가입 화면의 회원가입 버튼
 		JButton signupPage_signupButton = new JButton("");
 		signupPage_signupButton.setIcon(new ImageIcon(".\\images\\signupButton.png"));
 
@@ -399,10 +415,10 @@ public class Window {
 							IDovercheck_count = 0;            //회원가입 성공시 아이디, 닉네임 카운터 초기화
 							NIovercheck_count = 0;
 
-							signupPageTxtID.getText();
-							signupPagePass.getText();
-							signupPageNickname.getText();
-							signupPageEmail.getText();
+							signupPageTxtID.setText("");
+							signupPagePass.setText("");
+							signupPageNickname.setText("");
+							signupPageEmail.setText("");
 						}
 					}catch (IOException ex){
 
@@ -489,15 +505,18 @@ public class Window {
 				}
 
 				try {
-					login_possible = in.readUTF();
-					if(login_possible.equals(login + sc)) {
+					login_possible = in.readUTF(); //    login//success//mynick
+					String s[] = login_possible.split("//");
+					if(s[0].equals(login) && s[1].equals("success")) {
+						mynick = s[2];
+						JOptionPane.showMessageDialog(null, mynick + "님 환영합니다!");
 						loginPage.setVisible(false);
 						startGamePage.setVisible(true);
 					}
 					else
 						JOptionPane.showMessageDialog(null,"ID나 PW가 잘못되었습니다!");
 				} catch(IOException ex) {
-					//JOptionPane.showMessageDialog(null,"ID나 PW가 잘못되었습니다!");
+
 				}
 
 			}
@@ -712,6 +731,14 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+
+				try {
+					out.writeUTF(logout + "//" + mynick);
+					socket.close();
+				} catch(IOException ex) {
+
+				}
+
 				startGamePage.setVisible(false);
 				loginPage.setVisible(true);
 			}
@@ -719,7 +746,7 @@ public class Window {
 		startGamePage.add(startGamePage_logoutButton);
 
 
-		//랭크화면 버튼들
+		/* 랭크화면 버튼들 */
 
 		//게임시작 메뉴 버튼
 		JButton rankPage_startGameButton = new JButton("");
@@ -772,7 +799,7 @@ public class Window {
 		rankPage.add(rankPage_htpButton);
 
 
-		//로그아웃 버튼
+		//게임순위 페이지 안의 로그아웃 버튼
 		JButton rankpage_logoutButton = new JButton("");
 		rankpage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButton.png"));
 		rankpage_logoutButton.setBounds(1203, 43, 47, 47);
@@ -911,6 +938,8 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+
+
 				htpPage.setVisible(false);
 				loginPage.setVisible(true);
 			}

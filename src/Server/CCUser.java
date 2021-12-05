@@ -32,11 +32,14 @@ class CCUser extends Thread{
 
     Room myRoom;		//입장한 방 객체를 저장할 필드
 
+    static int auser_count = 0; // auser 벡터 카운트 초기화
+
     /* 각 메시지를 구분하기 위한 태그 */
     final String loginTag = "LOGIN";	//로그인
-    final String signupTag = "SIGNUP";		//회원가입
+    final String logoutTag = "LOGOUT";  //로그아웃
+    final String signupTag = "SIGNUP";	//회원가입
     final String overTag = "OVER";		//중복확인
-    final String viewTag = "VIEW";		//회원정보조회d
+    final String viewTag = "VIEW";		//회원정보조회
     final String changeTag = "CHANGE";	//회원정보변경
     final String rankTag = "RANK";		//전적조회(전체회원)
     final String croomTag = "C_ROOM";	//방생성
@@ -57,7 +60,7 @@ class CCUser extends Thread{
         this.server = _ss;
 
         auser = server.alluser; // 현재 접속 중인 모든 유저
-        wuser = server.waituser; //
+        wuser = server.waituser; // 현재 대기실에 있는 유저
         room = server.room;
     }  //CCUser()
     public void run() {
@@ -92,7 +95,7 @@ class CCUser extends Thread{
                         //System.out.println(auser.get(1));
                         //System.out.println(auser.get(2));
 
-                        dos.writeUTF(loginTag + "//success");
+                        dos.writeUTF(loginTag + "//success" + "//" + nickname);
 
                         sendWait(connectedUser());	//대기실 접속 유저에 모든 접속 인원을 전송
 
@@ -252,6 +255,17 @@ class CCUser extends Thread{
                         }
                     }
                 }  //패배, 기권 및 전적 업데이트 if문
+                else if(m[0].equals(logoutTag)) {
+                    System.out.println(server.alluser.size());
+                    String Client_nick = m[1];
+                    int i=0;
+                    while(!server.alluser.get(i).nickname.equals(Client_nick)) {
+                        i++;
+                    }
+                    System.out.println("[Server]" + server.alluser.get(i).nickname + "님이 게임을 종료하였습니다.");
+                    server.alluser.remove(i);
+                    System.out.println(server.alluser.size());
+                }
             }  //while문
         } catch(IOException e) {
             System.out.println("[Server] 입출력 오류 > " + e.toString());

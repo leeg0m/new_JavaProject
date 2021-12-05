@@ -32,6 +32,7 @@ public class Server {
                 CCUser c = new CCUser(socket, server);	//소켓과 서버를 넘겨 CCUser(접속한 유저 관리)객체 생성
 
                 c.start();	//CCUser 스레드 시작
+
             }
         } catch(SocketException e) {	//각 오류를 콘솔로 알린다.
             System.out.println("[Server] 서버 소켓 오류 > " + e.toString());
