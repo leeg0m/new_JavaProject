@@ -87,9 +87,10 @@ class CCUser extends Thread{
                         auser.add(this);	//모든 접속 인원에 추가
                         wuser.add(this);	//대기실 접속 인원에 추가
 
-                        System.out.println(auser.get(0));
-                        System.out.println(auser.get(1));
-                        System.out.println(auser.get(2));
+                        System.out.println(auser.get(0).nickname);
+
+                        //System.out.println(auser.get(1));
+                        //System.out.println(auser.get(2));
 
                         dos.writeUTF(loginTag + "//success");
 
