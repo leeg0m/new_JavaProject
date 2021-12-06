@@ -58,8 +58,9 @@ class CCUser extends Thread{
     final String Single_winTag = "SINGLEWIN"; //멀티모드 승리
     final String loseTag = "LOSE";		//패배
     final String recordTag = "RECORD";	//전적업데이트
-    final String find_id = "FINDID";     //아이디 찾기
-    final String find_pw = "FINDPW";     //비밀번호 찾기
+    static String find_id = "FINDID";
+    static String find_pw = "FINDPW";
+
 
     CCUser(Socket _s, Server _ss) {
         this.socket = _s;
@@ -144,14 +145,21 @@ class CCUser extends Thread{
                 }  //중복확인 if문
 
 
-                //아이디 조디
+                //아이디 조회
                 else if(m[0].equals(find_id)){  //
                     if(!db.viewID(m[1]).equals("null")){
-                        dos.writeUTF(find_id + "//" + db.viewID(m[1]));
+                        dos.writeUTF(find_id + "//success//" + db.viewID(m[1]));
                     }
-                    else{
+                    else
                         dos.writeUTF(find_id + "//FAIL");
-                    }
+                }
+                //비밀번호 조회
+                else if(m[0].equals(find_pw)){
+                    if(!db.viewPW(m[1],m[2]).equals("null")){
+                        System.out.println(db.viewPW(m[1], m[2]));
+                        dos.writeUTF(find_pw + "//success//" + db.viewPW(m[1],m[2]));
+                    }else
+                        dos.writeUTF(find_pw + "//FAIL");
                 }
 
 

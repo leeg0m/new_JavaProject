@@ -148,6 +148,33 @@ public class Database {
         return msg;
     }
 
+    String viewPW(String _nn, String _mm){
+        String msg = "null";    //반환할 문자열 변수를 "null"로 초기화.
+
+        //매개변수로 받은 이메일과 아이디를 각각 _zz, _xx에 초기화
+
+        String _zz = _nn;   //이메일
+        String _xx = _mm;   //아이디
+
+        try{
+            //member 테이블에서 _nn 이메일을 가진 회원의 id 정보를 조회한다.
+            String findid = "SELECT password FROM member WHERE email = '" + _nn + "' AND id = '"+ _mm +"'";
+            ResultSet result = state.executeQuery(findid);
+
+            int count = 0;
+            while(result.next()){
+                //msg에 "비밀번호" 형태로 초기화한다.
+                msg = result.getString("password");
+                count++;
+            }
+            System.out.println("[Server] 비밀번호 조회 성공");
+        }catch (Exception e){
+            System.out.println("[Server] 비밀번호 조회 실패 > " + e.toString());
+        }
+
+        return msg;
+    }
+
 
     //DB에 저장된 자신의 정보를 조회하는 메소드! 조회한 정보들을 String 형태로 반환
     String viewInfo(String _nn) {

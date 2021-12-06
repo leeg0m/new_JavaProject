@@ -51,6 +51,7 @@ public class Window {
 	static String signup_possible;
 	static String overcheckNick_possible;
 	static String overcheckId_possible;
+	static String findcheck_possible;
 
 	static int IDovercheck_count = 0; // 중복체크 누른 여부 체크
 	static int NIovercheck_count = 0; // 둘 다 1 이상 일 떄 회원가입 가능
@@ -70,8 +71,8 @@ public class Window {
 	static String easymode = "EASYMODE";
 	static String normalmode = "NORMALMODE";
 	static String hardmode = "HARDMODE";
-	final String find_id = "FINDID";
-	final String find_pw = "FINDPW";
+	static String find_id = "FINDID";
+	static String find_pw = "FINDPW";
 
 	/**
 	 * Launch the application.
@@ -270,15 +271,16 @@ public class Window {
 				//
 
 				try {
+
 					IDvalue = null;
-					PWvalue = null;
 					IDvalue = findPageTxtID1.getText();
+
+
 					if(IDvalue.equals(""))
 						IDvalue = "null";
-					if(PWvalue.equals(""))
-						PWvalue = "null";
-					if(IDvalue.equals("null") || PWvalue.equals("null"))
-						JOptionPane.showMessageDialog(null,"ID 혹은 PW가 입력되지 않았습니다.");
+
+					if(IDvalue.equals("null"))
+						JOptionPane.showMessageDialog(null,"이메일을 입력해주세요!");
 					else {
 						socket = new Socket(Server_IP, Server_Port);
 						in = new DataInputStream(socket.getInputStream());
@@ -286,8 +288,8 @@ public class Window {
 						out = new DataOutputStream(socket.getOutputStream());
 						System.out.println(socket.toString());
 
-						login_data = login + "//" + IDvalue + "//" + PWvalue; // Server에서 "//"를 통해서 구분
-						out.writeUTF(login_data);
+						findcheck_data = find_id + "//" + IDvalue; // Server에서 "//"를 통해서 구분
+						out.writeUTF(findcheck_data);
 					}
 
 				} catch (IOException ex) {
@@ -295,23 +297,16 @@ public class Window {
 				}
 
 				try {
-					login_possible = in.readUTF(); //    login//success//mynick
-					String s[] = login_possible.split("//");
-					if(s[0].equals(login) && s[1].equals("success")) {
-						mynick = s[2];
-						JOptionPane.showMessageDialog(null, mynick + "님 환영합니다!");
-						loginPage.setVisible(false);
-						startGamePage.setVisible(true);
+					findcheck_possible = in.readUTF(); //    login//success//mynick
+					String s[] = findcheck_possible.split("//");
+					if(s[0].equals(find_id) && s[1].equals("success")) {
+						String myid = s[2];
+						JOptionPane.showMessageDialog(null, "찾으시는 ID는 [" + myid + "]입니다." );
 					}
 					else
-						JOptionPane.showMessageDialog(null,"ID나 PW가 잘못되었습니다!");
+						JOptionPane.showMessageDialog(null,"이메일이 잘못되었습니다!");
 				} catch(IOException ex) {
-
 				}
-//				loginPage.setVisible(false);
-//				startGamePage.setVisible(true);
-
-
 			}
 
 		});
@@ -319,6 +314,79 @@ public class Window {
 		findPage.add(findPage_findIdButton);
 
 		//찾기화면_비밀번호 찾기 버튼
+		JButton findPage_findPwButton = new JButton("");
+		findPage_findPwButton.setBounds(660,490,114,26);
+		findPage_findPwButton.setBorderPainted(false);
+		findPage_findPwButton.setContentAreaFilled(false);
+		findPage_findPwButton.setFocusPainted(false);
+		findPage_findPwButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				findPage_findPwButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				findPage_findPwButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// 메소드로 로그인 버튼을 눌렀을 때 서버에 ID와 PW를 반환
+				// ID, PW를 반환받은 서버는 일치여부 확인을 위해 DB 반환
+				// DB는 확인 후 맞으면 true를, 틀리면 false를 서버에 반환
+				// 서버는 true를 반화받으면 success를, false를 반환받으면 fail을 반환
+				//
+
+				try {
+
+					IDvalue = null;
+					EMvalue = null;
+					IDvalue = findPageTxtID2.getText();
+					EMvalue = findPageEmail.getText();
+
+
+					if(IDvalue.equals(""))
+						IDvalue = "null";
+					if(EMvalue.equals(""))
+						EMvalue = "null";
+
+
+					if(IDvalue.equals("null") || EMvalue.equals("null"))
+						JOptionPane.showMessageDialog(null,"이메일 또는 아이디를 입력해주세요!");
+					else {
+						socket = new Socket(Server_IP, Server_Port);
+						in = new DataInputStream(socket.getInputStream());
+						keyboard = new DataInputStream(socket.getInputStream());
+						out = new DataOutputStream(socket.getOutputStream());
+						System.out.println(socket.toString());
+
+						findcheck_data = find_pw + "//" + EMvalue + "//" + IDvalue; // Server에서 "//"를 통해서 구분
+						out.writeUTF(findcheck_data);
+					}
+
+				} catch (IOException ex) {
+					JOptionPane.showMessageDialog(null,"게임 점검중(서버 오류)");
+				}
+
+				try {
+					findcheck_possible = in.readUTF(); //    login//success//mynick
+					String s[] = findcheck_possible.split("//");
+					if(s[0].equals(find_pw) && s[1].equals("success")) {
+						String mypw = s[2];
+						JOptionPane.showMessageDialog(null, "찾으시는 비밀번호는  [" + mypw + "]입니다." );
+					}
+					else
+						JOptionPane.showMessageDialog(null,"이메일 또는 아이디가 잘못되었습니다!");
+				} catch(IOException ex) {
+				}
+			}
+
+		});
+
+		findPage.add(findPage_findPwButton);
+
+
 
 		//찾기화면_뒤로가기 버튼
 		JButton findPage_BackButton = new JButton("");
@@ -421,7 +489,7 @@ public class Window {
 						out = new DataOutputStream(socket.getOutputStream());
 						System.out.println(socket.toString());
 
-						overcheck_data = find_id + "//" + "id" + "//" + IDvalue; // Server에서 "//"를 통해서 구분
+						overcheck_data = overcheck + "//" + "id" + "//" + IDvalue; // Server에서 "//"를 통해서 구분
 						out.writeUTF(overcheck_data);
 
 					} catch (IOException ex) {
@@ -851,9 +919,9 @@ public class Window {
 		frame.getContentPane().add(hardModePage);
 
 		// 같이하기_화면
-		//multiModePage = new ImagePanel(new ImageIcon(".\\images/multiPage1.png").getImage());
-		//frame.setSize(multiModePage.getWidth(), multiModePage.getHeight());
-		//frame.getContentPane().add(multiModePage);
+		multiModePage = new ImagePanel(new ImageIcon(".\\images/multiPage1.png").getImage());
+		frame.setSize(multiModePage.getWidth(), multiModePage.getHeight());
+		frame.getContentPane().add(multiModePage);
 
 		// 화면 초기화
 		signupPage.setVisible(false);
@@ -866,7 +934,7 @@ public class Window {
 		hardModePage.setVisible(false);
 		background.setVisible(false);
 		findPage.setVisible(false);
-		//multiModePage.setVisible(false);
+		multiModePage.setVisible(false);
 
 		frame.getContentPane().setLayout(null);
 
@@ -1045,8 +1113,8 @@ public class Window {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// 멀티게임 동작
-				//startGamePage.setVisible(false);
-				//multiModePage.setVisible(true);
+				startGamePage.setVisible(false);
+				multiModePage.setVisible(true);
 			}
 		});
 		startGamePage.add(startGamePage_multiButton);
