@@ -232,7 +232,12 @@ class CCUser extends Thread{
 
                 /* 싱글모드 승리 및 전적 업데이트 */
                 else if(m[0].equals(Single_winTag)) {
+
+                    System.out.println("aaaaaa");
                     System.out.println("[Server] " + nickname + " 승리");
+                    mode = m[1];
+                    nickname = m[2];
+                    currenttime = Integer.parseInt(m[3]);
 
                     if(db.Single_winRecord(mode, nickname, currenttime)) {	//전적 업데이트가 성공하면 업데이트 성공을 전송
                         dos.writeUTF(recordTag + "//OKAY");
@@ -240,19 +245,6 @@ class CCUser extends Thread{
                         dos.writeUTF(recordTag + "//FAIL");
                     }
 
-                    for(int i=0; i<myRoom.ccu.size(); i++) {	//myRoom의 인원수만큼 반복
-
-                        /* 방 접속 인원 중 클라이언트와 다른 닉네임의 클라이언트일때만 */
-                        if(!myRoom.ccu.get(i).nickname.equals(nickname)) {
-                            myRoom.ccu.get(i).dos.writeUTF(loseTag + "//");
-
-                            if(db.loseRecord(myRoom.ccu.get(i).nickname)) {	//전적 업데이트가 성공하면 업데이트 성공을 전송
-                                myRoom.ccu.get(i).dos.writeUTF(recordTag + "//OKAY");
-                            } else {										//전적 업데이트가 실패하면 업데이트 실패를 전송
-                                myRoom.ccu.get(i).dos.writeUTF(recordTag + "//FAIL");
-                            }
-                        }
-                    }
                 }
 
                 /* 멀티모드 승리 및 전적 업데이트 */

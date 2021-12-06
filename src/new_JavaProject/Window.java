@@ -30,12 +30,14 @@ import javax.swing.JTextField;
 import new_JavaProject.InGame.Items;
 
 public class Window {
-	Socket socket = new Socket(); // 소켓 생성
-	DataInputStream in; // Server로부터 데이터를 읽어들임
-	DataInputStream keyboard; // 키보드로 입력하는 값 읽어들임
-	DataOutputStream out; // Server로 내보내기 위한 출력스트림
+	static Socket socket = new Socket(); // 소켓 생성
+	static DataInputStream in; // Server로부터 데이터를 읽어들임
+	static DataInputStream keyboard; // 키보드로 입력하는 값 읽어들임
+	static DataOutputStream out; // Server로 내보내기 위한 출력스트림
 	private JFrame frame;
 	private int mouseX, mouseY;
+
+	static String worldName ;
 
 	static String Server_IP = "192.168.219.118";
 	static int Server_Port = 5555;
@@ -244,184 +246,6 @@ public class Window {
 		findPage.add(findPageTxtID2);
 
 
-		//아이디_비밀번호 찾기 버튼들
-
-		//찾기화면_아이디 찾기 버튼
-		JButton findPage_findIdButton = new JButton("");
-		findPage_findIdButton.setBounds(675,302,92,19);
-		findPage_findIdButton.setBorderPainted(false);
-		findPage_findIdButton.setContentAreaFilled(false);
-		findPage_findIdButton.setFocusPainted(false);
-		findPage_findIdButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				findPage_findIdButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				findPage_findIdButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// 메소드로 로그인 버튼을 눌렀을 때 서버에 ID와 PW를 반환
-				// ID, PW를 반환받은 서버는 일치여부 확인을 위해 DB 반환
-				// DB는 확인 후 맞으면 true를, 틀리면 false를 서버에 반환
-				// 서버는 true를 반화받으면 success를, false를 반환받으면 fail을 반환
-				//
-
-				try {
-
-					IDvalue = null;
-					IDvalue = findPageTxtID1.getText();
-
-
-					if(IDvalue.equals(""))
-						IDvalue = "null";
-
-					if(IDvalue.equals("null"))
-						JOptionPane.showMessageDialog(null,"이메일을 입력해주세요!");
-					else {
-						socket = new Socket(Server_IP, Server_Port);
-						in = new DataInputStream(socket.getInputStream());
-						keyboard = new DataInputStream(socket.getInputStream());
-						out = new DataOutputStream(socket.getOutputStream());
-						System.out.println(socket.toString());
-
-						findcheck_data = find_id + "//" + IDvalue; // Server에서 "//"를 통해서 구분
-						out.writeUTF(findcheck_data);
-					}
-
-				} catch (IOException ex) {
-					JOptionPane.showMessageDialog(null,"게임 점검중(서버 오류)");
-				}
-
-				try {
-					findcheck_possible = in.readUTF(); //    login//success//mynick
-					String s[] = findcheck_possible.split("//");
-					if(s[0].equals(find_id) && s[1].equals("success")) {
-						String myid = s[2];
-						JOptionPane.showMessageDialog(null, "찾으시는 ID는 [" + myid + "]입니다." );
-					}
-					else
-						JOptionPane.showMessageDialog(null,"이메일이 잘못되었습니다!");
-				} catch(IOException ex) {
-				}
-			}
-
-		});
-
-		findPage.add(findPage_findIdButton);
-
-		//찾기화면_비밀번호 찾기 버튼
-		JButton findPage_findPwButton = new JButton("");
-		findPage_findPwButton.setBounds(660,490,114,26);
-		findPage_findPwButton.setBorderPainted(false);
-		findPage_findPwButton.setContentAreaFilled(false);
-		findPage_findPwButton.setFocusPainted(false);
-		findPage_findPwButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				findPage_findPwButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				findPage_findPwButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// 메소드로 로그인 버튼을 눌렀을 때 서버에 ID와 PW를 반환
-				// ID, PW를 반환받은 서버는 일치여부 확인을 위해 DB 반환
-				// DB는 확인 후 맞으면 true를, 틀리면 false를 서버에 반환
-				// 서버는 true를 반화받으면 success를, false를 반환받으면 fail을 반환
-				//
-
-				try {
-
-					IDvalue = null;
-					EMvalue = null;
-					IDvalue = findPageTxtID2.getText();
-					EMvalue = findPageEmail.getText();
-
-
-					if(IDvalue.equals(""))
-						IDvalue = "null";
-					if(EMvalue.equals(""))
-						EMvalue = "null";
-
-
-					if(IDvalue.equals("null") || EMvalue.equals("null"))
-						JOptionPane.showMessageDialog(null,"이메일 또는 아이디를 입력해주세요!");
-					else {
-						socket = new Socket(Server_IP, Server_Port);
-						in = new DataInputStream(socket.getInputStream());
-						keyboard = new DataInputStream(socket.getInputStream());
-						out = new DataOutputStream(socket.getOutputStream());
-						System.out.println(socket.toString());
-
-						findcheck_data = find_pw + "//" + EMvalue + "//" + IDvalue; // Server에서 "//"를 통해서 구분
-						out.writeUTF(findcheck_data);
-					}
-
-				} catch (IOException ex) {
-					JOptionPane.showMessageDialog(null,"게임 점검중(서버 오류)");
-				}
-
-				try {
-					findcheck_possible = in.readUTF(); //    login//success//mynick
-					String s[] = findcheck_possible.split("//");
-					if(s[0].equals(find_pw) && s[1].equals("success")) {
-						String mypw = s[2];
-						JOptionPane.showMessageDialog(null, "찾으시는 비밀번호는  [" + mypw + "]입니다." );
-					}
-					else
-						JOptionPane.showMessageDialog(null,"이메일 또는 아이디가 잘못되었가니다!");
-				} catch(IOException ex) {
-				}
-			}
-
-		});
-
-		findPage.add(findPage_findPwButton);
-
-
-
-		//찾기화면_뒤로가기 버튼
-		JButton findPage_BackButton = new JButton("");
-
-		findPage_BackButton.setBounds(702, 561, 68, 18);
-		findPage_BackButton.setBorderPainted(false);
-		findPage_BackButton.setContentAreaFilled(false);
-		findPage_BackButton.setFocusPainted(false);
-		findPage_BackButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				findPage_BackButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				findPage_BackButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-
-
-				findPage.setVisible(false);
-				loginPage.setVisible(true);
-
-				findPageTxtID1.setText("");
-				findPageTxtID2.setText("");
-				findPageEmail.setText("");
-
-			}
-		});
-		findPage.add(findPage_BackButton);
-
 
 		// 회원가입 화면 필드들
 
@@ -573,40 +397,7 @@ public class Window {
 		});
 		signupPage.add(signupPage_NicknameovercheckButton);
 
-		// 회원가입 화면의 뒤로가기 버튼
-		JButton signupPage_BackButton = new JButton("");
-		signupPage_BackButton.setIcon(new ImageIcon(".\\images\\signupBackButton.png"));
 
-		signupPage_BackButton.setBounds(543, 512, 91, 35);
-		signupPage_BackButton.setBorderPainted(false);
-		signupPage_BackButton.setContentAreaFilled(false);
-		signupPage_BackButton.setFocusPainted(false);
-		signupPage_BackButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				signupPage_BackButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				signupPage_BackButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				IDovercheck_count = 0; // 뒤로가기 버튼 누를 시 아이디, 닉네임 카운터 초기화
-				NIovercheck_count = 0;
-
-				signupPage.setVisible(false);
-				loginPage.setVisible(true);
-
-				signupPageTxtID.setText("");
-				signupPagePass.setText("");
-				signupPageEmail.setText("");
-				signupPageNickname.setText("");
-			}
-		});
-		signupPage.add(signupPage_BackButton);
 
 		// 회원가입 화면의 회원가입 버튼
 		JButton signupPage_signupButton = new JButton("");
@@ -745,6 +536,44 @@ public class Window {
 			}
 		});
 		loginPage.add(loginPagePass);
+
+		// 회원가입 화면의 뒤로가기 버튼
+		JButton signupPage_BackButton = new JButton("");
+		signupPage_BackButton.setIcon(new ImageIcon(".\\images\\signupBackButton.png"));
+
+		signupPage_BackButton.setBounds(543, 512, 91, 35);
+		signupPage_BackButton.setBorderPainted(false);
+		signupPage_BackButton.setContentAreaFilled(false);
+		signupPage_BackButton.setFocusPainted(false);
+		signupPage_BackButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				signupPage_BackButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				signupPage_BackButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				IDovercheck_count = 0; // 뒤로가기 버튼 누를 시 아이디, 닉네임 카운터 초기화
+				NIovercheck_count = 0;
+
+				loginPageTxtID.setText("");
+				loginPagePass.setText("");
+
+				signupPage.setVisible(false);
+				loginPage.setVisible(true);
+
+				signupPageTxtID.setText("");
+				signupPagePass.setText("");
+				signupPageEmail.setText("");
+				signupPageNickname.setText("");
+			}
+		});
+		signupPage.add(signupPage_BackButton);
 
 
 		// ================================================================
@@ -930,6 +759,180 @@ public class Window {
 		redDot.setBorderPainted(false);
 		redDot.setBounds(1200,100,28,28);
 		multiModePage.add(redDot);
+
+
+		//아이디_비밀번호 찾기 버튼들
+
+		//찾기화면_아이디 찾기 버튼
+		JButton findPage_findIdButton = new JButton("");
+		findPage_findIdButton.setBounds(675,302,92,19);
+		findPage_findIdButton.setBorderPainted(false);
+		findPage_findIdButton.setContentAreaFilled(false);
+		findPage_findIdButton.setFocusPainted(false);
+		findPage_findIdButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				findPage_findIdButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				findPage_findIdButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+
+
+				try {
+
+					IDvalue = null;
+					IDvalue = findPageTxtID1.getText();
+
+
+					if(IDvalue.equals(""))
+						IDvalue = "null";
+
+					if(IDvalue.equals("null"))
+						JOptionPane.showMessageDialog(null,"이메일을 입력해주세요!");
+					else {
+						socket = new Socket(Server_IP, Server_Port);
+						in = new DataInputStream(socket.getInputStream());
+						keyboard = new DataInputStream(socket.getInputStream());
+						out = new DataOutputStream(socket.getOutputStream());
+						System.out.println(socket.toString());
+
+						findcheck_data = find_id + "//" + IDvalue; // Server에서 "//"를 통해서 구분
+						out.writeUTF(findcheck_data);
+					}
+
+				} catch (IOException ex) {
+					JOptionPane.showMessageDialog(null,"게임 점검중(서버 오류)");
+				}
+
+				try {
+					findcheck_possible = in.readUTF(); //    login//success//mynick
+					String s[] = findcheck_possible.split("//");
+					if(s[0].equals(find_id) && s[1].equals("success")) {
+						String myid = s[2];
+						JOptionPane.showMessageDialog(null, "찾으시는 ID는 [" + myid + "]입니다." );
+					}
+					else
+						JOptionPane.showMessageDialog(null,"이메일이 잘못되었습니다!");
+				} catch(IOException ex) {
+				}
+			}
+
+		});
+
+		findPage.add(findPage_findIdButton);
+
+		//찾기화면_비밀번호 찾기 버튼
+		JButton findPage_findPwButton = new JButton("");
+		findPage_findPwButton.setBounds(660,490,114,26);
+		findPage_findPwButton.setBorderPainted(false);
+		findPage_findPwButton.setContentAreaFilled(false);
+		findPage_findPwButton.setFocusPainted(false);
+		findPage_findPwButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				findPage_findPwButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				findPage_findPwButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+
+
+				try {
+
+					IDvalue = null;
+					EMvalue = null;
+					IDvalue = findPageTxtID2.getText();
+					EMvalue = findPageEmail.getText();
+
+
+					if(IDvalue.equals(""))
+						IDvalue = "null";
+					if(EMvalue.equals(""))
+						EMvalue = "null";
+
+
+					if(IDvalue.equals("null") || EMvalue.equals("null"))
+						JOptionPane.showMessageDialog(null,"이메일 또는 아이디를 입력해주세요!");
+					else {
+						socket = new Socket(Server_IP, Server_Port);
+						in = new DataInputStream(socket.getInputStream());
+						keyboard = new DataInputStream(socket.getInputStream());
+						out = new DataOutputStream(socket.getOutputStream());
+						System.out.println(socket.toString());
+
+						findcheck_data = find_pw + "//" + EMvalue + "//" + IDvalue; // Server에서 "//"를 통해서 구분
+						out.writeUTF(findcheck_data);
+					}
+
+				} catch (IOException ex) {
+					JOptionPane.showMessageDialog(null,"게임 점검중(서버 오류)");
+				}
+
+				try {
+					findcheck_possible = in.readUTF(); //    login//success//mynick
+					String s[] = findcheck_possible.split("//");
+					if(s[0].equals(find_pw) && s[1].equals("success")) {
+						String mypw = s[2];
+						JOptionPane.showMessageDialog(null, "찾으시는 비밀번호는  [" + mypw + "]입니다." );
+					}
+					else
+						JOptionPane.showMessageDialog(null,"이메일 또는 아이디가 잘못되었가니다!");
+				} catch(IOException ex) {
+				}
+			}
+
+		});
+
+		findPage.add(findPage_findPwButton);
+
+
+
+		//찾기화면_뒤로가기 버튼
+		JButton findPage_BackButton = new JButton("");
+
+		findPage_BackButton.setBounds(702, 561, 68, 18);
+		findPage_BackButton.setBorderPainted(false);
+		findPage_BackButton.setContentAreaFilled(false);
+		findPage_BackButton.setFocusPainted(false);
+		findPage_BackButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				findPage_BackButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				findPage_BackButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+
+				loginPageTxtID.setText("");
+				loginPagePass.setText("");
+
+				findPage.setVisible(false);
+				loginPage.setVisible(true);
+
+				findPageTxtID1.setText("");
+				findPageTxtID2.setText("");
+				findPageEmail.setText("");
+
+			}
+		});
+		findPage.add(findPage_BackButton);
+
 
 
 
@@ -1221,7 +1224,8 @@ public class Window {
 				} catch (IOException ex) {
 
 				}
-
+				loginPageTxtID.setText("");
+				loginPagePass.setText("");
 				startGamePage.setVisible(false);
 				loginPage.setVisible(true);
 			}
@@ -1745,24 +1749,24 @@ public class Window {
 		eee.setIcon(new ImageIcon(".\\images\\backButton.png"));
 		eee.setIcon(new ImageIcon(".\\images\\backButtonEntered.png"));
 
-		Thread t = new Thread(new Runnable() {
-			public void run() {
-				while (!IG.win) {
-
-				}
-
-				if (IG.win) {
-					try {
-						String singlewin_data;
-						singlewin_data = singlewin + "//" + easymode + "//" + IG.getTimer(); // Server에서 "//"를 통해서 구분, getTimer() : 깬 기록
-						out.writeUTF(singlewin_data);
-					} catch (IOException ex) {
-
-					}
-				}
-			}
-		});
-		t.start();
+//		Thread t = new Thread(new Runnable() {
+//			public void run() {
+//				while (!IG.win) {
+//
+//				}
+//
+//				if (IG.win) {
+//					try {
+//						String singlewin_data;
+//						singlewin_data = singlewin + "//" + easymode + "//" + IG.getTimer(); // Server에서 "//"를 통해서 구분, getTimer() : 깬 기록
+//						out.writeUTF(singlewin_data);
+//					} catch (IOException ex) {
+//
+//					}
+//				}
+//			}
+//		});
+//		t.start();
 	}
 
 //중급모드

@@ -69,8 +69,8 @@ public class Database {
         String user_email = _email;
 
         try {
-            //member 테이블에 각 문자열들을 순서대로 업데이트하는 문장. 각각 초기값을 초급/중급/고급/승/패 는 0, mmr점수는 1000으로 한다.
-            String insertStr = "INSERT INTO member VALUES('" + user_nickname + "', '" + user_id + "', '" + user_password + "', '" + user_email +"' ,0,0,0,0,0,1000)";
+            //member 테이블에 각 문자열들을 순서대로 업데이트하는 문장. 각각 초기값을 초급/중급/고급 는 10000초, 승/패 는 0, mmr점수는 1000으로 한다.
+            String insertStr = "INSERT INTO member VALUES('" + user_nickname + "', '" + user_id + "', '" + user_password + "', '" + user_email +"' , '" + Integer.MAX_VALUE + "' , '" + Integer.MAX_VALUE + "' , '" +Integer.MAX_VALUE + "' ,0,0,1000)";
             state.executeUpdate(insertStr);
 
             flag = true;	//업데이트문이 정상적으로 수행되면 flag를 true로 초기화하고 성공을 콘솔로 알린다.
@@ -290,15 +290,15 @@ public class Database {
     }
     */
     // <싱글모드> 게임 승리 시 전적을 업데트하하는 메소드! 조회 및 업데이트 성공 → true, 실패 → false 반환
-    boolean Single_winRecord(String _tag, String _nn, int _time) {
+    boolean Single_winRecord(String _mode, String _nn, int _time) {
         boolean flag = false;	//참거짓을 반환할 flag 변수. 초기값은 false.
 
         //매개변수로 받은 닉네임과 조회한 승리 횟수를 저장할 변수. num의 초기값은 0.
-        String mode = _tag;
+        String mode = _mode;
         String nick = _nn;
         int current_time = _time;
-        int oldtime = 0;
-        
+        int oldtime;
+
         // 초급 모드 기록 업데이트
         if(mode.equals("EASYMODE")) {
             try {
@@ -325,21 +325,21 @@ public class Database {
                 System.out.println("[Server] 전적 업데이트 실패 > " + e.toString());
             }
         }
-        
+
         // 중급 모드 기록 업데이트
         if(mode.equals("NORMALMODE")) {
             try {
                 //member 테이블에서 nick이라는 닉네임을 가진 회원의 승리 횟수를 조회한다.
-                String searchStr = "SELECT easyrecord FROM member WHERE nickname='" + nick + "'";
+                String searchStr = "SELECT normalrecord FROM member WHERE nickname='" + nick + "'";
                 ResultSet result = state.executeQuery(searchStr);
 
                 int count = 0;
                 while (result.next()) {
                     //num에 조회한 승리 횟수를 초기화.
-                    oldtime = result.getInt("easyrecord");
+                    oldtime = result.getInt("normalrecord");
                     if (current_time < oldtime) {
-                        //tag가 초급모드 일 경우, member 테이블에서 easyrecord를 업데이트 한다.
-                        String changeStr = "UPDATE member SET easyrecord=" + current_time + " WHERE nickname='" + nick + "'";
+                        //mode가 중급모드 일 경우, member 테이블에서 normalrecord를 업데이트 한다.
+                        String changeStr = "UPDATE member SET normalrecord=" + current_time + " WHERE nickname='" + nick + "'";
                         state.executeUpdate(changeStr);
                         flag = true;    //조회 및 업데이트 성공 시 flag를 true로 바꾸고 성공을 콘솔로 알린다.
                         System.out.println("[Server] 전적 업데이트 성공");
@@ -352,21 +352,21 @@ public class Database {
                 System.out.println("[Server] 전적 업데이트 실패 > " + e.toString());
             }
         }
-        
+
         // 고급 모드 기록 업데이트
         if(mode.equals("HARDMODE")) {
             try {
                 //member 테이블에서 nick이라는 닉네임을 가진 회원의 승리 횟수를 조회한다.
-                String searchStr = "SELECT easyrecord FROM member WHERE nickname='" + nick + "'";
+                String searchStr = "SELECT hardrecord FROM member WHERE nickname='" + nick + "'";
                 ResultSet result = state.executeQuery(searchStr);
 
                 int count = 0;
                 while (result.next()) {
                     //num에 조회한 승리 횟수를 초기화.
-                    oldtime = result.getInt("easyrecord");
+                    oldtime = result.getInt("hardrecord");
                     if (current_time < oldtime) {
                         //tag가 초급모드 일 경우, member 테이블에서 easyrecord를 업데이트 한다.
-                        String changeStr = "UPDATE member SET easyrecord=" + current_time + " WHERE nickname='" + nick + "'";
+                        String changeStr = "UPDATE member SET hardrecord=" + current_time + " WHERE nickname='" + nick + "'";
                         state.executeUpdate(changeStr);
                         flag = true;    //조회 및 업데이트 성공 시 flag를 true로 바꾸고 성공을 콘솔로 알린다.
                         System.out.println("[Server] 전적 업데이트 성공");

@@ -2,7 +2,6 @@ package new_JavaProject;
 
 import java.awt.AWTException;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -15,6 +14,10 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,6 +32,11 @@ import javax.swing.JPanel;
 import new_JavaProject.InGame.Items.reverse;
 
 public class InGame extends JPanel {
+	Socket socket = new Socket(); // 소켓 생성
+	static String Server_IP = "192.168.219.118";
+	static int Server_Port = 5555;
+	DataInputStream in; // Server로부터 데이터를 읽어들임
+	DataOutputStream out; // Server로 내보내기 위한 출력스트림
 //#책갈피(Ctrl f)
 //=깃발탐색=
 //=빈셀탐색=
@@ -76,7 +84,6 @@ public class InGame extends JPanel {
 	private static int[] field;// 모든 셀(칸) 넘버링
 	boolean inGame;// false:game lost
 	boolean win;
-
 	private int minesLeft;// 좌측하단의 표시되는 현재 남은 지뢰개수를 카운트하는 변수
 	private Image[] img;// 이미지 파일
 
@@ -542,7 +549,25 @@ public class InGame extends JPanel {
 			m_task.cancel();
 			inGame = false;// 게임종료
 			win = true;
-			System.out.println("TEst");
+
+			try {
+//				socket = new Socket(Server_IP, Server_Port);
+//				socket = Window.socket;
+//				in = new DataInputStream(socket.getInputStream());
+//				in = Window.in;
+//				out = new DataOutputStream(socket.getOutputStream());
+//				out = Window.out;
+
+				String MineTag;
+				if(N_MINES == 10)		MineTag="EASYMODE";
+				else if(N_MINES == 40)	MineTag="NORMALMODE";
+				else					MineTag="HARDMODE";
+				System.out.println(MineTag);
+				String Time_Data = Window.singlewin + "//" + MineTag +"//"+Window.mynick+"//"+getTimer();
+				Window.out.writeUTF(Time_Data);
+			}catch(Exception e){
+
+			}
 //			statusbar.setText("Game won");// 승리
 //            sound(soundsFilePath.get(soundsEnum.GAMEWIN.ordinal()));//승리소리
 
