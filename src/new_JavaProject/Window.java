@@ -98,6 +98,8 @@ public class Window {
 
 	ImagePanel easyModePage;
 	ImagePanel nomalModePage;
+	ImagePanel hardModePage;
+
 	ImagePanel signupPage;
 	ImagePanel htpPage;
 	ImagePanel rankPage;
@@ -691,6 +693,10 @@ public class Window {
 		nomalModePage = new ImagePanel(new ImageIcon(".\\images/mainMenuPage.png").getImage());
 		frame.setSize(nomalModePage.getWidth(), nomalModePage.getHeight());
 		frame.getContentPane().add(nomalModePage);
+
+		hardModePage = new ImagePanel(new ImageIcon(".\\images/mainMenuPage.png").getImage());
+		frame.setSize(hardModePage.getWidth(), hardModePage.getHeight());
+		frame.getContentPane().add(hardModePage);
 		// 멀티게임_화면
 		/*
 		 * ImagePanel multiModePage = new ImagePanel(new
@@ -707,6 +713,7 @@ public class Window {
 		singleModeSelectPage.setVisible(false);
 		easyModePage.setVisible(false);
 		nomalModePage.setVisible(false);
+		hardModePage.setVisible(false);
 		background.setVisible(false);
 
 		frame.getContentPane().setLayout(null);
@@ -812,13 +819,13 @@ public class Window {
 			}
 
 			public void mouseReleased(MouseEvent e) {
-				easyModePage.setVisible(false);
+				hardModePage.setVisible(false);
 
 				singleModeSelectPage.setVisible(true);
 			}
 		});
 
-		easyModePage.add(hardgamebackButton);
+		hardModePage.add(hardgamebackButton);
 //============================================================
 
 		// 게임시작화면 버튼들
@@ -1380,7 +1387,7 @@ public class Window {
 			public void mouseReleased(MouseEvent e) {
 				// 게임 동작
 				singleModeSelectPage.setVisible(false);
-				easyModePage.setVisible(true);
+				hardModePage.setVisible(true);
 				hard_gameStart();
 			}
 		});
@@ -1542,14 +1549,14 @@ public class Window {
 		int mine = 99;
 
 		IG = new InGame(col, row, mine, 30);// 가로개수,세로개수,지뢰수,한칸당 크기
-		IG.setBounds(410, 150, IG.getWidth(), IG.getHeight());
-		easyModePage.add(IG);
+		IG.setBounds(150, 150, IG.getWidth(), IG.getHeight());
+		hardModePage.add(IG);
 
 //		KeyListener kl = new inGameKeyListener(IG);
 //		easyModePage.addKeyListener(kl);
 
-		nomalModePage.setFocusable(true);
-		nomalModePage.requestFocus();
+		hardModePage.setFocusable(true);
+		hardModePage.requestFocus();
 
 		var path = "./images/inGame/resources/11.png";
 		JButton eee = new JButton("");

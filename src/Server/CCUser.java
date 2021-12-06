@@ -143,10 +143,16 @@ class CCUser extends Thread{
                     }
                 }  //중복확인 if문
 
-                /* id찾기 */
-                /*else if(m[0].equals(findID){
 
-                }*/
+                //아이디 조디
+                else if(m[0].equals(find_id)){  //
+                    if(!db.viewID(m[1]).equals("null")){
+                        dos.writeUTF(find_id + "//" + db.viewID(m[1]));
+                    }
+                    else{
+                        dos.writeUTF(find_id + "//FAIL");
+                    }
+                }
 
 
                 /*

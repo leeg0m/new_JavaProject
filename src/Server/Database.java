@@ -130,8 +130,18 @@ public class Database {
         String _mm = _nn;
 
         try{
-            String viewStr = "SELECT id FROM member WHERE email = '" + _nn + "'";
-        }catch (Exception e){
+            //member 테이블에서 _nn 이메일을 가진 회원의 id 정보를 조회한다.
+            String findid = "SELECT id FROM member WHERE email = '" + _nn + "'";
+            ResultSet result = state.executeQuery(findid);
+
+            int count = 0;
+            while(result.next()){
+                //msg에 "아이디" 형태로 초기화한다.
+                msg = result.getString("id");
+                count++;
+            }
+            System.out.println("[Server] 아이디 조회 성공");
+       }catch (Exception e){
             System.out.println("[Server] 아이디 조회 실패 > " + e.toString());
         }
 
