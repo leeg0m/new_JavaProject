@@ -743,7 +743,7 @@ public class Window {
 		frame.getContentPane().add(hardModePage);
 
 		// 같이하기_이미지화면
-		multiModePage = new ImagePanel(new ImageIcon(".\\images/multiPage1.png").getImage());
+		multiModePage = new ImagePanel(new ImageIcon(".\\images\\multiPage1.png").getImage());
 		frame.setSize(multiModePage.getWidth(), multiModePage.getHeight());
 		frame.getContentPane().add(multiModePage);
 
