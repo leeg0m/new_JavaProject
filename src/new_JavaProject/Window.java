@@ -18,14 +18,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import new_JavaProject.InGame.Items;
 
@@ -54,6 +47,7 @@ public class Window {
 	static String overcheckNick_possible;
 	static String overcheckId_possible;
 	static String findcheck_possible;
+	static boolean roommaster = false;
 
 	static int IDovercheck_count = 0; // 중복체크 누른 여부 체크
 	static int NIovercheck_count = 0; // 둘 다 1 이상 일 떄 회원가입 가능
@@ -760,6 +754,12 @@ public class Window {
 		redDot.setBounds(1200,100,28,28);
 		multiModePage.add(redDot);
 
+		//데이터베이스 테이블
+	/*	JPanel tablePenel = new JPanel();
+		tablePenel.setBounds(0,100,1000,500);
+		String[] headers = new String[] ={"닉네임", "초급","중급","고급","승","패","mmr"};
+		frame.add(tablePenel);*/
+
 
 		//아이디_비밀번호 찾기 버튼들
 
@@ -1134,6 +1134,15 @@ public class Window {
 				} catch(IOException ex) {
 
 				}
+				try {
+					String s = in.readUTF();
+					if(s.equals("0"))
+						roommaster = true;
+					else
+						roommaster = false;
+				} catch(IOException ex) {
+
+				}
 
 				startGamePage.setVisible(false);
 				multiModePage.setVisible(true);
@@ -1142,6 +1151,55 @@ public class Window {
 		startGamePage.add(startGamePage_multiButton);
 
 		// 같이하기 화면 안의 게임시작 버튼
+		JButton multiModePage_GameStartButton = new JButton("");
+		multiModePage_GameStartButton.setIcon(new ImageIcon(".\\images\\multiPage_GameStartButton.png"));
+		multiModePage_GameStartButton.setBounds(33,542,214,76);
+		multiModePage_GameStartButton.setBorderPainted(false);
+		multiModePage_GameStartButton.setContentAreaFilled(false);
+		multiModePage_GameStartButton.setFocusPainted(false);
+		multiModePage_GameStartButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+
+			}
+		});
+		multiModePage.add(multiModePage_GameStartButton);
+
+		// 같이하기 화면 안의 나가기 버튼
+		JButton multiModePage_BackButton = new JButton("");
+		multiModePage_BackButton.setIcon(new ImageIcon(".\\images\\multiPage_BackButton.png"));
+		multiModePage_BackButton.setBounds(33,618,214,76);
+		multiModePage_BackButton.setBorderPainted(false);
+		multiModePage_BackButton.setContentAreaFilled(false);
+		multiModePage_BackButton.setFocusPainted(false);
+		multiModePage_BackButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				multiModePage.setVisible(false);
+				startGamePage.setVisible(true);
+			}
+		});
+		multiModePage.add(multiModePage_BackButton);
 
 
 		// 게임순위 메뉴 버튼
@@ -1721,7 +1779,7 @@ public class Window {
 		// 고급 : 30x16|99
 		int col = 9;
 		int row = 9;
-		int mine = 5;
+		int mine = 10;
 
 		IG = new InGame(col, row, mine, 50);// 가로개수,세로개수,지뢰수,한칸당 크기
 		IG = new InGame(col, row, mine, 50);// 가로개수,세로개수,지뢰수,한칸당 크기
@@ -1756,15 +1814,22 @@ public class Window {
 		flageImg.setIcon(icon);
 		flageImg.setBounds(410, 70, 70, 70);
 		easyModePage.add(flageImg);
-//		int i = IG.flags_count.fc;
 
 
+		JTextField flagField = new JTextField(mine);
+		flagField.setBounds(490,70,70,70);
+		flagField.enable(false);
+//		Font font = new Font("맑은 고딕", Font.PLAIN, 30);
+//		flagField.setForeground(Color.BLACK);
+		flagField.setFont(new Font("맑은 고딕", Font.PLAIN, 30));
+		easyModePage.add(flagField);
 
 		new Thread() {
 			public void run() {
 				while (IG.inGame) {
 					try {
 						Thread.sleep(100);
+						flagField.setText(""+IG.minesLeft);
 						if(true) {
 							//게임중 작업
 						}

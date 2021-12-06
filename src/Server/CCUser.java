@@ -210,7 +210,9 @@ class CCUser extends Thread{
 
                     String nickname = m[1];
                     gameuser.add(this);
-                    gameuser.get(gameuser.size()-1);
+                    // gameuser.get(gameuser.size()-1);
+                    String s = String.format("%d",gameuser.size()-1);
+                    dos.writeUTF(s);
                 }
 
                 /* ¹æ »ý¼º */

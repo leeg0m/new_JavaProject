@@ -84,7 +84,7 @@ public class InGame extends JPanel {
 	private static int[] field;// 모든 셀(칸) 넘버링
 	boolean inGame;// false:game lost
 	boolean win;
-	private int minesLeft;// 좌측하단의 표시되는 현재 남은 지뢰개수를 카운트하는 변수
+	int minesLeft;// 좌측하단의 표시되는 현재 남은 지뢰개수를 카운트하는 변수
 	private Image[] img;// 이미지 파일
 
 	private static int allCells;// N_ROWS * N_COLS;// = field 개수
@@ -713,7 +713,7 @@ public class InGame extends JPanel {
 //								sound(sound.soundsFilePath.get(soundsEnum.FLAG.ordinal()));// 깃발소리
 							} else {
 //                            	sound()//금지
-								statusbar.setText("No marks left");// 카운터보다 깃발을 많이 꽂아서 더이상 깃발을 꽂을 수 없음
+//								statusbar.setText("No marks left");// 카운터보다 깃발을 많이 꽂아서 더이상 깃발을 꽂을 수 없음
 							}
 						} else {// 깃발 꽂혀있으면
 
@@ -822,6 +822,7 @@ public class InGame extends JPanel {
 		int current_col = j % N_COLS;// 넘겨받은 칸의 가로 위치
 		int cell;
 		flags_count = new FlagsCount();// 깃발 카운터
+		System.out.println(flags_count.fc);
 		int coverMark = COVER_FOR_CELL + MARK_FOR_CELL;// 깃발있음,커버있음
 
 		for (int i = 0; i < 2; i++) {// 첫번째 반복: 깃발 카운팅, 두번째 반복: 팔방위 활성화
