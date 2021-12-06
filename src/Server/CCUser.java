@@ -1,6 +1,7 @@
 package Server;
 
 
+import org.mariadb.jdbc.internal.com.read.resultset.SelectResultSet;
 import org.w3c.dom.ls.LSOutput;
 
 import java.io.*;
@@ -15,8 +16,9 @@ class CCUser extends Thread{
     Socket socket;
 
     /* 각 객체를 Vector로 관리 */
-    Vector<CCUser> auser;	//연결된 모든 클라이언트
-    Vector<CCUser> wuser;	//대기실에 있는 클라이언트
+    Vector<CCUser>auser;	//연결된 모든 클라이언트
+    Vector<CCUser>wuser;	//대기실에 있는 클라이언트
+    static Vector<CCUser>gameuser; //같이하기 버튼 눌렀을 떄 접속하는 인원을 저장하는 벡터
     Vector<Room> room;		//생성된 Room
 
     Database db = new Database();
@@ -202,6 +204,14 @@ class CCUser extends Thread{
                         dos.writeUTF(rankTag + "//FAIL");
                     }
                 }  //전체 전적 조회 if문
+
+                /* 접속 유저 벡터에 저장 */
+                else if(m[0].equals(roomuserTag)) {
+
+                    String nickname = m[1];
+                    gameuser.add(this);
+                    gameuser.get(gameuser.size()-1);
+                }
 
                 /* 방 생성 */
                 else if(m[0].equals(croomTag)) {

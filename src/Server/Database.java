@@ -1,6 +1,7 @@
 package Server;
 
 import java.sql.*;
+import java.util.Vector;
 //클라이언트가 요청한 데이터베이스 업데이트 및 쿼리 작업을 수행하는 클래스.
 //서버에서 객체 생성 시에 데이터베이스 연동 작업을 수행하고 다른 부가적인 작업들은 메소드를 통해 서버에서 불려지면 수행하도록 한다.
 
@@ -381,6 +382,7 @@ public class Database {
         }
         return flag;	//flag 반환
     }
+
 
     // <멀티모드> 게임 승리 시 전적을 업데이트하는 메소드! 조회 및 업데이트 성공 → true, 실패 → false 반환
     boolean Multi_winRecord(String _nn) {

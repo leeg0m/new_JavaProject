@@ -1141,6 +1141,9 @@ public class Window {
 		});
 		startGamePage.add(startGamePage_multiButton);
 
+		// 같이하기 화면 안의 게임시작 버튼
+
+
 		// 게임순위 메뉴 버튼
 		JButton startGamePage_rankButton = new JButton("");
 		startGamePage_rankButton.setBounds(244, 59, 210, 40);
@@ -1718,7 +1721,7 @@ public class Window {
 		// 고급 : 30x16|99
 		int col = 9;
 		int row = 9;
-		int mine = 0;
+		int mine = 5;
 
 		IG = new InGame(col, row, mine, 50);// 가로개수,세로개수,지뢰수,한칸당 크기
 		IG = new InGame(col, row, mine, 50);// 가로개수,세로개수,지뢰수,한칸당 크기
