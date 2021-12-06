@@ -1747,29 +1747,33 @@ public class Window {
 		// 만들기 위해서 필요한거 : 게임 상태를 알기 위해 따로 스레드를 만들어서 게임상태 감시.
 		// 게임상태가 win일 때 필요한 작업 : 데이터베이스에 랭킹스코어 전달. 승리 메시지? gui 구현
 		// 게임상태가 lose일 때 필요한 작업 : 패배 메시지? gui 구현
-		var path = "./images/inGame/resources/11.png";
-		JButton eee = new JButton("");
-		eee.setIcon(new ImageIcon(".\\images\\backButton.png"));
-		eee.setIcon(new ImageIcon(".\\images\\backButtonEntered.png"));
+		var path = "./images/flag.png";
+		JLabel flageImg = new JLabel("");
+		ImageIcon icon = new ImageIcon(path);
+		Image updateImg = icon.getImage();
+		updateImg = updateImg.getScaledInstance(70, 70, Image.SCALE_SMOOTH);
+		icon = new ImageIcon(updateImg);
+		flageImg.setIcon(icon);
+		flageImg.setBounds(410, 70, 70, 70);
+		easyModePage.add(flageImg);
+//		int i = IG.flags_count.fc;
 
-//		Thread t = new Thread(new Runnable() {
-//			public void run() {
-//				while (!IG.win) {
-//
-//				}
-//
-//				if (IG.win) {
-//					try {
-//						String singlewin_data;
-//						singlewin_data = singlewin + "//" + easymode + "//" + IG.getTimer(); // Server에서 "//"를 통해서 구분, getTimer() : 깬 기록
-//						out.writeUTF(singlewin_data);
-//					} catch (IOException ex) {
-//
-//					}
-//				}
-//			}
-//		});
-//		t.start();
+
+
+		new Thread() {
+			public void run() {
+				while (IG.inGame) {
+					try {
+						Thread.sleep(100);
+						if(true) {
+							//게임중 작업
+						}
+					} catch (Exception e) {
+
+					}
+				}
+			}
+		}.start();
 	}
 
 //중급모드

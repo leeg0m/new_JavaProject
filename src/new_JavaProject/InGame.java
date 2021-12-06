@@ -116,6 +116,7 @@ public class InGame extends JPanel {
 		BOARD_WIDTH = N_COLS * CELL_SIZE + 1;// 프레임 넓이
 		BOARD_HEIGHT = N_ROWS * CELL_SIZE + 1;//
 
+
 //        this.statusbar = statusbar;
 		initBoard();
 	}
@@ -810,16 +811,17 @@ public class InGame extends JPanel {
 		}
 	}
 
-	private class FlagsCount {// 깃발찾아서 카운트 하는데 사용하는 클래스
+	class FlagsCount {// 깃발찾아서 카운트 하는데 사용하는 클래스
 		int fc = 0;
 	}
+	static FlagsCount flags_count;
 
 	// =============================깃발탐색======================
 	private void find_mark_cells(int j) {
 
 		int current_col = j % N_COLS;// 넘겨받은 칸의 가로 위치
 		int cell;
-		FlagsCount flags_count = new FlagsCount();// 깃발 카운터
+		flags_count = new FlagsCount();// 깃발 카운터
 		int coverMark = COVER_FOR_CELL + MARK_FOR_CELL;// 깃발있음,커버있음
 
 		for (int i = 0; i < 2; i++) {// 첫번째 반복: 깃발 카운팅, 두번째 반복: 팔방위 활성화
