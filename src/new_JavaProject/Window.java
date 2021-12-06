@@ -1714,7 +1714,7 @@ public class Window {
 		// 고급 : 30x16|99
 		int col = 9;
 		int row = 9;
-		int mine = 10;
+		int mine = 0;
 
 		IG = new InGame(col, row, mine, 50);// 가로개수,세로개수,지뢰수,한칸당 크기
 		IG = new InGame(col, row, mine, 50);// 가로개수,세로개수,지뢰수,한칸당 크기
@@ -1747,13 +1747,14 @@ public class Window {
 
 		Thread t = new Thread(new Runnable() {
 			public void run() {
-				while (IG.inGame) {
+				while (!IG.win) {
 
 				}
+
 				if (IG.win) {
 					try {
 						String singlewin_data;
-						singlewin_data = singlewin + "//" + easymode + "//" + IG.getTimer(); // Server에서 "//"를 통해서 구분
+						singlewin_data = singlewin + "//" + easymode + "//" + IG.getTimer(); // Server에서 "//"를 통해서 구분, getTimer() : 깬 기록
 						out.writeUTF(singlewin_data);
 					} catch (IOException ex) {
 
@@ -1761,7 +1762,9 @@ public class Window {
 				}
 			}
 		});
+		t.start();
 	}
+
 //중급모드
 
 	public void normal_gameStart() {

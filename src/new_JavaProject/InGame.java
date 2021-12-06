@@ -76,6 +76,7 @@ public class InGame extends JPanel {
 	private static int[] field;// 모든 셀(칸) 넘버링
 	boolean inGame;// false:game lost
 	boolean win;
+
 	private int minesLeft;// 좌측하단의 표시되는 현재 남은 지뢰개수를 카운트하는 변수
 	private Image[] img;// 이미지 파일
 
@@ -541,7 +542,7 @@ public class InGame extends JPanel {
 			m_task.cancel();
 			inGame = false;// 게임종료
 			win = true;
-
+			System.out.println("TEst");
 //			statusbar.setText("Game won");// 승리
 //            sound(soundsFilePath.get(soundsEnum.GAMEWIN.ordinal()));//승리소리
 

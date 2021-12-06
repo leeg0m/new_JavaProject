@@ -298,31 +298,87 @@ public class Database {
         String nick = _nn;
         int current_time = _time;
         int oldtime = 0;
+        
+        // 초급 모드 기록 업데이트
+        if(mode.equals("EASYMODE")) {
+            try {
+                //member 테이블에서 nick이라는 닉네임을 가진 회원의 승리 횟수를 조회한다.
+                String searchStr = "SELECT easyrecord FROM member WHERE nickname='" + nick + "'";
+                ResultSet result = state.executeQuery(searchStr);
 
-        try {
-            //member 테이블에서 nick이라는 닉네임을 가진 회원의 승리 횟수를 조회한다.
-            String searchStr = "SELECT easyrecord FROM member WHERE nickname='" + nick + "'";
-            ResultSet result = state.executeQuery(searchStr);
-
-            int count = 0;
-            while(result.next()) {
-                //num에 조회한 승리 횟수를 초기화.
-                oldtime = result.getInt("easyrecord");
-                if(current_time < oldtime){
-                    //tag가 초급모드 일 경우, member 테이블에서 easyrecord를 업데이트 한다.
-                    String changeStr = "UPDATE member SET easyrecord=" + current_time + " WHERE nickname='" + nick +"'";
-                    state.executeUpdate(changeStr);
-                    flag = true;	//조회 및 업데이트 성공 시 flag를 true로 바꾸고 성공을 콘솔로 알린다.
-                    System.out.println("[Server] 전적 업데이트 성공");
+                int count = 0;
+                while (result.next()) {
+                    //num에 조회한 승리 횟수를 초기화.
+                    oldtime = result.getInt("easyrecord");
+                    if (current_time < oldtime) {
+                        //tag가 초급모드 일 경우, member 테이블에서 easyrecord를 업데이트 한다.
+                        String changeStr = "UPDATE member SET easyrecord=" + current_time + " WHERE nickname='" + nick + "'";
+                        state.executeUpdate(changeStr);
+                        flag = true;    //조회 및 업데이트 성공 시 flag를 true로 바꾸고 성공을 콘솔로 알린다.
+                        System.out.println("[Server] 전적 업데이트 성공");
+                    }
+                    count++;
                 }
-                count++;
+
+            } catch (Exception e) {    //조회 및 업데이트 실패 시 flag를 false로 바꾸고 실패를 콘솔로 알린다.
+                flag = false;
+                System.out.println("[Server] 전적 업데이트 실패 > " + e.toString());
             }
-
-        } catch(Exception e) {	//조회 및 업데이트 실패 시 flag를 false로 바꾸고 실패를 콘솔로 알린다.
-            flag = false;
-            System.out.println("[Server] 전적 업데이트 실패 > " + e.toString());
         }
+        
+        // 중급 모드 기록 업데이트
+        if(mode.equals("NORMALMODE")) {
+            try {
+                //member 테이블에서 nick이라는 닉네임을 가진 회원의 승리 횟수를 조회한다.
+                String searchStr = "SELECT easyrecord FROM member WHERE nickname='" + nick + "'";
+                ResultSet result = state.executeQuery(searchStr);
 
+                int count = 0;
+                while (result.next()) {
+                    //num에 조회한 승리 횟수를 초기화.
+                    oldtime = result.getInt("easyrecord");
+                    if (current_time < oldtime) {
+                        //tag가 초급모드 일 경우, member 테이블에서 easyrecord를 업데이트 한다.
+                        String changeStr = "UPDATE member SET easyrecord=" + current_time + " WHERE nickname='" + nick + "'";
+                        state.executeUpdate(changeStr);
+                        flag = true;    //조회 및 업데이트 성공 시 flag를 true로 바꾸고 성공을 콘솔로 알린다.
+                        System.out.println("[Server] 전적 업데이트 성공");
+                    }
+                    count++;
+                }
+
+            } catch (Exception e) {    //조회 및 업데이트 실패 시 flag를 false로 바꾸고 실패를 콘솔로 알린다.
+                flag = false;
+                System.out.println("[Server] 전적 업데이트 실패 > " + e.toString());
+            }
+        }
+        
+        // 고급 모드 기록 업데이트
+        if(mode.equals("HARDMODE")) {
+            try {
+                //member 테이블에서 nick이라는 닉네임을 가진 회원의 승리 횟수를 조회한다.
+                String searchStr = "SELECT easyrecord FROM member WHERE nickname='" + nick + "'";
+                ResultSet result = state.executeQuery(searchStr);
+
+                int count = 0;
+                while (result.next()) {
+                    //num에 조회한 승리 횟수를 초기화.
+                    oldtime = result.getInt("easyrecord");
+                    if (current_time < oldtime) {
+                        //tag가 초급모드 일 경우, member 테이블에서 easyrecord를 업데이트 한다.
+                        String changeStr = "UPDATE member SET easyrecord=" + current_time + " WHERE nickname='" + nick + "'";
+                        state.executeUpdate(changeStr);
+                        flag = true;    //조회 및 업데이트 성공 시 flag를 true로 바꾸고 성공을 콘솔로 알린다.
+                        System.out.println("[Server] 전적 업데이트 성공");
+                    }
+                    count++;
+                }
+
+            } catch (Exception e) {    //조회 및 업데이트 실패 시 flag를 false로 바꾸고 실패를 콘솔로 알린다.
+                flag = false;
+                System.out.println("[Server] 전적 업데이트 실패 > " + e.toString());
+            }
+        }
         return flag;	//flag 반환
     }
 
