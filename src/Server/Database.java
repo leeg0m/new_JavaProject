@@ -184,7 +184,7 @@ public class Database {
         try {
             //single 테이블의 닉네임, 시간을 모두 조회
             //member 테이블의 닉네임, 승, 패를 모두 조회
-            String record_viewStr = "SELECT nickname, mmr FROM record";
+            String record_viewStr = "SELECT nickname, easyrecord, normalrecord, hardrecord FROM member";
             ResultSet record_result = state.executeQuery(record_viewStr);
             String member_viewStr = "SELECT nickname, win, lose, mmr FROM member";
             ResultSet member_result = state.executeQuery(member_viewStr);

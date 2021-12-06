@@ -22,11 +22,12 @@ public class DBTable {
             // 회원정보
             String member_createStr = "CREATE TABLE member (nickname varchar(20) not null, " +
                     "id varchar(20) not null, password varchar(20) not null, email varchar(30) not null, " +
+                    "easyrecord int not null, normalrecord int not null, hardrecord int not null, " +
                     "win int, lose int, mmr int, PRIMARY KEY (nickname, id))";
             stmt.executeUpdate(member_createStr);
 
             // 싱글기록
-            String record_createStr = "CREATE TABLE record (nickname varchar(20) not null, time int not null)";
+            String record_createStr = "CREATE TABLE record (nickname varchar(20) not null, rctime int not null)";
             stmt.executeUpdate(record_createStr);
 
             System.out.println("[Server] 테이블 생성 성공");
