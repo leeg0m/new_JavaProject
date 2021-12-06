@@ -558,14 +558,7 @@ public class InGame extends JPanel {
 			g.drawRect(scanBox.x, scanBox.y, scanBox.width, scanBox.height); //생성된 box의 속성값을 가지고 그려줌
 //			System.out.println("!");
 		}
-		if (!inGame) {//이미지 리셋
-			for (int i = 0; i < N_ROWS; i++) {// 세로
 
-				for (int j = 0; j < N_COLS; j++) {// 가로
-					g.drawImage(img[10], (j * CELL_SIZE), (i * CELL_SIZE), this);
-				}
-			}
-		}
 	}
 
 
