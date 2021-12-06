@@ -864,7 +864,7 @@ public class Window {
 				rankpage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButton.png"));
 				rankpage_logoutButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
-			publci void mousePressed(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				rankpage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButtonPressed.png"));
 			}
 			@Override
