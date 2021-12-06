@@ -58,9 +58,8 @@ class CCUser extends Thread{
     final String Single_winTag = "SINGLEWIN"; //멀티모드 승리
     final String loseTag = "LOSE";		//패배
     final String recordTag = "RECORD";	//전적업데이트
-    final String findTag = "FINDTAG";
-    final String findIDTag = "FINDID";
-    final String findPasswordTag = "FINDPASSWORD";
+    final String find_id = "FINDID";     //아이디 찾기
+    final String find_pw = "FINDPW";     //비밀번호 찾기
 
     CCUser(Socket _s, Server _ss) {
         this.socket = _s;
@@ -144,19 +143,11 @@ class CCUser extends Thread{
                     }
                 }  //중복확인 if문
 
-                /* 아이디/비빌먼호 찾기 */
-                else if(m[0].equals(findIDTag)){
+                /* id찾기 */
+                /*else if(m[0].equals(findID){
 
-                    if(db.view(m[1]).equals(findIDTag)){  //findIDTag 있을시 실행
-                        dos.writeUTF(findIDTag + "//" + db.view(m[2])); //태그와 조회한 내용을 같이 전송
-                    }
-                    else if(db.view(m[1]).equals(findPasswordTag)){
-                        dos.writeUTF(findPasswordTag + "//" + db.view(m[2]));
-                    }
-                    else{//조회 실패
-                        dos.writeUTF(findIDTag + "//fail");
-                    }
-                }
+                }*/
+
 
                 /*
                 // 회원정보 조회

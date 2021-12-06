@@ -122,31 +122,21 @@ public class Database {
 
     }
 
-    String view(String _nn){
-     String msg = "null";
 
-     //매개변수로 받은 아이디를 findID에 초기화한다.
-     String findEmail = _nn;
+    String viewID(String _nn){
+        String msg = "null";    //반환할 문자열 변수를 "null"로 초기화.
 
-     try{
-         //member 테이블에서 findEmail 이라는 아이디를 가진 회원의 아이디 정보를 조회한다.
-         String findStr = "SELECT id, FROM member where email='" + findEmail +"'";
-         ResultSet result =state.executeQuery(findStr);
+        //매개변수로 받은 이메일을 _mm에 초기화
+        String _mm = _nn;
 
-         int count = 0;
-         while(result.next()){
-             //msg에 "아이디" 형태로 초기화한다.
-             msg = result.getString("id");
-             count++;
-         }
-         System.out.println("[Server] 아이디 찾기 성공");
-     }catch (Exception e){
-         System.out.println("[Server] 아이디 찾기 실패 > " + e.toString());
-     }
-     return msg;
+        try{
+            String viewStr = "SELECT id FROM member WHERE email = '" + _nn + "'";
+        }catch (Exception e){
+            System.out.println("[Server] 아이디 조회 실패 > " + e.toString());
+        }
+
+        return msg;
     }
-
-
 
 
     //DB에 저장된 자신의 정보를 조회하는 메소드! 조회한 정보들을 String 형태로 반환

@@ -63,6 +63,11 @@ public class Window {
 	static String overcheck = "OVER";
 	static String logout = "LOGOUT";
 	static String rank = "RANK";
+	static String singlewin = "SINGLEWIN";
+	static String multiwin = "MULTIWIN";
+	static String easymode = "EASYMODE";
+	static String normalmode = "NORMALMODE";
+	static String hardmode = "HARDMODE";
 
 	/**
 	 * Launch the application.
@@ -1494,6 +1499,15 @@ public class Window {
 		eee.setIcon(new ImageIcon(".\\images\\backButton.png"));
 		eee.setIcon(new ImageIcon(".\\images\\backButtonEntered.png"));
 
+		if(IG.win) {
+			try {
+				String singlewin_data;
+				singlewin_data = singlewin + "//" + easymode + "//" + IG.getTimer(); // Server에서 "//"를 통해서 구분
+				out.writeUTF(singlewin_data);
+			} catch(IOException ex) {
+
+			}
+		}
 	}
 //중급모드
 
@@ -1534,8 +1548,8 @@ public class Window {
 //		KeyListener kl = new inGameKeyListener(IG);
 //		easyModePage.addKeyListener(kl);
 
-		easyModePage.setFocusable(true);
-		easyModePage.requestFocus();
+		nomalModePage.setFocusable(true);
+		nomalModePage.requestFocus();
 
 		var path = "./images/inGame/resources/11.png";
 		JButton eee = new JButton("");
