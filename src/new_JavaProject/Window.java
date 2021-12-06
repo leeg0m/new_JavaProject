@@ -74,6 +74,17 @@ public class Window {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+
+
+	ImagePanel easyModePage;
+	ImagePanel signupPage;
+	ImagePanel htpPage;
+	ImagePanel rankPage;
+	ImagePanel startGamePage;
+	ImagePanel singleModeSelectPage;
+	ImagePanel syModePage;
+	ImagePanel background;
+
 	private void initialize() {
 		frame = new JFrame();
 		frame.setResizable(false);
@@ -517,7 +528,7 @@ public class Window {
 					}
 
 				} catch (IOException ex) {
-					JOptionPane.showMessageDialog(null,"다시 입력!!!!!");
+					JOptionPane.showMessageDialog(null,"게임 점검중(서버 오류)");
 				}
 
 				try {
@@ -618,8 +629,7 @@ public class Window {
 		frame.getContentPane().add(singleModeSelectPage);
 
 		//싱글게임_쉬움_화면
-		ImagePanel easyModePage = new ImagePanel(new ImageIcon(".\\images/mainMenuPage.png")
-				.getImage());
+		easyModePage = new ImagePanel(new ImageIcon(".\\images/mainMenuPage.png").getImage());
 		frame.setSize(easyModePage.getWidth(), easyModePage.getHeight());
 		frame.getContentPane().add(easyModePage);
 
@@ -646,6 +656,96 @@ public class Window {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
+		//초급 모드 화면 버튼들
+		//============================================================
+		JButton normalgamebackButton = new JButton("");
+		normalgamebackButton.setIcon(new ImageIcon(".\\images\\backButton.png"));
+		normalgamebackButton.setBounds(56, 598, 66, 66);
+		normalgamebackButton.setBorderPainted(false);
+		normalgamebackButton.setContentAreaFilled(false);
+		normalgamebackButton.setFocusPainted(false);
+		normalgamebackButton.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {
+				normalgamebackButton.setIcon(new ImageIcon(".\\images\\backButtonEntered.png"));
+				normalgamebackButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			public void mouseExited(MouseEvent e) {
+				normalgamebackButton.setIcon(new ImageIcon(".\\images\\backButton.png"));
+				normalgamebackButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+
+			}
+			public void mousePressed(MouseEvent e) {
+				normalgamebackButton.setIcon(new ImageIcon(".\\images\\backButtonEnteredPressed.png"));
+			}
+			public void mouseReleased(MouseEvent e) {
+				//exit
+				easyModePage.setVisible(false);
+				singleModeSelectPage.setVisible(true);
+			}
+		});
+
+		easyModePage.add(normalgamebackButton);
+		//============================================================
+		//중급 모드 화면 버튼들
+		//============================================================
+		JButton nomalgamebackButton = new JButton("");
+		nomalgamebackButton.setIcon(new ImageIcon(".\\images\\backButton.png"));
+		nomalgamebackButton.setBounds(56, 598, 66, 66);
+		nomalgamebackButton.setBorderPainted(false);
+		nomalgamebackButton.setContentAreaFilled(false);
+		nomalgamebackButton.setFocusPainted(false);
+		nomalgamebackButton.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {
+				nomalgamebackButton.setIcon(new ImageIcon(".\\images\\backButtonEntered.png"));
+				nomalgamebackButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			public void mouseExited(MouseEvent e) {
+				nomalgamebackButton.setIcon(new ImageIcon(".\\images\\backButton.png"));
+				nomalgamebackButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+
+			}
+			public void mousePressed(MouseEvent e) {
+				nomalgamebackButton.setIcon(new ImageIcon(".\\images\\backButtonEnteredPressed.png"));
+			}
+			public void mouseReleased(MouseEvent e) {
+				easyModePage.setVisible(false);
+
+				singleModeSelectPage.setVisible(true);
+			}
+		});
+
+		easyModePage.add(nomalgamebackButton);
+//============================================================
+		//고급 모드 화면 버튼들
+		//============================================================
+		JButton hardgamebackButton = new JButton("");
+		hardgamebackButton.setIcon(new ImageIcon(".\\images\\backButton.png"));
+		hardgamebackButton.setBounds(56, 598, 66, 66);
+		hardgamebackButton.setBorderPainted(false);
+		hardgamebackButton.setContentAreaFilled(false);
+		hardgamebackButton.setFocusPainted(false);
+		hardgamebackButton.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {
+				hardgamebackButton.setIcon(new ImageIcon(".\\images\\backButtonEntered.png"));
+				hardgamebackButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			public void mouseExited(MouseEvent e) {
+				hardgamebackButton.setIcon(new ImageIcon(".\\images\\backButton.png"));
+				hardgamebackButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+
+			}
+			public void mousePressed(MouseEvent e) {
+				hardgamebackButton.setIcon(new ImageIcon(".\\images\\backButtonEnteredPressed.png"));
+			}
+			public void mouseReleased(MouseEvent e) {
+				easyModePage.setVisible(false);
+
+				singleModeSelectPage.setVisible(true);
+			}
+		});
+
+		easyModePage.add(hardgamebackButton);
+//============================================================
 
 		//게임시작화면 버튼들
 
@@ -1136,7 +1236,7 @@ public class Window {
 		});
 		singleModeSelectPage.add(singleModeSelectPage_easyButton);
 
-		//중급 모드 버튼
+		//중급 버튼
 		JButton singleModeSelectPage_normalButton = new JButton("");
 		singleModeSelectPage_normalButton.setIcon(new ImageIcon(".\\images\\normal_Button.png"));
 
@@ -1165,13 +1265,13 @@ public class Window {
 			}
 			public void mouseReleased(MouseEvent e) {
 				singleModeSelectPage.setVisible(false);
-				background.setVisible(true);
+				easyModePage.setVisible(true);
 				normal_gameStart();
 			}
 		});
 		singleModeSelectPage.add(singleModeSelectPage_normalButton);
 
-		//고급 모드 버튼
+		//고급 버튼
 		JButton singleModeSelectPage_hardButton = new JButton("");
 		singleModeSelectPage_hardButton.setIcon(new ImageIcon(".\\images\\hard_Button.png"));
 
@@ -1201,14 +1301,14 @@ public class Window {
 			public void mouseReleased(MouseEvent e) {
 				//게임 동작
 				singleModeSelectPage.setVisible(false);
-				background.setVisible(true);
+				easyModePage.setVisible(true);
 				hard_gameStart();
 			}
 		});
 
 		singleModeSelectPage.add(singleModeSelectPage_hardButton);
 
-		//도전 모드 버튼
+		//도전 버튼
 		JButton singleModeSelectPage_challengeButton = new JButton("");
 		singleModeSelectPage_challengeButton.setIcon(new ImageIcon(".\\images\\challenge_Button.png"));
 
@@ -1275,7 +1375,8 @@ public class Window {
 
 //======================================================================
 	/* 게임 시작 */
-	//public void gameStart(int nowSelected, String mode) {
+//	public void gameStart(int nowSelected, String mode) {
+//	InGame IG;
 	public void easy_gameStart() {
 
 		//난이도별로 구조체나 클래스로 [가로x세로|지뢰수] 데이터 저장
@@ -1285,10 +1386,10 @@ public class Window {
 		int col = 9;
 		int row = 9;
 		int mine = 10;
-		
+
 		InGame IG = new InGame(col,row,mine,50);//가로개수,세로개수,지뢰수,한칸당 크기
 		IG.setBounds(410, 150,IG.getWidth(), IG.getHeight());
-		frame.add(IG,1);
+		easyModePage.add(IG);
 //			InGame IG2 = new InGame(col,row,mine);
 //			IG2.setBounds(100, 400,IG2.getWidth(), IG2.getHeight());
 //			frame.add(IG2);
@@ -1299,11 +1400,11 @@ public class Window {
 //			IG4.setBounds(700, 400,IG4.getWidth(), IG4.getHeight());
 //			frame.add(IG4);
 
-		KeyListener kl = new inGameKeyListener(IG);
-		frame.addKeyListener(kl);
+//		KeyListener kl = new inGameKeyListener(IG);
+//		easyModePage.addKeyListener(kl);
 
-		frame.setFocusable(true);
-		frame.requestFocus();
+		easyModePage.setFocusable(true);
+		easyModePage.requestFocus();
 		
 		//작업할거 : 승리 트리거, 패배 트리거
 		//만들기 위해서 필요한거 : 게임 상태를 알기 위해 따로 스레드를 만들어서 게임상태 감시.
@@ -1314,33 +1415,7 @@ public class Window {
 		eee.setIcon(new ImageIcon(".\\images\\backButton.png"));
 		eee.setIcon(new ImageIcon(".\\images\\backButtonEntered.png"));
 
-//============================================================
-		JButton easygamebackButton = new JButton("");
-		easygamebackButton.setIcon(new ImageIcon(".\\images\\backButton.png"));
-		easygamebackButton.setBounds(56, 598, 66, 66);
-		easygamebackButton.setBorderPainted(false);
-		easygamebackButton.setContentAreaFilled(false);
-		easygamebackButton.setFocusPainted(false);
-		easygamebackButton.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(MouseEvent e) {
-				easygamebackButton.setIcon(new ImageIcon(".\\images\\backButtonEntered.png"));
-				easygamebackButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-			public void mouseExited(MouseEvent e) {
-				easygamebackButton.setIcon(new ImageIcon(".\\images\\backButton.png"));
-				easygamebackButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
-			}
-			public void mousePressed(MouseEvent e) {
-				easygamebackButton.setIcon(new ImageIcon(".\\images\\backButtonEnteredPressed.png"));
-			}
-			public void mouseReleased(MouseEvent e) {
-				exit(0);
-			}
-		});
-
-		frame.add(easygamebackButton,0);
-//============================================================
 
 	}
 //중급모드
@@ -1353,13 +1428,21 @@ public class Window {
 
 		InGame IG = new InGame(col,row,mine,30);//가로개수,세로개수,지뢰수,한칸당 크기
 		IG.setBounds(410, 150,IG.getWidth(), IG.getHeight());
-		frame.add(IG,1);
+		easyModePage.add(IG);
 
-		KeyListener kl = new inGameKeyListener(IG);
-		frame.addKeyListener(kl);
+//		KeyListener kl = new inGameKeyListener(IG);
+//		easyModePage.addKeyListener(kl);
 
-		frame.setFocusable(true);
-		frame.requestFocus();
+		easyModePage.setFocusable(true);
+		easyModePage.requestFocus();
+
+		var path = "./images/inGame/resources/11.png";
+		JButton eee = new JButton("");
+		eee.setIcon(new ImageIcon(".\\images\\backButton.png"));
+		eee.setIcon(new ImageIcon(".\\images\\backButtonEntered.png"));
+
+
+
 	}
 
 	//고급모드
@@ -1370,14 +1453,22 @@ public class Window {
 		int mine = 99;
 
 		InGame IG = new InGame(col,row,mine,30);//가로개수,세로개수,지뢰수,한칸당 크기
-		IG.setBounds(80, 150,IG.getWidth(), IG.getHeight());
-		frame.add(IG,1);
+		IG.setBounds(410, 150,IG.getWidth(), IG.getHeight());
+		easyModePage.add(IG);
 
-		KeyListener kl = new inGameKeyListener(IG);
-		frame.addKeyListener(kl);
+//		KeyListener kl = new inGameKeyListener(IG);
+//		easyModePage.addKeyListener(kl);
 
-		frame.setFocusable(true);
-		frame.requestFocus();
+		easyModePage.setFocusable(true);
+		easyModePage.requestFocus();
+
+		var path = "./images/inGame/resources/11.png";
+		JButton eee = new JButton("");
+		eee.setIcon(new ImageIcon(".\\images\\backButton.png"));
+		eee.setIcon(new ImageIcon(".\\images\\backButtonEntered.png"));
+
+
+
 	}
 }
 

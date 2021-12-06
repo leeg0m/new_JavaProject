@@ -136,6 +136,7 @@ public class InGame extends JPanel {
 			img[i] = img[i].getScaledInstance(CELL_SIZE, CELL_SIZE, Image.SCALE_SMOOTH);
 
 			ImageIcon changeIcon = new ImageIcon(img[i]);
+
 //            img[i] = imageSetSize(img[i],30,30);
 
 		}
