@@ -29,7 +29,10 @@ class CCUser extends Thread{
 
     String msg;			//수신 메시지를 저장할 필드
     String nickname;	//클라이언트의 닉네임을 저장할 필드
-
+    String mode;        //싱글모드 게임난이도를 저장할 필드
+    int currenttime;           //싱글모드 시간기록을 저장할 필드
+    String findID;          //클라이언트의 아이디를 저장할 필드
+    String findPassword;    //클라이언트의 비밀번호를 저장할 필드
     Room myRoom;		//입장한 방 객체를 저장할 필드
 
     static int auser_count = 0; // auser 벡터 카운트 초기화
@@ -51,9 +54,13 @@ class CCUser extends Thread{
     final String pexitTag = "PEXIT";	//프로그램종료
     final String rexitTag = "REXIT";	//방퇴장
     final String omokTag = "OMOK";		//오목
-    final String winTag = "WIN";		//승리
+    final String Multi_winTag = "MULTIWIN";	//싱글모드 승리
+    final String Single_winTag = "SINGLEWIN"; //멀티모드 승리
     final String loseTag = "LOSE";		//패배
     final String recordTag = "RECORD";	//전적업데이트
+    final String findTag = "FINDTAG";
+    final String findIDTag = "FINDID";
+    final String findPasswordTag = "FINDPASSWORD";
 
     CCUser(Socket _s, Server _ss) {
         this.socket = _s;
@@ -79,6 +86,9 @@ class CCUser extends Thread{
                 // m["LOGIN", "admin", "admin"]
                 System.out.println(Arrays.toString(m));
                 // 수신받은 문자열들의 첫 번째 배열(m[0])은 모두 태그 문자. 각 기능을 분리한다.
+
+
+
                 /* 로그인 */
                 if(m[0].equals(loginTag)) {
                     // loginCheck은 nickname을 반환 m[1]:id, m[2]:pw 에 맞는 nickname
@@ -133,6 +143,20 @@ class CCUser extends Thread{
                         dos.writeUTF(overTag + "//fail");
                     }
                 }  //중복확인 if문
+
+                /* 아이디/비빌먼호 찾기 */
+                else if(m[0].equals(findIDTag)){
+
+                    if(db.view(m[1]).equals(findIDTag)){  //findIDTag 있을시 실행
+                        dos.writeUTF(findIDTag + "//" + db.view(m[2])); //태그와 조회한 내용을 같이 전송
+                    }
+                    else if(db.view(m[1]).equals(findPasswordTag)){
+                        dos.writeUTF(findPasswordTag + "//" + db.view(m[2]));
+                    }
+                    else{//조회 실패
+                        dos.writeUTF(findIDTag + "//fail");
+                    }
+                }
 
                 /*
                 // 회원정보 조회
@@ -200,11 +224,36 @@ class CCUser extends Thread{
                     }
                 }  //오목 if문
 
-                /* 승리 및 전적 업데이트 */
-                else if(m[0].equals(winTag)) {
+                /* 싱글모드 승리 및 전적 업데이트 */
+                else if(m[0].equals(Single_winTag)) {
                     System.out.println("[Server] " + nickname + " 승리");
 
-                    if(db.winRecord(nickname)) {	//전적 업데이트가 성공하면 업데이트 성공을 전송
+                    if(db.Single_winRecord(mode, nickname, currenttime)) {	//전적 업데이트가 성공하면 업데이트 성공을 전송
+                        dos.writeUTF(recordTag + "//OKAY");
+                    } else {						//전적 업데이트가 실패하면 업데이트 실패를 전송
+                        dos.writeUTF(recordTag + "//FAIL");
+                    }
+
+                    for(int i=0; i<myRoom.ccu.size(); i++) {	//myRoom의 인원수만큼 반복
+
+                        /* 방 접속 인원 중 클라이언트와 다른 닉네임의 클라이언트일때만 */
+                        if(!myRoom.ccu.get(i).nickname.equals(nickname)) {
+                            myRoom.ccu.get(i).dos.writeUTF(loseTag + "//");
+
+                            if(db.loseRecord(myRoom.ccu.get(i).nickname)) {	//전적 업데이트가 성공하면 업데이트 성공을 전송
+                                myRoom.ccu.get(i).dos.writeUTF(recordTag + "//OKAY");
+                            } else {										//전적 업데이트가 실패하면 업데이트 실패를 전송
+                                myRoom.ccu.get(i).dos.writeUTF(recordTag + "//FAIL");
+                            }
+                        }
+                    }
+                }
+
+                /* 멀티모드 승리 및 전적 업데이트 */
+                else if(m[0].equals(Multi_winTag)) {
+                    System.out.println("[Server] " + nickname + " 승리");
+
+                    if(db.Multi_winRecord(nickname)) {	//전적 업데이트가 성공하면 업데이트 성공을 전송
                         dos.writeUTF(recordTag + "//OKAY");
                     } else {						//전적 업데이트가 실패하면 업데이트 실패를 전송
                         dos.writeUTF(recordTag + "//FAIL");
@@ -244,9 +293,9 @@ class CCUser extends Thread{
 
                             /* 방 접속 인원 중 클라이언트와 다른 닉네임의 클라이언트일때만 */
                             if(!myRoom.ccu.get(i).nickname.equals(nickname)) {
-                                myRoom.ccu.get(i).dos.writeUTF(winTag + "//");
-
-                                if(db.winRecord(myRoom.ccu.get(i).nickname)) {	//전적 업데이트가 성공하면 업데이트 성공을 전송
+                                myRoom.ccu.get(i).dos.writeUTF(Multi_winTag + "//");
+                                // 수정 필요!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                if(db.Multi_winRecord(myRoom.ccu.get(i).nickname)) {	//전적 업데이트가 성공하면 업데이트 성공을 전송
                                     myRoom.ccu.get(i).dos.writeUTF(recordTag + "//OKAY");
                                 } else {										//전적 업데이트가 실패하면 업데이트 실패를 전송
                                     myRoom.ccu.get(i).dos.writeUTF(recordTag + "//FAIL");

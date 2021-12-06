@@ -75,7 +75,7 @@ public class InGame extends JPanel {
 
 	private static int[] field;// 모든 셀(칸) 넘버링
 	private boolean inGame;// false:game lost
-	private boolean win;
+	boolean win;
 	private int minesLeft;// 좌측하단의 표시되는 현재 남은 지뢰개수를 카운트하는 변수
 	private Image[] img;// 이미지 파일
 
