@@ -58,8 +58,9 @@ class CCUser extends Thread{
     final String Single_winTag = "SINGLEWIN"; //멀티모드 승리
     final String loseTag = "LOSE";		//패배
     final String recordTag = "RECORD";	//전적업데이트
-    static String find_id = "FINDID";
-    static String find_pw = "FINDPW";
+    final String find_id = "FINDID";
+    final String find_pw = "FINDPW";
+    final String roomuserTag = "ROOMUSER";
 
 
     CCUser(Socket _s, Server _ss) {

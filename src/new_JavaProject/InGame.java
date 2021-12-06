@@ -74,7 +74,7 @@ public class InGame extends JPanel {
 	private int BOARD_HEIGHT = N_ROWS * CELL_SIZE + 1;//
 
 	private static int[] field;// 모든 셀(칸) 넘버링
-	private boolean inGame;// false:game lost
+	boolean inGame;// false:game lost
 	boolean win;
 	private int minesLeft;// 좌측하단의 표시되는 현재 남은 지뢰개수를 카운트하는 변수
 	private Image[] img;// 이미지 파일

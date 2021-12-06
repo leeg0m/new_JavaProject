@@ -73,6 +73,7 @@ public class Window {
 	static String hardmode = "HARDMODE";
 	static String find_id = "FINDID";
 	static String find_pw = "FINDPW";
+	static String roomuser = "ROOMUSER";
 
 	/**
 	 * Launch the application.
@@ -377,7 +378,7 @@ public class Window {
 						JOptionPane.showMessageDialog(null, "찾으시는 비밀번호는  [" + mypw + "]입니다." );
 					}
 					else
-						JOptionPane.showMessageDialog(null,"이메일 또는 아이디가 잘못되었습니다!");
+						JOptionPane.showMessageDialog(null,"이메일 또는 아이디가 잘못되었가니다!");
 				} catch(IOException ex) {
 				}
 			}
@@ -918,10 +919,20 @@ public class Window {
 		frame.setSize(hardModePage.getWidth(), hardModePage.getHeight());
 		frame.getContentPane().add(hardModePage);
 
-		// 같이하기_화면
+		// 같이하기_이미지화면
 		multiModePage = new ImagePanel(new ImageIcon(".\\images/multiPage1.png").getImage());
 		frame.setSize(multiModePage.getWidth(), multiModePage.getHeight());
 		frame.getContentPane().add(multiModePage);
+
+		//빨간 버튼(플레이어 차례)
+		JButton redDot = new JButton();
+		redDot.setIcon(new ImageIcon(".\\images\\reddotButton.png"));
+		redDot.setBorderPainted(false);
+		redDot.setBounds(1200,100,28,28);
+		multiModePage.add(redDot);
+
+
+
 
 		// 화면 초기화
 		signupPage.setVisible(false);
@@ -1085,7 +1096,7 @@ public class Window {
 		});
 		startGamePage.add(startGamePage_singleButton);
 
-		// 멀티 버튼
+		// 같이하기 버튼
 		JButton startGamePage_multiButton = new JButton("");
 		startGamePage_multiButton.setIcon(new ImageIcon(".\\images\\multiButton.png"));
 
@@ -1112,7 +1123,15 @@ public class Window {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				// 멀티게임 동작
+				// 같이하기(멀티)게임 동작
+					String user_data;
+					user_data = roomuser + "//" + mynick;
+				try {
+					out.writeUTF(user_data);
+				} catch(IOException ex) {
+
+				}
+
 				startGamePage.setVisible(false);
 				multiModePage.setVisible(true);
 			}
@@ -1726,15 +1745,22 @@ public class Window {
 		eee.setIcon(new ImageIcon(".\\images\\backButton.png"));
 		eee.setIcon(new ImageIcon(".\\images\\backButtonEntered.png"));
 
-		if(IG.win) {
-			try {
-				String singlewin_data;
-				singlewin_data = singlewin + "//" + easymode + "//" + IG.getTimer(); // Server에서 "//"를 통해서 구분
-				out.writeUTF(singlewin_data);
-			} catch(IOException ex) {
+		Thread t = new Thread(new Runnable() {
+			public void run() {
+				while (IG.inGame) {
 
+				}
+				if (IG.win) {
+					try {
+						String singlewin_data;
+						singlewin_data = singlewin + "//" + easymode + "//" + IG.getTimer(); // Server에서 "//"를 통해서 구분
+						out.writeUTF(singlewin_data);
+					} catch (IOException ex) {
+
+					}
+				}
 			}
-		}
+		});
 	}
 //중급모드
 
