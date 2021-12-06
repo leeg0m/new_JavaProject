@@ -42,6 +42,7 @@ public class Window {
 	static String login_data;
 	static String signup_data;
 	static String overcheck_data;
+	static String findcheck_data;
 	static String IDvalue; // ID
 	static String PWvalue; // PW
 	static String NIvalue; // NickName
@@ -50,6 +51,7 @@ public class Window {
 	static String signup_possible;
 	static String overcheckNick_possible;
 	static String overcheckId_possible;
+
 	static int IDovercheck_count = 0; // 중복체크 누른 여부 체크
 	static int NIovercheck_count = 0; // 둘 다 1 이상 일 떄 회원가입 가능
 	static String mynick;
@@ -68,6 +70,8 @@ public class Window {
 	static String easymode = "EASYMODE";
 	static String normalmode = "NORMALMODE";
 	static String hardmode = "HARDMODE";
+	final String find_id = "FINDID";
+	final String find_pw = "FINDPW";
 
 	/**
 	 * Launch the application.
@@ -99,6 +103,7 @@ public class Window {
 	ImagePanel easyModePage;
 	ImagePanel nomalModePage;
 	ImagePanel hardModePage;
+	ImagePanel multiModePage;
 
 	ImagePanel signupPage;
 	ImagePanel htpPage;
@@ -203,6 +208,152 @@ public class Window {
 		frame.setSize(signupPage.getWidth(), signupPage.getHeight());
 		frame.getContentPane().add(signupPage);
 
+		//아이디_비밀번호 찾기 화면
+		ImagePanel findPage = new ImagePanel(new ImageIcon(".\\images\\findPage.png").getImage());
+		frame.setSize(findPage.getWidth(), findPage.getHeight());
+		frame.getContentPane().add(findPage);
+
+
+
+		//아이디_비밀번호 찾기 화면 필드들기
+
+		//아이디 찾기 아이디 필드
+		JTextField findPageTxtID1 = new JTextField();
+		findPageTxtID1.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
+		findPageTxtID1.setBounds(590, 244, 178, 33);
+		findPageTxtID1.setBorder(null);
+		signupPage.add(findPageTxtID1);
+		findPage.add(findPageTxtID1);
+
+		//비밀번호 찾기 이메일 필드
+		JTextField findPageEmail = new JTextField();
+		findPageEmail.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
+		findPageEmail.setBounds(594, 384, 178, 33);
+		findPageEmail.setBorder(null);
+		signupPage.add(findPageEmail);
+		findPage.add(findPageEmail);
+
+		//비밀번호 찾기 아이디 필드
+		JTextField findPageTxtID2 = new JTextField();
+		findPageTxtID2.setFont(new Font("맑은 고딕", Font.PLAIN, 20));
+		findPageTxtID2.setBounds(595, 436, 178, 33);
+		findPageTxtID2.setBorder(null);
+		signupPage.add(findPageTxtID2);
+		findPage.add(findPageTxtID2);
+
+
+		//아이디_비밀번호 찾기 버튼들
+
+		//찾기화면_아이디 찾기 버튼
+		JButton findPage_findIdButton = new JButton("");
+		findPage_findIdButton.setBounds(675,302,92,19);
+		findPage_findIdButton.setBorderPainted(false);
+		findPage_findIdButton.setContentAreaFilled(false);
+		findPage_findIdButton.setFocusPainted(false);
+		findPage_findIdButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				findPage_findIdButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				findPage_findIdButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// 메소드로 로그인 버튼을 눌렀을 때 서버에 ID와 PW를 반환
+				// ID, PW를 반환받은 서버는 일치여부 확인을 위해 DB 반환
+				// DB는 확인 후 맞으면 true를, 틀리면 false를 서버에 반환
+				// 서버는 true를 반화받으면 success를, false를 반환받으면 fail을 반환
+				//
+
+				try {
+					IDvalue = null;
+					PWvalue = null;
+					IDvalue = findPageTxtID1.getText();
+					if(IDvalue.equals(""))
+						IDvalue = "null";
+					if(PWvalue.equals(""))
+						PWvalue = "null";
+					if(IDvalue.equals("null") || PWvalue.equals("null"))
+						JOptionPane.showMessageDialog(null,"ID 혹은 PW가 입력되지 않았습니다.");
+					else {
+						socket = new Socket(Server_IP, Server_Port);
+						in = new DataInputStream(socket.getInputStream());
+						keyboard = new DataInputStream(socket.getInputStream());
+						out = new DataOutputStream(socket.getOutputStream());
+						System.out.println(socket.toString());
+
+						login_data = login + "//" + IDvalue + "//" + PWvalue; // Server에서 "//"를 통해서 구분
+						out.writeUTF(login_data);
+					}
+
+				} catch (IOException ex) {
+					JOptionPane.showMessageDialog(null,"게임 점검중(서버 오류)");
+				}
+
+				try {
+					login_possible = in.readUTF(); //    login//success//mynick
+					String s[] = login_possible.split("//");
+					if(s[0].equals(login) && s[1].equals("success")) {
+						mynick = s[2];
+						JOptionPane.showMessageDialog(null, mynick + "님 환영합니다!");
+						loginPage.setVisible(false);
+						startGamePage.setVisible(true);
+					}
+					else
+						JOptionPane.showMessageDialog(null,"ID나 PW가 잘못되었습니다!");
+				} catch(IOException ex) {
+
+				}
+//				loginPage.setVisible(false);
+//				startGamePage.setVisible(true);
+
+
+			}
+
+		});
+
+		findPage.add(findPage_findIdButton);
+
+		//찾기화면_비밀번호 찾기 버튼
+
+		//찾기화면_뒤로가기 버튼
+		JButton findPage_BackButton = new JButton("");
+
+		findPage_BackButton.setBounds(702, 561, 68, 18);
+		findPage_BackButton.setBorderPainted(false);
+		findPage_BackButton.setContentAreaFilled(false);
+		findPage_BackButton.setFocusPainted(false);
+		findPage_BackButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				findPage_BackButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				findPage_BackButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+
+
+				findPage.setVisible(false);
+				loginPage.setVisible(true);
+
+				findPageTxtID1.setText("");
+				findPageTxtID2.setText("");
+				findPageEmail.setText("");
+
+			}
+		});
+		findPage.add(findPage_BackButton);
+
+
 		// 회원가입 화면 필드들
 
 		// 회원가입 ID필드
@@ -270,7 +421,7 @@ public class Window {
 						out = new DataOutputStream(socket.getOutputStream());
 						System.out.println(socket.toString());
 
-						overcheck_data = overcheck + "//" + "id" + "//" + IDvalue; // Server에서 "//"를 통해서 구분
+						overcheck_data = find_id + "//" + "id" + "//" + IDvalue; // Server에서 "//"를 통해서 구분
 						out.writeUTF(overcheck_data);
 
 					} catch (IOException ex) {
@@ -659,7 +810,8 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				JOptionPane.showMessageDialog(null, "찾기 테슷흐");
+				loginPage.setVisible(false);
+				findPage.setVisible(true);
 
 			}
 		});
@@ -697,13 +849,11 @@ public class Window {
 		hardModePage = new ImagePanel(new ImageIcon(".\\images/mainMenuPage.png").getImage());
 		frame.setSize(hardModePage.getWidth(), hardModePage.getHeight());
 		frame.getContentPane().add(hardModePage);
-		// 멀티게임_화면
-		/*
-		 * ImagePanel multiModePage = new ImagePanel(new
-		 * ImageIcon(".\\images/multiPage.png").getImage());
-		 * frame.setSize(multiModePage.getWidth(), multiModePage.getHeight());
-		 * frame.getContentPane().add(multiModePage);
-		 */
+
+		// 같이하기_화면
+		//multiModePage = new ImagePanel(new ImageIcon(".\\images/multiPage1.png").getImage());
+		//frame.setSize(multiModePage.getWidth(), multiModePage.getHeight());
+		//frame.getContentPane().add(multiModePage);
 
 		// 화면 초기화
 		signupPage.setVisible(false);
@@ -715,6 +865,8 @@ public class Window {
 		nomalModePage.setVisible(false);
 		hardModePage.setVisible(false);
 		background.setVisible(false);
+		findPage.setVisible(false);
+		//multiModePage.setVisible(false);
 
 		frame.getContentPane().setLayout(null);
 
@@ -893,8 +1045,8 @@ public class Window {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// 멀티게임 동작
-				// startGamePage.setVisible(false);
-				// multiModePage.setVisible(true);
+				//startGamePage.setVisible(false);
+				//multiModePage.setVisible(true);
 			}
 		});
 		startGamePage.add(startGamePage_multiButton);

@@ -69,8 +69,8 @@ public class Database {
         String user_email = _email;
 
         try {
-            //member 테이블에 각 문자열들을 순서대로 업데이트하는 문장. 각각 초기값을 승/패는 0, mmr점수는 1000으로 한다.
-            String insertStr = "INSERT INTO member VALUES('" + user_nickname + "', '" + user_id + "', '" + user_password + "', '" + user_email +"',0,0,1000)";
+            //member 테이블에 각 문자열들을 순서대로 업데이트하는 문장. 각각 초기값을 초급/중급/고급/승/패 는 0, mmr점수는 1000으로 한다.
+            String insertStr = "INSERT INTO member VALUES('" + user_nickname + "', '" + user_id + "', '" + user_password + "', '" + user_email +"' ,0,0,0,0,0,1000)";
             state.executeUpdate(insertStr);
 
             flag = true;	//업데이트문이 정상적으로 수행되면 flag를 true로 초기화하고 성공을 콘솔로 알린다.
