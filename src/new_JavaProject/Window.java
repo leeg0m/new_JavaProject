@@ -1100,7 +1100,7 @@ public class Window {
 		});
 		singleModeSelectPage.add(singleModeSelectPage_logoutButton);
 
-		//초급 모드 버튼
+		// 초급 버튼
 		JButton singleModeSelectPage_easyButton = new JButton("");
 		singleModeSelectPage_easyButton.setIcon(new ImageIcon(".\\images\\easy_Button.png"));
 
@@ -1129,7 +1129,7 @@ public class Window {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				singleModeSelectPage.setVisible(false);
-				background.setVisible(true);
+				easyModePage.setVisible(true);
 				easy_gameStart();
 
 			}
