@@ -103,15 +103,15 @@ public class Database {
 
             */
 
-                while (result.next()) {
-                    //조회한 아이디(혹은 닉네임)과 val을 비교.
-                    if (!val.equals(result.getString(att))) {   // val과 같은 것이 존재하면 flag를 true로 변경한다.
-                        flag = true;
-                    } else {   // val과 같은 것이 존재하지 않으면 flag를 false로 변경한다.
-                        flag = false;
-                    }
-                    count++;
+            while (result.next()) {
+                //조회한 아이디(혹은 닉네임)과 val을 비교.
+                if (!val.equals(result.getString(att))) {   // val과 같은 것이 존재하면 flag를 true로 변경한다.
+                    flag = true;
+                } else {   // val과 같은 것이 존재하지 않으면 flag를 false로 변경한다.
+                    flag = false;
                 }
+                count++;
+            }
 
             System.out.println("[Server] 중복 확인 성공");   //정상적으로 수행되었을 때 성공을 콘솔로 알린다.
         } catch(Exception e) {   //정상적으로 수행하지 못하면 실패를 콘솔로 알린다.
@@ -199,7 +199,7 @@ public class Database {
             while(member_result.next()) {
                 //기존의 msg에 "닉네임 : n승 n패@" 형태의 문자열을 계속해서 추가한다.
                 member_msg = member_msg + member_result.getString("nickname") + " : " + member_result.getInt("win") + "승 " + member_result.getInt("lose") + "패"
-                            + member_result.getInt("mmr") + "점";
+                        + member_result.getInt("mmr") + "점";
                 count++;
             }
             System.out.println("[Server] 전적 조회 성공");	//정상적으로 수행되면 성공을 콘솔로 알린다.

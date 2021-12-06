@@ -75,6 +75,7 @@ public class InGame extends JPanel {
 
 	private static int[] field;// 모든 셀(칸) 넘버링
 	private boolean inGame;// false:game lost
+	private boolean win;
 	private int minesLeft;// 좌측하단의 표시되는 현재 남은 지뢰개수를 카운트하는 변수
 	private Image[] img;// 이미지 파일
 
@@ -344,6 +345,7 @@ public class InGame extends JPanel {
 			fc.firstCheck = true;// 첫클릭 상태 초기화
 
 			inGame = true;// 게임 상태. true:대기 false:gamelose
+			win = false;
 			minesLeft = N_MINES;// 남은 개수를 총 개수로 초기화
 
 			allCells = N_ROWS * N_COLS;
@@ -537,6 +539,8 @@ public class InGame extends JPanel {
 			secDiffTime = (afterTime - beforeTime) / 1_000_000;
 			m_task.cancel();
 			inGame = false;// 게임종료
+			win = true;
+
 //			statusbar.setText("Game won");// 승리
 //            sound(soundsFilePath.get(soundsEnum.GAMEWIN.ordinal()));//승리소리
 
@@ -544,6 +548,7 @@ public class InGame extends JPanel {
 			afterTime = System.nanoTime();// 게임 종료시간
 			secDiffTime = (afterTime - beforeTime) / 1_000_000;
 			m_task.cancel();
+			win = false;
 //			statusbar.setText("Game lost");// 패배
 //            sound(soundsFilePath.get(soundsEnum.GAMEOVER.ordinal()));//패배소리
 		}
@@ -698,7 +703,7 @@ public class InGame extends JPanel {
 
 						setTimerTask();
 						m_timer = new Timer();
-						m_timer.schedule(m_task, 0, 100);
+						m_timer.schedule(m_task, 0, 1000);
 
 						fc.openFirstCell(inGame, currentField);// 팔방향 빈셀 확보
 						game.newGame();// 지뢰 셋팅
@@ -1012,8 +1017,7 @@ public class InGame extends JPanel {
 				public void run() {
 					afterTime = System.nanoTime();
 					secDiffTime = (afterTime - beforeTime) / 1_000_000;//정수? 실수?
-//					secDiffTime = (afterTime - beforeTime) / 1_000_000_000;//정수? 실수?
-					System.out.printf("%.2f\n", (afterTime - beforeTime) / 1_000_000_000.);//나노초 -> 초 변환
+					System.out.printf("%.2f\n", (afterTime - beforeTime) / 1_000_000.);//나노초 -> 초 변환
 				}
 			};
 		} catch (Exception e) {
@@ -1279,7 +1283,7 @@ public class InGame extends JPanel {
 			//reverse, random
 		}
 	}
-	int getPlayTime(){
+	int getTimer(){
 		return (int)secDiffTime;
 	}
 

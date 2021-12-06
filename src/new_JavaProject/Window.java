@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import static java.lang.System.*;
+import new_JavaProject.InGame.Items;
 
 public class Window {
 	Socket socket = new Socket(); // 소켓 생성
@@ -21,17 +22,22 @@ public class Window {
 	private JFrame frame;
 	private int mouseX, mouseY;
 
-	static String Server_IP = "192.168.1.90";
+	static String Server_IP = "172.18.6.176";
+	static int Server_Port = 5555;
 	static String login_data;
 	static String signup_data;
 	static String overcheck_data;
 	static String IDvalue; // ID
 	static String PWvalue; // PW
 	static String NIvalue; // NickName
+	static String EMvalue; // email
 	static String login_possible;
 	static String signup_possible;
 	static String overcheckNick_possible;
 	static String overcheckId_possible;
+	static int IDovercheck_count = 0; // 중복체크 누른 여부 체크
+	static int NIovercheck_count = 0; // 둘 다 1 이상 일 떄 회원가입 가능
+	static String mynick;
 
 	// 태그 정보
 
@@ -40,6 +46,7 @@ public class Window {
 	static String login = "LOGIN";
 	static String signup = "SIGNUP";
 	static String overcheck = "OVER";
+	static String logout = "LOGOUT";
 
 
 	/**
@@ -94,7 +101,18 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+
+				if(socket.isConnected()) {
+					try {
+
+						out.writeUTF(logout + "//" + mynick);
+						socket.close();
+					} catch (IOException ex) {
+
+					}
+				}
 				exit(0);
+
 			}
 		});
 		frame.getContentPane().add(exitButton);
@@ -158,31 +176,39 @@ public class Window {
 		//회원가입 ID필드
 		JTextField signupPageTxtID = new JTextField();
 		signupPageTxtID.setFont(new Font("맑은 고딕", Font.PLAIN,20));
-		signupPageTxtID.setBounds(551,327,178,33);
+		signupPageTxtID.setBounds(551,270,178,33);
 		signupPageTxtID.setBorder(null);
 		signupPage.add(signupPageTxtID);
-
-		//회원가입 비밀번호 필드
-		JPasswordField signupPagePass = new JPasswordField();
-		signupPagePass.setFont(new Font("맑은 고딕", Font.PLAIN,20));
-		signupPagePass.setBounds(551,383,178,33);
-		signupPagePass.setBorder(null);
-		signupPage.add(signupPagePass);
 
 		//회원가입 닉네임 필드
 		JTextField signupPageNickname = new JTextField();
 		signupPageNickname.setFont(new Font("맑은 고딕", Font.PLAIN,20));
-		signupPageNickname.setBounds(551,437,178,33);
+		signupPageNickname.setBounds(551,326,178,33);
 		signupPageNickname.setBorder(null);
 		signupPage.add(signupPageNickname);
+
+		//회원가입 이메일 필드
+		JTextField signupPageEmail = new JTextField();
+		signupPageEmail.setFont(new Font("맑은 고딕", Font.PLAIN,20));
+		signupPageEmail.setBounds(551,382,178,33);
+		signupPageEmail.setBorder(null);
+		signupPage.add(signupPageEmail);
+
+
+		//회원가입 비밀번호 필드
+		JPasswordField signupPagePass = new JPasswordField();
+		signupPagePass.setFont(new Font("맑은 고딕", Font.PLAIN,20));
+		signupPagePass.setBounds(551,437,178,33);
+		signupPagePass.setBorder(null);
+		signupPage.add(signupPagePass);
 
 
 		/* 회원가입 화면 버튼들 */
 		// id 중복체크 버튼
 		JButton signupPage_IDovercheckButton = new JButton("");
-		signupPage_IDovercheckButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
+		signupPage_IDovercheckButton.setIcon(new ImageIcon(".\\images\\overcheckButton.png"));
 
-		signupPage_IDovercheckButton.setBounds(755, 327, 91, 35);
+		signupPage_IDovercheckButton.setBounds(755, 270, 91, 35);
 		signupPage_IDovercheckButton.setBorderPainted(false);
 		signupPage_IDovercheckButton.setContentAreaFilled(false);
 		signupPage_IDovercheckButton.setFocusPainted(false);
@@ -200,14 +226,50 @@ public class Window {
 			@Override
 			public void mousePressed(MouseEvent e) {
 
+				IDvalue = null;
+				IDvalue = signupPageTxtID.getText();
+
+				if(IDvalue.equals(""))
+					JOptionPane.showMessageDialog(null,"ID를 입력해주세요");
+				else{
+					try {
+						socket = new Socket(Server_IP, Server_Port);
+						in = new DataInputStream(socket.getInputStream());
+						keyboard = new DataInputStream(socket.getInputStream());
+						out = new DataOutputStream(socket.getOutputStream());
+						System.out.println(socket.toString());
+
+						overcheck_data = overcheck + "//" + "id" + "//" + IDvalue; // Server에서 "//"를 통해서 구분
+						out.writeUTF(overcheck_data);
+
+					}catch (IOException ex){
+
+					}
+
+					try {
+						overcheckId_possible = in.readUTF();
+						//System.out.println(overcheckId_possible);
+						if(overcheckId_possible.equals(overcheck + sc)) {
+							JOptionPane.showMessageDialog(null, "사용가능!");
+							IDovercheck_count++;
+						}
+						else
+							JOptionPane.showMessageDialog(null,"사용불가! 다른 ID를 입력해주세요.");
+
+					}catch (IOException ex){
+
+					}
+				}
 			}
 		});
 		signupPage.add(signupPage_IDovercheckButton);
-		// nickname 중복체크 버튼
-		JButton signupPage_NicknameovercheckButton = new JButton("");
-		signupPage_NicknameovercheckButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
 
-		signupPage_NicknameovercheckButton.setBounds(755, 327, 91, 35);
+
+		// 닉네임 중복체크 버튼
+		JButton signupPage_NicknameovercheckButton = new JButton("");
+		signupPage_NicknameovercheckButton.setIcon(new ImageIcon(".\\images\\overcheckButton.png"));
+
+		signupPage_NicknameovercheckButton.setBounds(755, 326, 91, 35);
 		signupPage_NicknameovercheckButton.setBorderPainted(false);
 		signupPage_NicknameovercheckButton.setContentAreaFilled(false);
 		signupPage_NicknameovercheckButton.setFocusPainted(false);
@@ -225,53 +287,48 @@ public class Window {
 			@Override
 			public void mousePressed(MouseEvent e) {
 
-				try	{
-					System.out.println(signupPageNickname.getText());
-					NIvalue = null;
-					NIvalue = signupPageNickname.getText();
+				NIvalue = null;
+				NIvalue = signupPageNickname.getText();
 
-					if(IDvalue.equals(null))
-						JOptionPane.showMessageDialog(null,"ID를 입력해주세요!");
-					else {
-						socket = new Socket(Server_IP, 5555);
+				if(NIvalue.equals(""))
+					JOptionPane.showMessageDialog(null,"닉네임을 입력해주세요");
+				else{
+					try {
+						socket = new Socket(Server_IP, Server_Port);
 						in = new DataInputStream(socket.getInputStream());
 						keyboard = new DataInputStream(socket.getInputStream());
 						out = new DataOutputStream(socket.getOutputStream());
 						System.out.println(socket.toString());
 
-						overcheck_data = overcheck + "//" + IDvalue; // Server에서 "//"를 통해서 구분
+						overcheck_data = overcheck + "//" + "nickname" + "//" + NIvalue; // Server에서 "//"를 통해서 구분
 						out.writeUTF(overcheck_data);
-						JOptionPane.showMessageDialog(null,"사용가능!");
-						// id 혹은 pw 혹은 Nickname이 null 값일 때 회원가입 버튼 눌렀을 때 "나머지 값을 입력해주세요!" 출력
+
+					}catch (IOException ex){
+
 					}
 
-				} catch(IOException ex) {
+					try {
+						overcheckNick_possible = in.readUTF();
+						//System.out.println(overcheckId_possible);
+						if(overcheckNick_possible.equals(overcheck + sc)) {
+							JOptionPane.showMessageDialog(null, "사용가능!");
+							NIovercheck_count++;
+						}
+						else
+							JOptionPane.showMessageDialog(null,"사용불가! 다른 닉네임을 입력해주세요.");
 
-				}
+					}catch (IOException ex){
 
-				try {
-					overcheckNick_possible = in.readUTF();
-					if (overcheckNick_possible.equals(overcheck + sc)) {
-						JOptionPane.showMessageDialog(null, "사용가능!");
-						signupPage.setVisible(false);
-						loginPage.setVisible(true);
-					} else {
-						JOptionPane.showMessageDialog(null, "사용가능! 다른 ID를 입력해주세요.");
-						signupPage.setVisible(false);
-						loginPage.setVisible(true);
 					}
-					} catch(IOException ex) {
-
 				}
-
 			}
 		});
 		signupPage.add(signupPage_NicknameovercheckButton);
 
 
-		//뒤로가기 버튼
+		// 회원가입 화면의 뒤로가기 버튼
 		JButton signupPage_BackButton = new JButton("");
-		signupPage_BackButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
+		signupPage_BackButton.setIcon(new ImageIcon(".\\images\\signupBackButton.png"));
 
 		signupPage_BackButton.setBounds(543, 512, 91, 35);
 		signupPage_BackButton.setBorderPainted(false);
@@ -290,15 +347,23 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				IDovercheck_count = 0;			//뒤로가기 버튼 누를 시 아이디, 닉네임 카운터 초기화
+				NIovercheck_count = 0;
+
 				signupPage.setVisible(false);
 				loginPage.setVisible(true);
+
+				signupPageTxtID.setText("");
+				signupPagePass.setText("");
+				signupPageEmail.setText("");
+				signupPageNickname.setText("");
 			}
 		});
 		signupPage.add(signupPage_BackButton);
 
-		//회원가입 화면의 회원가입 버튼
+		// 회원가입 화면의 회원가입 버튼
 		JButton signupPage_signupButton = new JButton("");
-		signupPage_signupButton.setIcon(new ImageIcon(".\\images\\loginButton.png"));
+		signupPage_signupButton.setIcon(new ImageIcon(".\\images\\signupButton.png"));
 
 		signupPage_signupButton.setBounds(647, 512, 91, 35);
 		signupPage_signupButton.setBorderPainted(false);
@@ -317,42 +382,53 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				try {
-					IDvalue = null;
-					PWvalue = null;
-					NIvalue = null;
-					IDvalue = signupPageTxtID.getText();
-					PWvalue = signupPagePass.getText();
-					NIvalue = signupPageNickname.getText();
+				IDvalue = null;
+				PWvalue = null;
+				NIvalue = null;
+				EMvalue = null;
+				IDvalue = signupPageTxtID.getText();
+				PWvalue = signupPagePass.getText();
+				NIvalue = signupPageNickname.getText();
+				EMvalue = signupPageEmail.getText();
 
-					if(IDvalue.equals("") || PWvalue.equals("") ||NIvalue.equals(""))
-						JOptionPane.showMessageDialog(null,"나머지 값을 입력해주세요!");
-					else {
-						socket = new Socket(Server_IP, 5555);
+				if(IDvalue.equals("") || PWvalue.equals("") || NIvalue.equals("") || EMvalue.equals("")){
+					JOptionPane.showMessageDialog(null, "나머지 값을 채워주세요!");
+				}else if(IDovercheck_count == 0 || NIovercheck_count == 0){
+					JOptionPane.showMessageDialog(null, "중복체크 버튼을 눌러주세요");
+				}else{
+					try{
+						socket = new Socket(Server_IP,Server_Port);
 						in = new DataInputStream(socket.getInputStream());
 						keyboard = new DataInputStream(socket.getInputStream());
 						out = new DataOutputStream(socket.getOutputStream());
 						System.out.println(socket.toString());
 
-						signup_data = signup + "//" + NIvalue + "//" + IDvalue + "//" + PWvalue; // Server에서 "//"를 통해서 구분
+						signup_data = signup + "//" + NIvalue + "//" + IDvalue + "//" + PWvalue + "//" + EMvalue; // Server에서 "//"를 통해서 구분
 						out.writeUTF(signup_data);
 						// id 혹은 pw 혹은 Nickname이 null 값일 때 회원가입 버튼 눌렀을 때 "나머지 값을 입력해주세요!" 출력
-					}
-				} catch (IOException ex) {
-					JOptionPane.showMessageDialog(null,"통신 실패!!!");
-				}
-
-				try {
-					signup_possible = in.readUTF();
-					if(signup_possible.equals(signup + sc)) {
-						JOptionPane.showMessageDialog(null,"회원가입 성공! 메인화면으로 돌아갑니다.");
-						signupPage.setVisible(false);
-						loginPage.setVisible(true);
+					}catch (IOException ex){
+						JOptionPane.showMessageDialog(null,"통신 실패!!!");
 					}
 
-				} catch(IOException ex) {
+					try {
+						signup_possible = in.readUTF();
+						if(signup_possible.equals(signup + sc)) {
+							JOptionPane.showMessageDialog(null, "회원가입 성공! 메인화면으로 돌아갑니다.");
+							signupPage.setVisible(false);
+							loginPage.setVisible(true);
+							IDovercheck_count = 0;            //회원가입 성공시 아이디, 닉네임 카운터 초기화
+							NIovercheck_count = 0;
 
+							signupPageTxtID.setText("");
+							signupPagePass.setText("");
+							signupPageNickname.setText("");
+							signupPageEmail.setText("");
+						}
+					}catch (IOException ex){
+
+					}
 				}
+
 			}
 		});
 		signupPage.add(signupPage_signupButton);
@@ -400,11 +476,11 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-			// 메소드로 로그인 버튼을 눌렀을 때 서버에 ID와 PW를 반환
-			// ID, PW를 반환받은 서버는 일치여부 확인을 위해 DB 반환
-			// DB는 확인 후 맞으면 true를, 틀리면 false를 서버에 반환
-			// 서버는 true를 반화받으면 success를, false를 반환받으면 fail을 반환
-			//
+				// 메소드로 로그인 버튼을 눌렀을 때 서버에 ID와 PW를 반환
+				// ID, PW를 반환받은 서버는 일치여부 확인을 위해 DB 반환
+				// DB는 확인 후 맞으면 true를, 틀리면 false를 서버에 반환
+				// 서버는 true를 반화받으면 success를, false를 반환받으면 fail을 반환
+				//
 
 				try {
 					IDvalue = null;
@@ -418,7 +494,7 @@ public class Window {
 					if(IDvalue.equals("null") || PWvalue.equals("null"))
 						JOptionPane.showMessageDialog(null,"ID 혹은 PW가 입력되지 않았습니다.");
 					else {
-						socket = new Socket(Server_IP, 5555);
+						socket = new Socket(Server_IP, Server_Port);
 						in = new DataInputStream(socket.getInputStream());
 						keyboard = new DataInputStream(socket.getInputStream());
 						out = new DataOutputStream(socket.getOutputStream());
@@ -433,15 +509,18 @@ public class Window {
 				}
 
 				try {
-					login_possible = in.readUTF();
-					if(login_possible.equals(login + sc)) {
+					login_possible = in.readUTF(); //    login//success//mynick
+					String s[] = login_possible.split("//");
+					if(s[0].equals(login) && s[1].equals("success")) {
+						mynick = s[2];
+						JOptionPane.showMessageDialog(null, mynick + "님 환영합니다!");
 						loginPage.setVisible(false);
 						startGamePage.setVisible(true);
 					}
 					else
 						JOptionPane.showMessageDialog(null,"ID나 PW가 잘못되었습니다!");
 				} catch(IOException ex) {
-					//JOptionPane.showMessageDialog(null,"ID나 PW가 잘못되었습니다!");
+
 				}
 
 			}
@@ -503,7 +582,6 @@ public class Window {
 
 		frame.getContentPane().add(startGamePage);
 
-
 		// 게임순위 버튼
 
 		// 랭크(게임순위)화면
@@ -511,6 +589,7 @@ public class Window {
 				new ImageIcon(".\\images\\rankPage.png").getImage());
 		frame.setSize(rankPage.getWidth(), rankPage.getHeight());
 		frame.getContentPane().add(rankPage);
+
 
 		// 튜토리얼화면
 		ImagePanel htpPage = new ImagePanel(
@@ -655,6 +734,14 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+
+				try {
+					out.writeUTF(logout + "//" + mynick);
+					socket.close();
+				} catch(IOException ex) {
+
+				}
+
 				startGamePage.setVisible(false);
 				loginPage.setVisible(true);
 			}
@@ -662,7 +749,7 @@ public class Window {
 		startGamePage.add(startGamePage_logoutButton);
 
 
-		//랭크화면 버튼들
+		/* 랭크화면 버튼들 */
 
 		//게임시작 메뉴 버튼
 		JButton rankPage_startGameButton = new JButton("");
@@ -715,7 +802,7 @@ public class Window {
 		rankPage.add(rankPage_htpButton);
 
 
-		//로그아웃 버튼
+		//게임순위 페이지 안의 로그아웃 버튼
 		JButton rankpage_logoutButton = new JButton("");
 		rankpage_logoutButton.setIcon(new ImageIcon(".\\images\\logoutButton.png"));
 		rankpage_logoutButton.setBounds(1203, 43, 47, 47);
@@ -854,6 +941,8 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+
+
 				htpPage.setVisible(false);
 				loginPage.setVisible(true);
 			}
@@ -1089,7 +1178,7 @@ public class Window {
 	}
 
 
-
+	/* 게임 시작 */
 	//public void gameStart(int nowSelected, String mode) {
 	public void beginner_gameStart() {
 
@@ -1122,6 +1211,38 @@ public class Window {
 //			InGame IG4 = new InGame(col,row,mine);
 //			IG4.setBounds(700, 400,IG4.getWidth(), IG4.getHeight());
 //			frame.add(IG4);
+
+		frame.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				System.out.println(e.getKeyCode());
+				if(e.getKeyCode()==KeyEvent.VK_1) {
+					Items.scan.using(IG.ma.x,IG.ma.y);
+//					System.out.println(IG.ma.x);
+//					System.out.println(IG.ma.y);
+				}
+				if(e.getKeyCode()==KeyEvent.VK_2) {
+					Items.reverse.using();
+
+				}
+			}
+		});
+		frame.setFocusable(true);
+		frame.requestFocus();
 	}
 }
 
