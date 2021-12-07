@@ -13,9 +13,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 
 import javax.swing.*;
@@ -27,11 +25,18 @@ public class Window {
 	static DataInputStream in; // Server로부터 데이터를 읽어들임
 	static DataInputStream keyboard; // 키보드로 입력하는 값 읽어들임
 	static DataOutputStream out; // Server로 내보내기 위한 출력스트림
+
+	static InputStream in2;
+	static OutputStream out2;
+
+
 	private JFrame frame;
 	private int mouseX, mouseY;
 
 	static String worldName ;
 
+	static InGame IG;
+	static viewGame VG;
 	static String Server_IP = "192.168.219.118";
 	static int Server_Port = 5555;
 	static String login_data;
@@ -1130,7 +1135,7 @@ public class Window {
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// 같이하기(멀티)게임 동작
-					String user_data;
+					/*String user_data;
 					user_data = roomuser + "//" + mynick;
 				try {
 					out.writeUTF(user_data);
@@ -1149,10 +1154,25 @@ public class Window {
 					}
 				} catch(IOException ex) {
 
-				}
+				}*/
+
+
+
 
 				startGamePage.setVisible(false);
 				multiModePage.setVisible(true);
+
+				try{
+
+					out2 = socket.getOutputStream();
+					ObjectOutputStream oos = new ObjectOutputStream(out2);
+
+					oos.writeObject(IG.getField());
+
+
+				}catch (Exception ex){
+
+				}
 			}
 		});
 		startGamePage.add(startGamePage_multiButton);
@@ -1802,7 +1822,6 @@ public class Window {
 	//======================================================================
 	/* 게임 시작 */
 //	public void gameStart(int nowSelected, String mode) {
-	InGame IG;
 
 	public void easy_gameStart() {
 
@@ -1814,7 +1833,6 @@ public class Window {
 		int row = 9;
 		int mine = 10;
 
-		IG = new InGame(col, row, mine, 50);// 가로개수,세로개수,지뢰수,한칸당 크기
 		IG = new InGame(col, row, mine, 50);// 가로개수,세로개수,지뢰수,한칸당 크기
 		IG.setBounds(410, 150, IG.getWidth(), IG.getHeight());
 		easyModePage.add(IG);
