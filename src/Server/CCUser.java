@@ -204,14 +204,16 @@ class CCUser extends Thread{
 
                 /* 전체 전적 조회 */
                 else if(m[0].equals(rankTag)) {
+                    System.out.println(db.viewRank());
                     if(!db.viewRank().equals("")) {	//조회 성공
                         dos.writeUTF(rankTag + "//" + db.viewRank());	//태그와 조회한 내용을 같이 전송
+
                     }
                     // db.viewRank() = record//member
                     else {	//조회 실패
                         dos.writeUTF(rankTag + "//FAIL");
                     }
-                }  //전체 전적 조회 if문
+                } //전체 전적 조회 if문
 
                 /* 접속 유저 벡터에 저장 */
                 else if(m[0].equals(roomuserTag)) {

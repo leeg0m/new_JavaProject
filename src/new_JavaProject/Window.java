@@ -8,15 +8,15 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.*;
 import java.io.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 
 import javax.swing.*;
+import javax.xml.crypto.Data;
 
 import new_JavaProject.InGame.Items;
 
@@ -723,11 +723,18 @@ public class Window {
 
 		// =====================================================================
 		// 게임순위 버튼
+		//-----------------------------
+
+
 
 		// 랭크(게임순위)화면
 		ImagePanel rankPage = new ImagePanel(new ImageIcon(".\\images\\rankPage.png").getImage());
 		frame.setSize(rankPage.getWidth(), rankPage.getHeight());
 		frame.getContentPane().add(rankPage);
+
+		JTextArea list = new JTextArea();
+		list.setBounds(300,150,500,500);
+		rankPage.add(list);
 
 		// 튜토리얼화면
 		ImagePanel htpPage = new ImagePanel(new ImageIcon(".\\images/htpPage.png").getImage());
@@ -1283,6 +1290,31 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				try {
+					socket = new Socket(Server_IP, Server_Port);
+					in = new DataInputStream(socket.getInputStream());
+					out = new DataOutputStream(socket.getOutputStream());
+
+					String ranktag = "RANK";
+					String rank_data = ranktag; // Server에서 "//"를 통해서 구분
+					out.writeUTF(rank_data);
+				} catch(IOException ex) {
+
+				}
+
+				try {
+					String rankcheck_possible = in.readUTF();
+
+					String s[] = rankcheck_possible.split("//");
+					if(s[0].equals(rankPage)) {
+						for (int i = 0; i <= s.length-1 ; i++) {
+							list.setText(s[i]);
+							System.out.println("");
+						}
+					}
+				} catch	(IOException ex) {
+
+				}
 				startGamePage.setVisible(false);
 				rankPage.setVisible(true);
 			}
@@ -1917,18 +1949,14 @@ public class Window {
 	}
 
 //중급모드
-	Socket nsocket=new Socket();
 	InputStream in3 = null;
 	OutputStream out3 = null;
+	final int myPort = 5000; // 수신용 포트 번호
+	final int otherPort = 6000; //송신용 포트 번호
+
 	public void normal_gameStart() {
 
-		try {
-			nsocket = new Socket(Server_IP,5432);
-			in2 = nsocket.getInputStream();
-			out2 = nsocket.getOutputStream();
-		}catch(IOException ex){
 
-		}
 
 		int col = 16;
 		int row = 16;
@@ -1955,6 +1983,13 @@ public class Window {
 		nomalModePage.add(VG);
 		new Thread() {
 			public void run() {
+				JTextField textField;
+				JTextArea textArea;
+				DatagramSocket nsocket;
+				DatagramPacket npacket;
+				InetAddress address = null;
+				final int myPort = 5000; // 수신용 포트 번호
+				final int otherPort = 6000; // 송신용 포트 번호
 				while (IG.inGame) {
 					try {
 						Thread.sleep(100);
@@ -1962,8 +1997,12 @@ public class Window {
 							//게임중 작업
 //							VG.setField(IG.getField());
 							try {
-								out3.write(IG.getField());
-								out3.flush();
+								nsocket = new DatagramSocket(myPort);
+								npacket = new DatagramPacket(VG.getField(), VG.getField().length);
+								nsocket.receive(npacket);
+								// 패킷 생성
+								npacket = new DatagramPacket(IG.getField(), IG.getField().length, InetAddress.getByName("192.168.1.107"), otherPort);
+								nsocket.send(npacket);
 							}catch(Exception ex){
 
 							}

@@ -231,37 +231,25 @@ public class Database {
 
     //전체 회원의 전적을 조회하는 메소드. 모든 회원의 전적을 String 형태로 반환한다.
     String viewRank() {
-        String record_msg = ""; //싱글모드 전적을 받을 문자열.
-        String member_msg = "";	//멀티모드 전적을 받을 문자열. 초기값은 ""로 한다.
-        String msg = "";
+        String msg = "";	//전적을 받을 문자열. 초기값은 ""로 한다.
 
         try {
-            //single 테이블의 닉네임, 시간을 모두 조회
-            //member 테이블의 닉네임, 승, 패를 모두 조회
-            String record_viewStr = "SELECT nickname, easyrecord, normalrecord, hardrecord FROM member";
-            ResultSet record_result = state.executeQuery(record_viewStr);
-            String member_viewStr = "SELECT nickname, win, lose, mmr FROM member";
-            ResultSet member_result = state.executeQuery(member_viewStr);
+            //member 테이블의 닉네임, 승, 패를 모두 조회한다.
+            String viewStr = "SELECT nickname, easyrecord, normalrecord, hardrecord, win, lose, mmr FROM member";
+            ResultSet result = state.executeQuery(viewStr);
 
             int count = 0;
-            while(record_result.next()) {
+            while(result.next()) {
                 //기존의 msg에 "닉네임 : n승 n패@" 형태의 문자열을 계속해서 추가한다.
-                record_msg = record_msg + member_result.getString("nickname") + " : " + member_result.getInt("win") + "승 " + member_result.getInt("lose") + "패"
-                        + member_result.getInt("mmr") + "점";
-                count++;
-            }
-            while(member_result.next()) {
-                //기존의 msg에 "닉네임 : n승 n패@" 형태의 문자열을 계속해서 추가한다.
-                member_msg = member_msg + member_result.getString("nickname") + " : " + member_result.getInt("win") + "승 " + member_result.getInt("lose") + "패"
-                        + member_result.getInt("mmr") + "점";
+                msg = msg + result.getString("nickname") + " : " + "초급(" +result.getInt("easyrecord")+ "초) 중급(" +result.getInt("normalrecord")+ "초) 고급(" +result.getInt("hardrecord")+ "초) " + result.getInt("win") + "승 " + result.getInt("lose") + "패 "+ result.getInt("mmr") + "점//";
                 count++;
             }
             System.out.println("[Server] 전적 조회 성공");	//정상적으로 수행되면 성공을 콘솔로 알린다.
         } catch(Exception e) {	//정상적으로 수행하지 못하면 실패를 콘솔로 알린다.
             System.out.println("[Server] 전적 조회 실패 > " + e.toString());
         }
-        msg = record_msg + "//" + member_msg;
-        return msg;	//싱글모드, 멀티모드 기록 동시 반환환
+
+        return msg;	//msg 반환
     }
     /*
     //한 명의 회원의 전적을 조회하는 메소드. 해당 회원의 전적을 String 형태로 반환한다.
