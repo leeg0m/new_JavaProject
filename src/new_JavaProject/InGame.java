@@ -1,5 +1,6 @@
 package new_JavaProject;
 
+
 import java.awt.AWTException;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -1318,6 +1319,14 @@ public class InGame extends JPanel {
 		return (int)secDiffTime;
 	}
 
+	byte[] f;
+	public byte[] getField() {
+		f= new byte[field.length];
+		for(int i=0;i<field.length;i++){
+			f[i]=(byte)field[i];
+		}
+		return f;
+	}
 }
 
 

@@ -37,7 +37,7 @@ public class Window {
 
 	static InGame IG;
 	static viewGame VG;
-	static String Server_IP = "192.168.219.118";
+	static String Server_IP = "192.168.1.90";
 	static int Server_Port = 5555;
 	static String login_data;
 	static String signup_data;
@@ -204,7 +204,9 @@ public class Window {
 		frame.setSize(startGamePage.getWidth(), startGamePage.getHeight());
 
 		// 로그인화면
-		ImagePanel loginPage = new ImagePanel(new ImageIcon("./images/loginPage.png").getImage());
+	//	ImagePanel loginPage = new ImagePanel(new ImageIcon("./images/loginPage.png").getImage());
+		ImagePanel loginPage = new ImagePanel(new ImageIcon("./images/MainLogInPage.png").getImage());
+
 		frame.setSize(loginPage.getWidth(), loginPage.getHeight());
 
 		frame.getContentPane().add(loginPage);
@@ -756,17 +758,22 @@ public class Window {
 		frame.getContentPane().add(multiModePage);
 
 		//빨간 버튼(플레이어 차례)
-		JButton redDot = new JButton();
-		redDot.setIcon(new ImageIcon(".\\images\\reddotButton.png"));
-		redDot.setBorderPainted(false);
-		redDot.setBounds(1200,100,28,28);
-		multiModePage.add(redDot);
+//		JButton redDot = new JButton();
+//		redDot.setIcon(new ImageIcon(".\\images\\reddotButton.png"));
+//		redDot.setBorderPainted(false);
+//		redDot.setBounds(1200,100,28,28);
+//		multiModePage.add(redDot);
 
 		//데이터베이스 테이블
-	/*	JPanel tablePenel = new JPanel();
-		tablePenel.setBounds(0,100,1000,500);
-		String[] headers = new String[] ={"닉네임", "초급","중급","고급","승","패","mmr"};
-		frame.add(tablePenel);*/
+		//JPanel tablePenel = new JPanel();
+		//tablePenel.setBounds(0,100,1000,500);
+	    //String[] headers = new String[] ={"닉네임", "초급","중급","고급","승","패","mmr"};
+ 	    //frame.add(tablePenel);
+
+		JTextField tableField = new JTextField("닉네임, 초급, 중급, 고급, 승, 패, mmr");
+		tableField.setBounds(150,150,520,520);
+		rankPage.add(tableField);
+
 
 
 		//아이디_비밀번호 찾기 버튼들
@@ -1207,9 +1214,11 @@ public class Window {
 				}
 				try {
 					String[] mg = in.readUTF().split("//");
-					if(mg[0].equals(info))
-						mg[1].split("!!");
-
+					String[] mg_info = mg[1].split("!!");
+					String cell = mg_info[0]; // 셀 정보
+					String c_flag = mg_info[1]; // 깃발 갯수
+					String token = mg_info[2]; // 토큰
+					// 게임시작 되자마자 이거 각 클라이언트에 전달 받음 → A 클라이언트가 눌렀을 떄, B,C,D 화면에도 보이게
 
 				} catch(IOException ex) {
 
@@ -1434,7 +1443,22 @@ public class Window {
 		JButton rankrefreshButton = new JButton("");
 		rankrefreshButton.setIcon(new ImageIcon(".\\images\\rankrefreshButton.png"));
 		rankrefreshButton.setBounds(70, 600, 47, 47);
-
+		rankrefreshButton.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {
+				rankrefreshButton.setIcon(new ImageIcon(".\\images\\rankrefreshButton.png"));
+				rankrefreshButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+			public void mouseExited(MouseEvent e) {
+				rankrefreshButton.setIcon(new ImageIcon(".\\images\\rankrefreshButton.png"));
+				rankrefreshButton.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+			public void mousePressed(MouseEvent e) {
+				rankrefreshButton.setIcon(new ImageIcon(".\\images\\rankrefreshButtonPressed.png"));
+			}
+			public void mouseReleased(MouseEvent e) {
+				//viewrank 관련
+			}
+		});
 		rankPage.add(rankrefreshButton);
 
 		// ====================================================================
@@ -1893,15 +1917,25 @@ public class Window {
 	}
 
 //중급모드
-
+	Socket nsocket=new Socket();
+	InputStream in3 = null;
+	OutputStream out3 = null;
 	public void normal_gameStart() {
+
+		try {
+			nsocket = new Socket(Server_IP,5432);
+			in2 = nsocket.getInputStream();
+			out2 = nsocket.getOutputStream();
+		}catch(IOException ex){
+
+		}
 
 		int col = 16;
 		int row = 16;
 		int mine = 40;
 
 		IG = new InGame(col, row, mine, 30);// 가로개수,세로개수,지뢰수,한칸당 크기
-		IG.setBounds(410, 150, IG.getWidth(), IG.getHeight());
+		IG.setBounds(100, 150, IG.getWidth(), IG.getHeight());
 		nomalModePage.add(IG);
 
 //		KeyListener kl = new inGameKeyListener(IG);
@@ -1914,6 +1948,39 @@ public class Window {
 		JButton eee = new JButton("");
 		eee.setIcon(new ImageIcon(".\\images\\backButton.png"));
 		eee.setIcon(new ImageIcon(".\\images\\backButtonEntered.png"));
+
+
+		viewGame VG = new viewGame(IG.getField());
+		VG.setBounds(700, 150, IG.getWidth(), IG.getHeight());
+		nomalModePage.add(VG);
+		new Thread() {
+			public void run() {
+				while (IG.inGame) {
+					try {
+						Thread.sleep(100);
+						if(true) {
+							//게임중 작업
+//							VG.setField(IG.getField());
+							try {
+								out3.write(IG.getField());
+								out3.flush();
+							}catch(Exception ex){
+
+							}
+							try {
+								VG.setField(in3.readAllBytes());
+
+							}catch(Exception ex){
+
+							}
+						}
+					} catch (Exception e) {
+
+					}
+				}
+			}
+		}.start();
+
 
 	}
 

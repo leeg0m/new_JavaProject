@@ -26,8 +26,10 @@ public class viewGame extends JPanel{
     private final int DRAW_MARK = 11;// 깃발마크
     private final int DRAW_WRONG_MARK = 12;// 깃 취소
 
-    viewGame(int[] field){
-        this.field = field;
+    viewGame(byte[] ff){
+        for(int i=0;i<ff.length;i++){
+            field[i]=(int)ff[i];
+        }
 
         img = new Image[NUM_IMAGES];// 이미지 로딩
         for (int i = 0; i < NUM_IMAGES; i++) {
@@ -39,16 +41,22 @@ public class viewGame extends JPanel{
             ImageIcon changeIcon = new ImageIcon(img[i]);
         }
     }
-    boolean old;
-    public void setField(int[] field) {
-        old=true;
+    public void setField(byte[] ff) {
+        for(int i=0;i<ff.length;i++){
+            field[i]=(int)ff[i];
+        }
+
         this.field = field;
         repaint();
     }
 
-    public static int[] getField() {
-
-        return field;
+    byte[] f;
+    public byte[] getField() {
+        f= new byte[field.length];
+        for(int i=0;i<field.length;i++){
+            f[i]=(byte)field[i];
+        }
+        return f;
     }
 
     @Override

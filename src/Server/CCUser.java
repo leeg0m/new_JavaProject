@@ -240,6 +240,8 @@ class CCUser extends Thread{
                     // String[] inf = m[1].split("!!");
                     // if(inf[0])
                     // inf[0] ¼¿ Á¤º¸, inf[1] ±ê¹ß, inf[2] ÅäÅ«
+                    inf[0] = "";
+                    inf[1] = "";
                     inf[2] = "" + token;
                     String s = infoTag + "//" + inf[0] + "!!" + inf[1] + "!!" + inf[2];
                     dos.writeUTF(s);
