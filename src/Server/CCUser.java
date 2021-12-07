@@ -18,7 +18,7 @@ class CCUser extends Thread{
     /* 각 객체를 Vector로 관리 */
     Vector<CCUser>auser;	//연결된 모든 클라이언트
     Vector<CCUser>wuser;	//대기실에 있는 클라이언트
-    static Vector<CCUser>gameuser; //같이하기 버튼 눌렀을 떄 접속하는 인원을 저장하는 벡터
+    Vector<CCUser>gameuser; //같이하기 버튼 눌렀을 떄 접속하는 인원을 저장하는 벡터
     Vector<Room> room;		//생성된 Room
 
     Database db = new Database();
@@ -37,7 +37,11 @@ class CCUser extends Thread{
     String findPassword;    //클라이언트의 비밀번호를 저장할 필드
     Room myRoom;		//입장한 방 객체를 저장할 필드
 
+
     static int auser_count = 0; // auser 벡터 카운트 초기화
+    static int[] field = new int[16*30]; // 각 셀 마다의 정보
+    static int multiflag = 99;
+    static int token = 0;
 
     /* 각 메시지를 구분하기 위한 태그 */
     final String loginTag = "LOGIN";	//로그인
@@ -63,6 +67,9 @@ class CCUser extends Thread{
     final String find_id = "FINDID";
     final String find_pw = "FINDPW";
     final String roomuserTag = "ROOMUSER";
+    final String exituserTag = "EXITUSER";
+    final String mgamestartTag = "MGAMESTART";
+    final String infoTag = "INFO";
 
 
     CCUser(Socket _s, Server _ss) {
@@ -71,6 +78,7 @@ class CCUser extends Thread{
 
         auser = server.alluser; // 현재 접속 중인 모든 유저
         wuser = server.waituser; // 현재 대기실에 있는 유저
+        gameuser = server.guser; // 현재 매칭 방 안에 있는 유저
         room = server.room;
     }  //CCUser()
     public void run() {
@@ -110,7 +118,7 @@ class CCUser extends Thread{
 
                         dos.writeUTF(loginTag + "//success" + "//" + nickname);
 
-                        sendWait(connectedUser());	//대기실 접속 유저에 모든 접속 인원을 전송
+                        // sendWait(connectedUser());	//대기실 접속 유저에 모든 접속 인원을 전송
 
                         if(room.size() > 0) {	//생성된 방의 개수가 0 이상일 때
                             sendWait(roomInfo());	//대기실 접속 인원에 방 목록을 전송
@@ -210,8 +218,30 @@ class CCUser extends Thread{
 
                     String nickname = m[1];
                     gameuser.add(this);
-                    // gameuser.get(gameuser.size()-1);
-                    String s = String.format("%d",gameuser.size()-1);
+                    int gi = gameuser.size()-1;
+//                    String s = String.format("%s//%d",roomuserTag ,gameuser.size()-1);
+                    String s = roomuserTag + "//" + gi;
+                    System.out.println(gi);
+
+                    System.out.println("s:" + s);
+                    dos.writeUTF(s);
+                }
+
+                /* 접속 유저가 나가기 버튼 눌렀을 때 벡터에서 제거 */
+                else if(m[0].equals(exituserTag)){
+                    System.out.println(gameuser.size());
+                    gameuser.remove(Integer.parseInt(m[1]));
+                    System.out.println(gameuser.size());
+                }
+
+                /* 방장이 게임시작을 하였을 때 각 클라이언트 정보 동기화 */
+                else if(m[0].equals(mgamestartTag)){
+                    String[] inf = new String[3];
+                    // String[] inf = m[1].split("!!");
+                    // if(inf[0])
+                    // inf[0] 셀 정보, inf[1] 깃발, inf[2] 토큰
+                    inf[2] = "" + token;
+                    String s = infoTag + "//" + inf[0] + "!!" + inf[1] + "!!" + inf[2];
                     dos.writeUTF(s);
                 }
 

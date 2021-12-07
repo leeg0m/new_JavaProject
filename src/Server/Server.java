@@ -12,6 +12,7 @@ public class Server {
     /* 각 객체들을 Vector로 관리 */
     Vector<CCUser> alluser;		// 연결된 모든 클라이언트
     Vector<CCUser> waituser;	// 대기실에 있는 클라이언트
+    Vector<CCUser> guser;       // 매칭 방 안에 있는 클라이언트
     Vector<Room> room;			// 생성된 Room
 
     public static void main(String[] args) {
@@ -19,6 +20,7 @@ public class Server {
 
         server.alluser = new Vector<>();
         server.waituser = new Vector<>();
+        server.guser = new Vector<>();
         server.room = new Vector<>();
 
         try {

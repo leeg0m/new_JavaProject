@@ -48,6 +48,7 @@ public class Window {
 	static String overcheckId_possible;
 	static String findcheck_possible;
 	static boolean roommaster = false;
+	static String mynumber;
 
 	static int IDovercheck_count = 0; // 중복체크 누른 여부 체크
 	static int NIovercheck_count = 0; // 둘 다 1 이상 일 떄 회원가입 가능
@@ -70,7 +71,9 @@ public class Window {
 	static String find_id = "FINDID";
 	static String find_pw = "FINDPW";
 	static String roomuser = "ROOMUSER";
-
+	static String exituser = "EXITUSER";
+	static String mgamestart = "MGAMESTART"; // 방장이 게임시작을 눌렀을 떄 보내는 태그
+	static String info = "INFO"; // 같이하기(멀티)게임 정보
 	/**
 	 * Launch the application.
 	 */
@@ -1135,11 +1138,15 @@ public class Window {
 
 				}
 				try {
-					String s = in.readUTF();
-					if(s.equals("0"))
-						roommaster = true;
-					else
-						roommaster = false;
+					String[] s = in.readUTF().split("//");
+					System.out.println(s[0] + s[1]);
+					if(s[0].equals(roomuser)) {
+						mynumber = s[1];
+						if (mynumber.equals("0"))
+							roommaster = true;
+						else
+							roommaster = false;
+					}
 				} catch(IOException ex) {
 
 				}
@@ -1170,6 +1177,23 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				try{
+					if(mynumber.equals("0"))
+						out.writeUTF(mgamestart);
+					else
+						JOptionPane.showMessageDialog(null, "권한이 없습니다.");
+				} catch(IOException ex) {
+
+				}
+				try {
+					String[] mg = in.readUTF().split("//");
+					if(mg[0].equals(info))
+						mg[1].split("!!");
+
+
+				} catch(IOException ex) {
+
+				}
 
 			}
 		});
@@ -1195,6 +1219,15 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				String exituser_data;
+				exituser_data = exituser + "//" + mynumber;
+				System.out.println(exituser_data);
+				try {
+					out.writeUTF(exituser_data);
+				} catch(IOException ex) {
+
+				}
+
 				multiModePage.setVisible(false);
 				startGamePage.setVisible(true);
 			}
