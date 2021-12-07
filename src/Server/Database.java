@@ -241,7 +241,7 @@ public class Database {
             int count = 0;
             while(result.next()) {
                 //기존의 msg에 "닉네임 : n승 n패@" 형태의 문자열을 계속해서 추가한다.
-                msg = msg + result.getString("nickname") + " : " + "초급(" +result.getInt("easyrecord")+ "초) 중급(" +result.getInt("normalrecord")+ "초) 고급(" +result.getInt("hardrecord")+ "초) " + result.getInt("win") + "승 " + result.getInt("lose") + "패 "+ result.getInt("mmr") + "점//";
+                msg = msg + result.getString("nickname") + " : " + "초급(" +result.getInt("easyrecord")+ "초) 중급(" +result.getInt("normalrecord")+ "초) 고급(" +result.getInt("hardrecord")+ "초) " + result.getInt("win") + "승 " + result.getInt("lose") + "패 "+ result.getInt("mmr") + "점" + "//";
                 count++;
             }
             System.out.println("[Server] 전적 조회 성공");	//정상적으로 수행되면 성공을 콘솔로 알린다.

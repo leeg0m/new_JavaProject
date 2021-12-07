@@ -732,9 +732,46 @@ public class Window {
 		frame.setSize(rankPage.getWidth(), rankPage.getHeight());
 		frame.getContentPane().add(rankPage);
 
-		JTextArea list = new JTextArea();
-		list.setBounds(300,150,500,500);
-		rankPage.add(list);
+		JTextArea list1 = new JTextArea();
+		list1.setBounds(380,150,500,50);
+		list1.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		rankPage.add(list1);
+		JTextArea list2 = new JTextArea();
+		list2.setBounds(380,200,500,50);
+		list2.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		rankPage.add(list2);
+		JTextArea list3 = new JTextArea();
+		list3.setBounds(380,250,500,50);
+		list3.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		rankPage.add(list3);
+		JTextArea list4 = new JTextArea();
+		list4.setBounds(380,300,500,50);
+		list4.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		rankPage.add(list4);
+		JTextArea list5 = new JTextArea();
+		list5.setBounds(380,350,500,50);
+		list5.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		rankPage.add(list5);
+		JTextArea list6 = new JTextArea();
+		list6.setBounds(380,150,500,50);
+		list6.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		rankPage.add(list6);
+		JTextArea list7 = new JTextArea();
+		list7.setBounds(380,200,500,50);
+		list7.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		rankPage.add(list7);
+		JTextArea list8 = new JTextArea();
+		list8.setBounds(380,250,500,50);
+		list8.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		rankPage.add(list8);
+		JTextArea list9 = new JTextArea();
+		list9.setBounds(380,300,500,50);
+		list9.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		rankPage.add(list9);
+		JTextArea list10 = new JTextArea();
+		list10.setBounds(380,350,500,50);
+		list10.setFont(new Font("¸¼Àº °íµñ", Font.PLAIN, 15));
+		rankPage.add(list10);
 
 		// Æ©Åä¸®¾óÈ­¸é
 		ImagePanel htpPage = new ImagePanel(new ImageIcon(".\\images/htpPage.png").getImage());
@@ -777,9 +814,9 @@ public class Window {
 	    //String[] headers = new String[] ={"´Ð³×ÀÓ", "ÃÊ±Þ","Áß±Þ","°í±Þ","½Â","ÆÐ","mmr"};
  	    //frame.add(tablePenel);
 
-		JTextField tableField = new JTextField("´Ð³×ÀÓ, ÃÊ±Þ, Áß±Þ, °í±Þ, ½Â, ÆÐ, mmr");
-		tableField.setBounds(150,150,520,520);
-		rankPage.add(tableField);
+		//JTextField tableField = new JTextField("");
+		//tableField.setBounds(150,150,520,520);
+		//rankPage.add(tableField);
 
 
 
@@ -1290,6 +1327,8 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				startGamePage.setVisible(false);
+				rankPage.setVisible(true);
 				try {
 					socket = new Socket(Server_IP, Server_Port);
 					in = new DataInputStream(socket.getInputStream());
@@ -1304,19 +1343,36 @@ public class Window {
 
 				try {
 					String rankcheck_possible = in.readUTF();
-
+					System.out.println(rankcheck_possible);
 					String s[] = rankcheck_possible.split("//");
-					if(s[0].equals(rankPage)) {
-						for (int i = 0; i <= s.length-1 ; i++) {
-							list.setText(s[i]);
-							System.out.println("");
-						}
+					System.out.println(s[1] + "   " + s[2]);
+					if (s[0].equals("RANK")) {
+						if(!s[1].equals(""))
+							list1.setText(s[1]);
+						if(!s[2].equals(""))
+							list2.setText(s[2]);
+						if(!s[3].equals(null))
+							list3.setText(s[3]);
+						if(!s[4].equals(null))
+							list4.setText(s[4]);
+						if(!s[5].equals(null))
+							list5.setText(s[5]);
+						if(!s[6].equals(""))
+							list1.setText(s[6]);
+						if(!s[7].equals(""))
+							list2.setText(s[7]);
+						if(!s[8].equals(null))
+							list3.setText(s[8]);
+						if(!s[9].equals(null))
+							list4.setText(s[9]);
+						if(!s[10].equals(null))
+							list5.setText(s[10]);
 					}
+
 				} catch	(IOException ex) {
 
 				}
-				startGamePage.setVisible(false);
-				rankPage.setVisible(true);
+
 			}
 		});
 		startGamePage.add(startGamePage_rankButton);
@@ -1340,6 +1396,7 @@ public class Window {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+
 				startGamePage.setVisible(false);
 				htpPage.setVisible(true);
 			}
@@ -1580,6 +1637,51 @@ public class Window {
 			public void mousePressed(MouseEvent e) {
 				htpPage.setVisible(false);
 				rankPage.setVisible(true);
+
+				try {
+					socket = new Socket(Server_IP, Server_Port);
+					in = new DataInputStream(socket.getInputStream());
+					out = new DataOutputStream(socket.getOutputStream());
+
+					String ranktag = "RANK";
+					String rank_data = ranktag; // Server¿¡¼­ "//"¸¦ ÅëÇØ¼­ ±¸ºÐ
+					out.writeUTF(rank_data);
+				} catch(IOException ex) {
+
+				}
+
+				try {
+					String rankcheck_possible = in.readUTF();
+					System.out.println(rankcheck_possible);
+					String s[] = rankcheck_possible.split("//");
+					System.out.println(s[1] + "   " + s[2]);
+					if (s[0].equals("RANK")) {
+						if(!s[1].equals(""))
+							list1.setText(s[1]);
+						if(!s[2].equals(""))
+							list2.setText(s[2]);
+						if(!s[3].equals(null))
+							list3.setText(s[3]);
+						if(!s[4].equals(null))
+							list4.setText(s[4]);
+						if(!s[5].equals(null))
+							list5.setText(s[5]);
+						if(!s[6].equals(""))
+							list1.setText(s[6]);
+						if(!s[7].equals(""))
+							list2.setText(s[7]);
+						if(!s[8].equals(null))
+							list3.setText(s[8]);
+						if(!s[9].equals(null))
+							list4.setText(s[9]);
+						if(!s[10].equals(null))
+							list5.setText(s[10]);
+					}
+
+				} catch	(IOException ex) {
+
+				}
+
 			}
 		});
 		htpPage.add(htpPage_rankButton);
@@ -1902,8 +2004,8 @@ public class Window {
 //			IG4.setBounds(700, 400,IG4.getWidth(), IG4.getHeight());
 //			frame.add(IG4);
 
-//		KeyListener kl = new inGameKeyListener(IG);
-//		easyModePage.addKeyListener(kl);
+		KeyListener kl = new inGameKeyListener(IG);
+		easyModePage.addKeyListener(kl);
 
 		easyModePage.setFocusable(true);
 		easyModePage.requestFocus();
